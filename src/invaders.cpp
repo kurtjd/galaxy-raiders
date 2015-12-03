@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -19,17 +20,28 @@ sf::Image load_sprites(std::string img)
 }
 
 //Creates shields across the screen
-void init_shields(sf::Image &spritesheet, std::vector<Shield> &shields)
+void init_shields(sf::Image &spritesheet, std::vector<Shield*> &shields)
 {
-    for(unsigned i = 45; i < SCREEN_WIDTH; i += 175)
-        shields.push_back(Shield(spritesheet, i));
+    // Create shields on the heap so they don't go out of scope.
+    // This loop creates 4 shields across the screen.
+    for (unsigned i = 45; i < SCREEN_WIDTH; i += 175)
+        shields.push_back(new Shield(spritesheet, i));
+}
+
+//Remove shields from memory
+void del_shields(std::vector<Shield*> &shields)
+{
+    for (unsigned i = 0; i < shields.size(); ++i)
+        delete shields[i];
+
+    shields.clear();
 }
 
 // Draws the shields to the screen
-void draw_shields(sf::RenderWindow &window, std::vector<Shield> &shields)
+void draw_shields(sf::RenderWindow &window, std::vector<Shield*> &shields)
 {
-    for(unsigned i = 0; i < shields.size(); ++i)
-        window.draw(shields[i].getSprite());
+    for (unsigned i = 0; i < shields.size(); ++i)
+        window.draw(shields[i]->getSprite());
 }
 
 int main()
@@ -47,7 +59,7 @@ int main()
     screenline.setFillColor(sf::Color::Green);
 
     // Create shields vector
-    std::vector<Shield> shields;
+    std::vector<Shield*> shields;
     
     // Initialize shields
     init_shields(spritesheet, shields);
@@ -57,15 +69,16 @@ int main()
 
 
     // Begin game loop
-    while(window.isOpen())
+    while (window.isOpen())
     {
         // Check for input
         sf::Event event;
-        while(window.pollEvent(event))
+        while (window.pollEvent(event))
         {
-            switch(event.type)
+            switch (event.type)
             {
             case sf::Event::Closed:
+                del_shields(shields);
                 window.close();
                 break;
 

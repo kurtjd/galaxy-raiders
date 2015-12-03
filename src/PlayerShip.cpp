@@ -5,5 +5,5 @@ PlayerShip::PlayerShip(sf::Image &spritesheet, int startx): spritesheet(spritesh
 {
     this->alive_txtr.loadFromImage(spritesheet, sf::IntRect(492, 40, 48, 30));
     this->alive_sprite.setTexture(this->alive_txtr);
-    this->alive_sprite.setPosition(this->x, 580);
+    this->alive_sprite.setPosition(this->x, 580); // 580 is the y pos of the ship, which never changes.
 }
