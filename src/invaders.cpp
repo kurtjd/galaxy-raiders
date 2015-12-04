@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <cmath>
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
@@ -9,9 +11,20 @@
 const std::string SCREEN_TITLE = "Space Invaders!";
 const unsigned SCREEN_WIDTH = 700;
 const unsigned SCREEN_HEIGHT = 700;
-const unsigned FRAME_RATE = 30;
+const unsigned FRAME_RATE = 60;
 const sf::Color BG_COLOR = sf::Color::Black;
 
+// Calculates the current FPS and updates the window title with it.
+void updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
+{
+    float fps = 1.0f / (fps_clock.getElapsedTime().asSeconds() - fps_timer);
+    std::ostringstream title;
+    title << "Space Invaders! - " << round(fps) << "fps";
+    window.setTitle(title.str());
+    fps_timer = fps_clock.getElapsedTime().asSeconds();
+}
+
+// Creates an Image object to be used as a texture for sprites.
 sf::Image load_sprites(std::string img)
 {
     sf::Image spritesheet;
@@ -46,6 +59,9 @@ void draw_shields(sf::RenderWindow &window, std::vector<Shield*> &shields)
 
 int main()
 {
+    sf::Clock fps_clock;
+    float fps_timer = fps_clock.getElapsedTime().asSeconds();
+
     // Create and render game window.
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), SCREEN_TITLE);
     window.setFramerateLimit(FRAME_RATE);
@@ -65,7 +81,7 @@ int main()
     init_shields(spritesheet, shields);
 
     // Create player ship
-    PlayerShip playership = PlayerShip(spritesheet, 250);
+    PlayerShip playership = PlayerShip(spritesheet, SCREEN_WIDTH / 2);
 
 
     // Begin game loop
@@ -87,11 +103,20 @@ int main()
             }
         }
 
-        // Display window
+        // Handle keyboard input (this is realtime keyboard input, as opposed to 'event-based'
+        // Move playership
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playership.getX() < (SCREEN_WIDTH - (playership.getWidth() / 2) - 10))
+            playership.move(1);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playership.getX() > (0 + (playership.getWidth() / 2) + 10))
+            playership.move(-1);
+
+        // Display window and draw objects
         window.clear(BG_COLOR);
         window.draw(playership.getAliveSprite());
         draw_shields(window, shields);
         window.draw(screenline);
         window.display();
+
+        updateFPS(window, fps_clock, fps_timer);
     }
 }
