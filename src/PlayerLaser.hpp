@@ -1,27 +1,27 @@
-#ifndef PLAYERBULLET_H
-#define PLAYERBULLET_H
+#ifndef PLAYERLASER_H
+#define PLAYERLASER_H
 
 #include <SFML/Graphics.hpp>
 
-class PlayerBullet
+class PlayerLaser
 {
 private:
     static const int SPEED = 10;
-    sf::RectangleShape bullet;
+    sf::RectangleShape laser;
     bool is_shooting;
 
 public:
-    PlayerBullet();
-    sf::RectangleShape& getShape(){ return this->bullet; }
+    PlayerLaser();
+    sf::RectangleShape& getShape(){ return this->laser; }
     bool isShooting(){ return this->is_shooting; }
 
     // Begins the shooting movement
     void shoot(unsigned startx, unsigned starty);
 
-    // Bullet moves upwards after shot
+    // Laser moves upwards after shot
     void move();
 
-    // Called to make the bullet stop shooting
+    // Called to make the laser stop shooting
     void stop();
 
 };

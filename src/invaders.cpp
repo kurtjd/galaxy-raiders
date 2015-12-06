@@ -4,11 +4,16 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "CoreCannon.hpp"
-#include "Shield.hpp"
-#include "PlayerBullet.hpp"
-#include "Earth.hpp"
 #include "Invader.hpp"
+#include "Shield.hpp"
+#include "CoreCannon.hpp"
+#include "PlayerLaser.hpp"
+#include "Earth.hpp"
+
+/* Helpers */
+typedef std::vector<Invader*> InvaderRow;
+typedef std::vector<InvaderRow> InvaderFormation;
+typedef std::vector<Shield*> ShieldWall;
 
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
@@ -36,14 +41,14 @@ sf::Image load_sprites(std::string img)
 }
 
 // Create Invader formation
-void init_invaders(sf::Image &spritesheet, std::vector<std::vector<Invader*> > &invaders)
+void init_invaders(sf::Image &spritesheet, InvaderFormation &invaders)
 {
     // Vector for each row in the formation
-    std::vector<Invader*> small_invaders;
-    std::vector<Invader*> medium_invaders1;
-    std::vector<Invader*> medium_invaders2;
-    std::vector<Invader*> large_invaders1;
-    std::vector<Invader*> large_invaders2;
+    InvaderRow small_invaders;
+    InvaderRow medium_invaders1;
+    InvaderRow medium_invaders2;
+    InvaderRow large_invaders1;
+    InvaderRow large_invaders2;
 
     // Create each row (each row has 11 invaders)
     for (unsigned i = 1; i <= 11; ++i)
@@ -74,7 +79,7 @@ void init_invaders(sf::Image &spritesheet, std::vector<std::vector<Invader*> > &
 }
 
 // Remove Invaders from memory
-void del_invaders(std::vector<std::vector<Invader*> > &invaders)
+void del_invaders(InvaderFormation &invaders)
 {
     for (unsigned i = 0; i < invaders.size(); ++i)
     {
@@ -88,7 +93,7 @@ void del_invaders(std::vector<std::vector<Invader*> > &invaders)
 }
 
 // Draws the invaders to the screen
-void draw_invaders(sf::RenderWindow &window, std::vector<std::vector<Invader*> > &invaders)
+void draw_invaders(sf::RenderWindow &window, InvaderFormation &invaders)
 {
     for (unsigned i = 0; i < invaders.size(); ++i)
     {
@@ -102,7 +107,7 @@ void draw_invaders(sf::RenderWindow &window, std::vector<std::vector<Invader*> >
 }
 
 // Creates shields across the screen
-void init_shields(sf::Image &spritesheet, std::vector<Shield*> &shields)
+void init_shields(sf::Image &spritesheet, ShieldWall &shields)
 {
     // Create shields on the heap so they don't go out of scope.
     // This loop creates 4 shields across the screen.
@@ -112,7 +117,7 @@ void init_shields(sf::Image &spritesheet, std::vector<Shield*> &shields)
 }
 
 // Remove shields from memory
-void del_shields(std::vector<Shield*> &shields)
+void del_shields(ShieldWall &shields)
 {
     for (unsigned i = 0; i < shields.size(); ++i)
         delete shields[i];
@@ -121,43 +126,43 @@ void del_shields(std::vector<Shield*> &shields)
 }
 
 // Draws the shields to the screen
-void draw_shields(sf::RenderWindow &window, std::vector<Shield*> &shields)
+void draw_shields(sf::RenderWindow &window, ShieldWall &shields)
 {
     for (unsigned i = 0; i < shields.size(); ++i)
         window.draw(shields[i]->getSprite());
 }
 
-// A wrapper for drawing player bullet to check if it is shooting
-void draw_player_bullet(sf::RenderWindow &window, PlayerBullet &bullet)
+// A wrapper for drawing player laser to check if it is shooting
+void draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
 {
-    if (bullet.isShooting())
-        window.draw(bullet.getShape());
+    if (laser.isShooting())
+        window.draw(laser.getShape());
 }
 
 // Draw all objects
-void draw_objects(sf::RenderWindow &window, std::vector<std::vector<Invader*> > &invaders, CoreCannon &cannon, PlayerBullet &playerbul, Earth &earth, std::vector<Shield*> &shields)
+void draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth, ShieldWall &shields)
 {
     window.clear(BG_COLOR);
     draw_invaders(window, invaders);
     draw_shields(window, shields);
-    window.draw(cannon.getAliveSprite());
-    draw_player_bullet(window, playerbul);
+    window.draw(cannon.getSprite());
+    draw_player_laser(window, playerlaser);
     window.draw(earth.getShape());
     window.display();
 }
 
-// Check collision between player bullet and Invaders
-void check_invader_hit(std::vector<std::vector<Invader*> > &invaders, PlayerBullet &bullet)
+// Check collision between player laser and Invaders
+void check_invader_hit(InvaderFormation &invaders, PlayerLaser &laser)
 {
     for (unsigned i = 0; i < invaders.size(); ++i)
     {
         for (unsigned j = 0; j < invaders[i].size(); ++j)
         {
             Invader *invader = invaders[i][j];
-            if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(bullet.getShape().getGlobalBounds()))
+            if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
             {
                 invader->die();
-                bullet.stop();
+                laser.stop();
             }
         }
 
@@ -179,18 +184,18 @@ int main()
     sf::Image spritesheet = load_sprites("../sprites/invader_sprites.png");
 
     // Create Invaders!
-    std::vector<std::vector<Invader*> > invaders;
+    InvaderFormation invaders;
     init_invaders(spritesheet, invaders);
 
     // Create shields
-    std::vector<Shield*> shields;
+    ShieldWall shields;
     init_shields(spritesheet, shields);
 
     // Create Core Cannon (player)
     CoreCannon cannon = CoreCannon(spritesheet, SCREEN_WIDTH / 2);
     
-    // Create player bullet
-    PlayerBullet player_bul;
+    // Create player laser
+    PlayerLaser player_laser;
     
     // Create "Earth" (best name I could come up with
     // for the line at bottom of the screen)
@@ -224,21 +229,21 @@ int main()
         else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && cannon.getX() > (0 + (cannon.getWidth() / 2) + 10))
             cannon.move(-1);
 
-        // Shoot bullet
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !player_bul.isShooting())
+        // Shoot laser
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !player_laser.isShooting())
         {
-            sf::Vector2f cannonpos = cannon.getAliveSprite().getPosition();
-            player_bul.shoot(cannonpos.x, cannonpos.y);
+            sf::Vector2f cannonpos = cannon.getSprite().getPosition();
+            player_laser.shoot(cannonpos.x, cannonpos.y);
         }
 
         /* Update objects */
-        check_invader_hit(invaders, player_bul);
+        check_invader_hit(invaders, player_laser);
 
-        if (player_bul.isShooting())
-            player_bul.move();
+        if (player_laser.isShooting())
+            player_laser.move();
 
         /* Display window and draw objects */
-        draw_objects(window, invaders, cannon, player_bul, earth, shields);
+        draw_objects(window, invaders, cannon, player_laser, earth, shields);
 
         //updateFPS(window, fps_clock, fps_timer);
     }
