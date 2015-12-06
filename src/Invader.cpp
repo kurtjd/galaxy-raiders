@@ -1,13 +1,28 @@
 #include <SFML/Graphics.hpp>
 #include "Invader.hpp"
 
-void Invader::setTextures(sf::IntRect frame1, sf::IntRect frame2)
+void Invader::setTextures(sf::IntRect frame1, sf::IntRect frame2, sf::IntRect frame3)
 {
     this->frame1_txtr.loadFromImage(this->spritesheet, frame1);
     this->frame2_txtr.loadFromImage(this->spritesheet, frame2);
+    this->frame3_txtr.loadFromImage(this->spritesheet, frame3);
 }
 
-Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(1), is_dead(false), frame_on(1)
+void Invader::flipFrame()
+{
+    if (this->frame_on == 1)
+    {
+        this->sprite.setTexture(this->frame2_txtr, true);
+        this->frame_on = 2;
+    }
+    else
+    {
+        this->sprite.setTexture(this->frame1_txtr, true);
+        this->frame_on = 1;
+    }
+}
+
+Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(1), is_dead(false), frame_on(1), death_tick(0)
 {
     sf::IntRect frame1_rect;
     sf::IntRect frame2_rect;
@@ -37,38 +52,40 @@ Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesh
         break;
     }
 
-    this->setTextures(frame1_rect, frame2_rect);
-    this->sprite.setTexture(this->frame1_txtr);
+    // Death frame (same for all types)
+    sf::IntRect frame3_rect(555, 107, 48, 102);
+
+    this->setTextures(frame1_rect, frame2_rect, frame3_rect);
+    this->sprite.setTexture(this->frame1_txtr, true);
     
     // Put the point of origin in center of invader.
-    this->sprite.setOrigin(this->frame1_txtr.getSize().x / 2, this->frame1_txtr.getSize().y / 2);
+    this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().width / 2);
 }
 
 void Invader::die()
 {
+    this->sprite.setTexture(this->frame3_txtr, true);
+    this->is_exploding = true;
     this->is_dead = true;
 }
 
 void Invader::move()
 {
-    this->sprite.move(this->SPEED * this->move_dir, 0);
+    if (this->isDead())
+        return;
 
-    if (this->frame_on == 1)
-    {
-        this->sprite.setTexture(this->frame2_txtr);
-        this->frame_on = 2;
-    }
-    else
-    {
-        this->sprite.setTexture(this->frame1_txtr);
-        this->frame_on = 1;
-    }
+    this->sprite.move(this->SPEED * this->move_dir, 0);
+    this->flipFrame();
 }
 
 void Invader::dropDown()
 {
+    if (this->isDead())
+        return;
+
     // 35 is height of all Invaders
     this->sprite.move(0, 35);
+    this->flipFrame();
 }
 
 void Invader::reverseDir()
@@ -91,4 +108,11 @@ bool Invader::checkHitEdge(int screenw)
         return true;
 
     return false;
+}
+
+void Invader::incDeathTick()
+{
+    ++this->death_tick;
+    if (this->death_tick >= this->DEATH_TICK_MAX)
+        this->is_exploding = false;
 }

@@ -43,6 +43,9 @@ private:
 
     bool has_hit_edge;
 
+    // Check if invaders are exploding and increment tick
+    void incDeathTick();
+
 public:
     InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw);
     ~InvaderFormation();

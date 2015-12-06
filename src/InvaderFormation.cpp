@@ -1,6 +1,19 @@
 #include <SFML/Graphics.hpp>
 #include "InvaderFormation.hpp"
 
+void InvaderFormation::incDeathTick()
+{
+    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+        {
+            Invader *invader = this->invaders[i][j];
+            if (invader->isExploding())
+                invader->incDeathTick();
+        }
+    }
+}
+
 InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw): window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), has_hit_edge(false)
 {
     // Vector for each row in the formation
@@ -48,6 +61,7 @@ InvaderFormation::~InvaderFormation()
 
 bool InvaderFormation::move()
 {
+    this->incDeathTick(); // move() is called every frame so we put this here.
     ++this->move_tick;
     if (this->move_tick == this->move_tick_max)
     {
@@ -129,7 +143,7 @@ void InvaderFormation::draw()
         for (unsigned j = 0; j < this->invaders[i].size(); ++j)
         {
             Invader *invader = this->invaders[i][j];
-            if (!invader->isDead())
+            if (!invader->isDead() || (invader->isDead() && invader->isExploding()))
                 this->window.draw(invader->getSprite());
         }
     }
