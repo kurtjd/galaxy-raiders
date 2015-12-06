@@ -6,10 +6,8 @@
 class Shield
 {
 private:
-    sf::Image spritesheet;
-    int x; // Position of shield
-    
     // The sprite of the shield.
+    sf::Image spritesheet;
     sf::Texture shield_txtr;
     sf::Sprite shield_sprite;
 

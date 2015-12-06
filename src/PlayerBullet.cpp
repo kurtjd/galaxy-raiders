@@ -10,17 +10,12 @@ PlayerBullet::PlayerBullet(): is_shooting(false)
     this->bullet.setOrigin(2, 15); // Make the origin bottom of bullet
 }
 
-void PlayerBullet::placeAt(unsigned x, unsigned y)
-{
-    this->bullet.setPosition(x, y);
-}
-
 void PlayerBullet::shoot(unsigned startx, unsigned starty)
 {
     // If bullet is shooting, don't try to shoot again
     if (!this->is_shooting)
     {
-        this->placeAt(startx, starty);
+        this->bullet.setPosition(startx, starty);
         this->is_shooting = true;
     }
 }
@@ -33,6 +28,7 @@ void PlayerBullet::move()
 
     this->bullet.move(0, this->SPEED * -1);
 
+    // Player can shoot again when bullet leaves screen
     if (this->bullet.getPosition().y < 0)
         this->is_shooting = false;
 }

@@ -7,6 +7,7 @@
 #include "PlayerShip.hpp"
 #include "Shield.hpp"
 #include "PlayerBullet.hpp"
+#include "Colony.hpp"
 
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
@@ -33,7 +34,7 @@ sf::Image load_sprites(std::string img)
     return spritesheet;
 }
 
-//Creates shields across the screen
+// Creates shields across the screen
 void init_shields(sf::Image &spritesheet, std::vector<Shield*> &shields)
 {
     // Create shields on the heap so they don't go out of scope.
@@ -43,7 +44,7 @@ void init_shields(sf::Image &spritesheet, std::vector<Shield*> &shields)
         shields.push_back(new Shield(spritesheet, i));
 }
 
-//Remove shields from memory
+// Remove shields from memory
 void del_shields(std::vector<Shield*> &shields)
 {
     for (unsigned i = 0; i < shields.size(); ++i)
@@ -59,8 +60,28 @@ void draw_shields(sf::RenderWindow &window, std::vector<Shield*> &shields)
         window.draw(shields[i]->getSprite());
 }
 
+// A wrapper for drawing player bullet to check if it is shooting
+void draw_player_bullet(sf::RenderWindow &window, PlayerBullet &bullet)
+{
+    if (bullet.isShooting())
+        window.draw(bullet.getShape());
+}
+
+// Draw all objects
+void draw_objects(sf::RenderWindow &window, PlayerShip &player, PlayerBullet &playerbul, Colony &colony, std::vector<Shield*> &shields)
+{
+    window.clear(BG_COLOR);
+    window.draw(player.getAliveSprite());
+    draw_player_bullet(window, playerbul);
+    window.draw(colony.getShape());
+    draw_shields(window, shields);
+    window.display();
+}
+
+
 int main()
 {
+    // Setup FPS timer
     sf::Clock fps_clock;
     float fps_timer = fps_clock.getElapsedTime().asSeconds();
 
@@ -71,28 +92,26 @@ int main()
     // Load spritesheet
     sf::Image spritesheet = load_sprites("../sprites/invader_sprites.png");
 
-    // Create screenline
-    sf::RectangleShape screenline(sf::Vector2f(SCREEN_WIDTH, 2));
-    screenline.setPosition(0, 680);
-    screenline.setFillColor(sf::Color::Green);
-
-    // Create bullet
-    PlayerBullet player_bul;
+    // Create "Colony" (best name I could come up with
+    // for the line at bottom of the screen)
+    Colony colony(SCREEN_WIDTH);
 
     // Create shields vector
     std::vector<Shield*> shields;
-    
     // Initialize shields
     init_shields(spritesheet, shields);
 
     // Create player ship
     PlayerShip playership = PlayerShip(spritesheet, SCREEN_WIDTH / 2);
+    
+    // Create player bullet
+    PlayerBullet player_bul;
 
 
-    // Begin game loop
+    /* Begin game loop */
     while (window.isOpen())
     {
-        // Check for input
+        // Check for events
         sf::Event event;
         while (window.pollEvent(event))
         {
@@ -108,7 +127,7 @@ int main()
             }
         }
 
-        // Handle keyboard input (this is realtime keyboard input, as opposed to 'event-based'
+        /* Handle keyboard input (this is realtime keyboard input, as opposed to 'event-based') */
         // Move playership
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playership.getX() < (SCREEN_WIDTH - (playership.getWidth() / 2) - 10))
             playership.move(1);
@@ -122,17 +141,12 @@ int main()
             player_bul.shoot(playerpos.x, playerpos.y);
         }
 
-        // Update objects
+        /* Update objects */
         if (player_bul.isShooting())
             player_bul.move();
 
-        // Display window and draw objects
-        window.clear(BG_COLOR);
-        window.draw(playership.getAliveSprite());
-        window.draw(player_bul.getShape());
-        draw_shields(window, shields);
-        window.draw(screenline);
-        window.display();
+        /* Display window and draw objects */
+        draw_objects(window, playership, player_bul, colony, shields);
 
         updateFPS(window, fps_clock, fps_timer);
     }

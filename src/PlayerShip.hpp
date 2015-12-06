@@ -9,9 +9,6 @@ private:
     static const int SPEED = 5; // Movement speed of ship
 
     sf::Image spritesheet;
-    unsigned x; // Ship's position on the screen
-    unsigned width; // Width of ship sprite.
-
     
     // The sprite of the ship as it is alive (not exploding)
     sf::Texture alive_txtr;
@@ -25,8 +22,8 @@ public:
     PlayerShip(sf::Image &spritesheet, int startx);
     void move(int dir);
     sf::Sprite& getAliveSprite(){ return this->alive_sprite; }
-    unsigned getX(){ return this->x; }
-    unsigned getWidth(){ return this->width; }
+    unsigned getX(){ return this->alive_sprite.getPosition().x; }
+    unsigned getWidth(){ return this->getAliveSprite().getGlobalBounds().width; }
 
 };
 
