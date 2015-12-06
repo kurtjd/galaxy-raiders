@@ -7,7 +7,7 @@ void Invader::setTextures(sf::IntRect frame1, sf::IntRect frame2)
     this->frame2_txtr.loadFromImage(this->spritesheet, frame2);
 }
 
-Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(0), is_dead(false)
+Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(1), is_dead(false), frame_on(1)
 {
     sf::IntRect frame1_rect;
     sf::IntRect frame2_rect;
@@ -47,4 +47,45 @@ Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesh
 void Invader::die()
 {
     this->is_dead = true;
+}
+
+void Invader::move()
+{
+    this->sprite.move(this->SPEED * this->move_dir, 0);
+
+    if (this->frame_on == 1)
+    {
+        this->sprite.setTexture(this->frame2_txtr);
+        this->frame_on = 2;
+    }
+    else
+    {
+        this->sprite.setTexture(this->frame1_txtr);
+        this->frame_on = 1;
+    }
+}
+
+void Invader::dropDown()
+{
+    // 35 is height of all Invaders
+    this->sprite.move(0, 35);
+}
+
+void Invader::reverseDir()
+{
+    if (this->move_dir == 1)
+        this->move_dir = -1;
+    else if (this->move_dir == -1)
+        this->move_dir = 1;
+}
+
+bool Invader::checkHitEdge(int screenw)
+{
+    int x = this->sprite.getPosition().x;
+    int half_width = (this->sprite.getTexture()->getSize().x) / 2;
+
+    if (!this->isDead() && ((x >= (screenw - half_width - 10) && this->move_dir == 1) || (x <= (half_width + 10) && this->move_dir == -1)))
+        return true;
+
+    return false;
 }

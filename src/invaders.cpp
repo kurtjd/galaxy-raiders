@@ -15,6 +15,9 @@ typedef std::vector<Invader*> InvaderRow;
 typedef std::vector<InvaderRow> InvaderFormation;
 typedef std::vector<Shield*> ShieldWall;
 
+/* Globals */
+unsigned move_tick_change = 5;
+
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
 const unsigned SCREEN_WIDTH = 800;
@@ -140,7 +143,7 @@ void draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
 }
 
 // Draw all objects
-void draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth, ShieldWall &shields)
+void draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
 {
     window.clear(BG_COLOR);
     draw_invaders(window, invaders);
@@ -149,6 +152,48 @@ void draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, CoreCann
     draw_player_laser(window, playerlaser);
     window.draw(earth.getShape());
     window.display();
+}
+
+// Increase speed, drop down, and reverse direction!
+void shift_formation(InvaderFormation &invaders, unsigned &move_tick_max)
+{
+    // Slow down move tick change if getting max is getting
+    // close to 0, and don't go any lower than 1 so they
+    // don't stop moving.
+    if (move_tick_max > 5)
+        move_tick_max -= move_tick_change;
+    else if (move_tick_max > 1)
+        --move_tick_max;
+
+    for (unsigned i = 0; i < invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < invaders[i].size(); ++j)
+        {
+            Invader *invader = invaders[i][j];
+            invader->dropDown();
+            invader->reverseDir();
+        }
+    }
+}
+
+// Move the Invader formation
+void invaders_move(InvaderFormation &invaders, unsigned &move_tick_max)
+{
+    bool hit_edge = false;
+    for (unsigned i = 0; i < invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < invaders[i].size(); ++j)
+        {
+            Invader *invader = invaders[i][j];
+
+            invader->move();
+            if (invader->checkHitEdge(SCREEN_WIDTH))
+                hit_edge = true;
+        }
+    }
+
+    if (hit_edge)
+        shift_formation(invaders, move_tick_max);
 }
 
 // Check collision between player laser and Invaders
@@ -201,6 +246,11 @@ int main()
     // for the line at bottom of the screen)
     Earth earth(SCREEN_WIDTH);
 
+    // When move_tick hits move_tick_max, the formation moves
+    // move_tick_max is lowered every time formation hits edge of screen
+    unsigned move_tick = 0;
+    unsigned move_tick_max = FRAME_RATE / 2;
+
 
     /* Begin game loop */
     while (window.isOpen())
@@ -237,13 +287,18 @@ int main()
         }
 
         /* Update objects */
-        check_invader_hit(invaders, player_laser);
+        ++move_tick;
+        if (move_tick == move_tick_max)
+        {
+            move_tick = 0;
+            invaders_move(invaders, move_tick_max);
+        }
 
-        if (player_laser.isShooting())
-            player_laser.move();
+        check_invader_hit(invaders, player_laser);
+        player_laser.move();
 
         /* Display window and draw objects */
-        draw_objects(window, invaders, cannon, player_laser, earth, shields);
+        draw_objects(window, invaders, shields, cannon, player_laser, earth);
 
         //updateFPS(window, fps_clock, fps_timer);
     }
