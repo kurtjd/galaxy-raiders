@@ -17,6 +17,20 @@ ShieldWall::~ShieldWall()
     this->shields.clear();
 }
 
+bool ShieldWall::checkCollisions(PlayerLaser &laser)
+{
+    for (unsigned i = 0; i < this->shields.size(); ++i)
+    {
+        if (shields[i]->checkCollide(laser))
+        {
+            laser.stop();
+            return true;
+        }
+    }
+
+    return false;
+}
+
 void ShieldWall::draw()
 {
     for (unsigned i = 0; i < this->shields.size(); ++i)

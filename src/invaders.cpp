@@ -165,6 +165,7 @@ int main()
         }
 
         invaders.checkHit(player_laser);
+        shields.checkCollisions(player_laser);
         player_laser.move();
 
         /* Display window and draw objects */

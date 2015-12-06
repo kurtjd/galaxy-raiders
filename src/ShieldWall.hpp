@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "Shield.hpp"
+#include "PlayerLaser.hpp"
 
 typedef std::vector<Shield*> ShieldVector;
 
@@ -21,6 +22,8 @@ private:
 public:
     ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw);
     ~ShieldWall();
+
+    bool checkCollisions(PlayerLaser &laser);
 
     void draw();
 
