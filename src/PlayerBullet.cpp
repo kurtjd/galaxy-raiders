@@ -30,5 +30,13 @@ void PlayerBullet::move()
 
     // Player can shoot again when bullet leaves screen
     if (this->bullet.getPosition().y < 0)
-        this->is_shooting = false;
+        this->stop();
+}
+
+void PlayerBullet::stop()
+{
+    this->is_shooting = false;
+
+    // Do this so the bullet isn't sitting there waiting to be collided with.
+    this->bullet.setPosition(999, 999);
 }

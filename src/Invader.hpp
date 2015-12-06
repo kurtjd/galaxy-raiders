@@ -22,14 +22,20 @@ private:
     InvaderType type;
     unsigned score_value; // How many points the invader is worth when killed
     int move_dir; // 1 is right, -1 is left, 0 is not moving
+    bool is_dead;
 
     // Load textures for each frame given a rectangle containing location of texture on spritesheet
     void setTextures(sf::IntRect frame1, sf::IntRect frame2);
 
 public:
     Invader(sf::Image &spritesheet, InvaderType type);
+
+    // Called when Invader is hit by bullet
+    void die();
+
     sf::Sprite& getSprite(){ return this->sprite; }
     unsigned getScoreValue(){ return this->score_value; }
+    bool isDead(){ return this->is_dead; }
 
 };
 

@@ -21,6 +21,9 @@ public:
     // Bullet moves upwards after shot
     void move();
 
+    // Called to make the bullet stop shooting
+    void stop();
+
 };
 
 #endif

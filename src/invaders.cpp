@@ -93,7 +93,11 @@ void draw_invaders(sf::RenderWindow &window, std::vector<std::vector<Invader*> >
     for (unsigned i = 0; i < invaders.size(); ++i)
     {
         for (unsigned j = 0; j < invaders[i].size(); ++j)
-            window.draw(invaders[i][j]->getSprite());
+        {
+            Invader *invader = invaders[i][j];
+            if (!invader->isDead())
+                window.draw(invader->getSprite());
+        }
     }
 }
 
@@ -140,6 +144,24 @@ void draw_objects(sf::RenderWindow &window, std::vector<std::vector<Invader*> > 
     draw_player_bullet(window, playerbul);
     window.draw(earth.getShape());
     window.display();
+}
+
+// Check collision between player bullet and Invaders
+void check_invader_hit(std::vector<std::vector<Invader*> > &invaders, PlayerBullet &bullet)
+{
+    for (unsigned i = 0; i < invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < invaders[i].size(); ++j)
+        {
+            Invader *invader = invaders[i][j];
+            if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(bullet.getShape().getGlobalBounds()))
+            {
+                invader->die();
+                bullet.stop();
+            }
+        }
+
+    }
 }
 
 
@@ -199,7 +221,7 @@ int main()
         // Move Core Cannon
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && cannon.getX() < (SCREEN_WIDTH - (cannon.getWidth() / 2) - 10))
             cannon.move(1);
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && cannon.getX() > (0 + (cannon.getWidth() / 2) + 10))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && cannon.getX() > (0 + (cannon.getWidth() / 2) + 10))
             cannon.move(-1);
 
         // Shoot bullet
@@ -210,6 +232,8 @@ int main()
         }
 
         /* Update objects */
+        check_invader_hit(invaders, player_bul);
+
         if (player_bul.isShooting())
             player_bul.move();
 

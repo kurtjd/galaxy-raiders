@@ -7,7 +7,7 @@ void Invader::setTextures(sf::IntRect frame1, sf::IntRect frame2)
     this->frame2_txtr.loadFromImage(this->spritesheet, frame2);
 }
 
-Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(0)
+Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(0), is_dead(false)
 {
     sf::IntRect frame1_rect;
     sf::IntRect frame2_rect;
@@ -42,4 +42,9 @@ Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesh
     
     // Put the point of origin in center of invader.
     this->sprite.setOrigin(this->frame1_txtr.getSize().x / 2, this->frame1_txtr.getSize().y / 2);
+}
+
+void Invader::die()
+{
+    this->is_dead = true;
 }
