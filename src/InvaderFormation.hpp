@@ -41,6 +41,8 @@ private:
     unsigned move_tick_max;
     unsigned move_tick_change;
 
+    bool has_hit_edge;
+
 public:
     InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw);
     ~InvaderFormation();

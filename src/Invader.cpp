@@ -81,10 +81,13 @@ void Invader::reverseDir()
 
 bool Invader::checkHitEdge(int screenw)
 {
+    if (this->isDead())
+        return false;
+
     int x = this->sprite.getPosition().x;
     int half_width = (this->sprite.getTexture()->getSize().x) / 2;
 
-    if (!this->isDead() && ((x >= (screenw - half_width - 10) && this->move_dir == 1) || (x <= (half_width + 10) && this->move_dir == -1)))
+    if ((x >= (screenw - half_width - 10) && this->move_dir == 1) || (x <= (half_width + 10) && this->move_dir == -1))
         return true;
 
     return false;

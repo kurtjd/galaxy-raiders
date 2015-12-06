@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "InvaderFormation.hpp"
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw): window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw): window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), has_hit_edge(false)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -51,21 +51,25 @@ bool InvaderFormation::move()
     ++this->move_tick;
     if (this->move_tick == this->move_tick_max)
     {
-        bool hit_edge = false;
-        for (unsigned i = 0; i < this->invaders.size(); ++i)
+        if (this->has_hit_edge)
         {
-            for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+            this->shift();
+            this->has_hit_edge = false;
+        }
+        else
+        {
+            for (unsigned i = 0; i < this->invaders.size(); ++i)
             {
-                Invader *invader = this->invaders[i][j];
+                for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+                {
+                    Invader *invader = this->invaders[i][j];
 
-                invader->move();
-                if (invader->checkHitEdge(this->screenw))
-                    hit_edge = true;
+                    invader->move();
+                    if (invader->checkHitEdge(this->screenw))
+                        this->has_hit_edge = true;
+                }
             }
         }
-
-        if (hit_edge)
-            this->shift();
 
         this->move_tick = 0;
 
