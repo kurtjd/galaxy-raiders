@@ -4,10 +4,13 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
-#include "PlayerShip.hpp"
+#include "CoreCannon.hpp"
 #include "Shield.hpp"
 #include "PlayerBullet.hpp"
-#include "Colony.hpp"
+#include "Earth.hpp"
+#include "LargeInvader.hpp"
+#include "MediumInvader.hpp"
+#include "SmallInvader.hpp"
 
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
@@ -16,7 +19,7 @@ const unsigned SCREEN_HEIGHT = 730;
 const unsigned FRAME_RATE = 60;
 const sf::Color BG_COLOR = sf::Color::Black;
 
-// Calculates the current FPS and updates the window title with it.
+/*// Calculates the current FPS and updates the window title with it.
 void updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
 {
     float fps = 1.0f / (fps_clock.getElapsedTime().asSeconds() - fps_timer);
@@ -24,7 +27,7 @@ void updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
     title << "Space Invaders! - " << round(fps) << "fps";
     window.setTitle(title.str());
     fps_timer = fps_clock.getElapsedTime().asSeconds();
-}
+}*/
 
 // Creates an Image object to be used as a texture for sprites.
 sf::Image load_sprites(std::string img)
@@ -32,6 +35,68 @@ sf::Image load_sprites(std::string img)
     sf::Image spritesheet;
     spritesheet.loadFromFile(img);
     return spritesheet;
+}
+
+// Create Invader formation
+void init_invaders(sf::Image &spritesheet, std::vector<std::vector<Invader*> > &invaders)
+{
+    // Vector for each row in the formation
+    std::vector<Invader*> small_invaders;
+    std::vector<Invader*> medium_invaders1;
+    std::vector<Invader*> medium_invaders2;
+    std::vector<Invader*> large_invaders1;
+    std::vector<Invader*> large_invaders2;
+
+    // Create each row (each row has 11 invaders)
+    for (unsigned i = 1; i <= 11; ++i)
+    {
+        small_invaders.push_back(new SmallInvader(spritesheet));
+        medium_invaders1.push_back(new MediumInvader(spritesheet));
+        medium_invaders2.push_back(new MediumInvader(spritesheet));
+        large_invaders1.push_back(new LargeInvader(spritesheet));
+        large_invaders2.push_back(new LargeInvader(spritesheet));
+    }
+
+    // Now add each row to the main vector
+    invaders.push_back(small_invaders);
+    invaders.push_back(medium_invaders1);
+    invaders.push_back(medium_invaders2);
+    invaders.push_back(large_invaders1);
+    invaders.push_back(large_invaders2);
+
+    // Setup starting positions
+    unsigned startx = 120;
+    unsigned starty = 100;
+
+    for (unsigned i = 0; i < invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < invaders[i].size(); ++j)
+            invaders[i][j]->getSprite().setPosition(startx + (j * 55), starty + (i * 50));
+    }
+}
+
+// Remove Invaders from memory
+void del_invaders(std::vector<std::vector<Invader*> > &invaders)
+{
+    for (unsigned i = 0; i < invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < invaders[i].size(); ++j)
+            delete invaders[i][j];
+
+        invaders[i].clear();
+    }
+
+    invaders.clear();
+}
+
+// Draws the invaders to the screen
+void draw_invaders(sf::RenderWindow &window, std::vector<std::vector<Invader*> > &invaders)
+{
+    for (unsigned i = 0; i < invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < invaders[i].size(); ++j)
+            window.draw(invaders[i][j]->getSprite());
+    }
 }
 
 // Creates shields across the screen
@@ -68,22 +133,23 @@ void draw_player_bullet(sf::RenderWindow &window, PlayerBullet &bullet)
 }
 
 // Draw all objects
-void draw_objects(sf::RenderWindow &window, PlayerShip &player, PlayerBullet &playerbul, Colony &colony, std::vector<Shield*> &shields)
+void draw_objects(sf::RenderWindow &window, std::vector<std::vector<Invader*> > &invaders, CoreCannon &cannon, PlayerBullet &playerbul, Earth &earth, std::vector<Shield*> &shields)
 {
     window.clear(BG_COLOR);
-    window.draw(player.getAliveSprite());
-    draw_player_bullet(window, playerbul);
-    window.draw(colony.getShape());
+    draw_invaders(window, invaders);
     draw_shields(window, shields);
+    window.draw(cannon.getAliveSprite());
+    draw_player_bullet(window, playerbul);
+    window.draw(earth.getShape());
     window.display();
 }
 
 
 int main()
 {
-    // Setup FPS timer
+    /*// Setup FPS timer
     sf::Clock fps_clock;
-    float fps_timer = fps_clock.getElapsedTime().asSeconds();
+    float fps_timer = fps_clock.getElapsedTime().asSeconds();*/
 
     // Create and render game window.
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), SCREEN_TITLE);
@@ -92,20 +158,23 @@ int main()
     // Load spritesheet
     sf::Image spritesheet = load_sprites("../sprites/invader_sprites.png");
 
-    // Create "Colony" (best name I could come up with
-    // for the line at bottom of the screen)
-    Colony colony(SCREEN_WIDTH);
+    // Create Invaders!
+    std::vector<std::vector<Invader*> > invaders;
+    init_invaders(spritesheet, invaders);
 
-    // Create shields vector
+    // Create shields
     std::vector<Shield*> shields;
-    // Initialize shields
     init_shields(spritesheet, shields);
 
-    // Create player ship
-    PlayerShip playership = PlayerShip(spritesheet, SCREEN_WIDTH / 2);
+    // Create Core Cannon (player)
+    CoreCannon cannon = CoreCannon(spritesheet, SCREEN_WIDTH / 2);
     
     // Create player bullet
     PlayerBullet player_bul;
+    
+    // Create "Earth" (best name I could come up with
+    // for the line at bottom of the screen)
+    Earth earth(SCREEN_WIDTH);
 
 
     /* Begin game loop */
@@ -119,6 +188,7 @@ int main()
             {
             case sf::Event::Closed:
                 del_shields(shields);
+                del_invaders(invaders);
                 window.close();
                 break;
 
@@ -128,17 +198,17 @@ int main()
         }
 
         /* Handle keyboard input (this is realtime keyboard input, as opposed to 'event-based') */
-        // Move playership
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && playership.getX() < (SCREEN_WIDTH - (playership.getWidth() / 2) - 10))
-            playership.move(1);
-        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && playership.getX() > (0 + (playership.getWidth() / 2) + 10))
-            playership.move(-1);
+        // Move Core Cannon
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && cannon.getX() < (SCREEN_WIDTH - (cannon.getWidth() / 2) - 10))
+            cannon.move(1);
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && cannon.getX() > (0 + (cannon.getWidth() / 2) + 10))
+            cannon.move(-1);
 
         // Shoot bullet
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !player_bul.isShooting())
         {
-            sf::Vector2f playerpos = playership.getAliveSprite().getPosition();
-            player_bul.shoot(playerpos.x, playerpos.y);
+            sf::Vector2f cannonpos = cannon.getAliveSprite().getPosition();
+            player_bul.shoot(cannonpos.x, cannonpos.y);
         }
 
         /* Update objects */
@@ -146,8 +216,8 @@ int main()
             player_bul.move();
 
         /* Display window and draw objects */
-        draw_objects(window, playership, player_bul, colony, shields);
+        draw_objects(window, invaders, cannon, player_bul, earth, shields);
 
-        updateFPS(window, fps_clock, fps_timer);
+        //updateFPS(window, fps_clock, fps_timer);
     }
 }
