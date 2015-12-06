@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include "SoundFx.hpp"
 #include "Invader.hpp"
 #include "Shield.hpp"
 #include "CoreCannon.hpp"
@@ -18,23 +19,6 @@ typedef std::vector<Shield*> ShieldWall;
 
 /* Globals */
 unsigned move_tick_change = 5;
-
-/* Sounds */
-sf::SoundBuffer shoot_snd_buf;
-sf::SoundBuffer invader_death_snd_buf;
-
-sf::SoundBuffer invader_step1_snd_buf;
-sf::SoundBuffer invader_step2_snd_buf;
-sf::SoundBuffer invader_step3_snd_buf;
-sf::SoundBuffer invader_step4_snd_buf;
-
-sf::Sound shoot_snd;
-sf::Sound invader_death_snd;
-
-sf::Sound invader_step1_snd;
-sf::Sound invader_step2_snd;
-sf::Sound invader_step3_snd;
-sf::Sound invader_step4_snd;
 
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
@@ -228,7 +212,7 @@ void invaders_move(InvaderFormation &invaders, unsigned &move_tick_max)
 }
 
 // Check collision between player laser and Invaders
-void check_invader_hit(InvaderFormation &invaders, PlayerLaser &laser)
+void check_invader_hit(InvaderFormation &invaders, PlayerLaser &laser, SoundFx &invader_death_snd)
 {
     for (unsigned i = 0; i < invaders.size(); ++i)
     {
@@ -238,7 +222,7 @@ void check_invader_hit(InvaderFormation &invaders, PlayerLaser &laser)
             if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
             {
                 invader->die();
-                play_sound(invader_death_snd, invader_death_snd_buf);
+                invader_death_snd.play();
                 laser.stop();
             }
         }
@@ -258,13 +242,12 @@ int main()
     window.setFramerateLimit(FRAME_RATE);
 
     // Load sounds
-    load_sound(shoot_snd_buf, "../sounds/shoot_laser.wav");
-    load_sound(invader_death_snd_buf, "../sounds/invader_death.wav");
-
-    load_sound(invader_step1_snd_buf, "../sounds/invader_step1.wav");
-    load_sound(invader_step2_snd_buf, "../sounds/invader_step2.wav");
-    load_sound(invader_step3_snd_buf, "../sounds/invader_step3.wav");
-    load_sound(invader_step4_snd_buf, "../sounds/invader_step4.wav");
+    SoundFx shoot_snd("../sounds/shoot_laser.wav");
+    SoundFx invader_death_snd("../sounds/invader_death.wav");
+    SoundFx invader_step1_snd("../sounds/invader_step1.wav");
+    SoundFx invader_step2_snd("../sounds/invader_step2.wav");
+    SoundFx invader_step3_snd("../sounds/invader_step3.wav");
+    SoundFx invader_step4_snd("../sounds/invader_step4.wav");
 
     // Load spritesheet
     sf::Image spritesheet = load_sprites("../sprites/invader_sprites.png");
@@ -327,29 +310,30 @@ int main()
             sf::Vector2f cannonpos = cannon.getSprite().getPosition();
             player_laser.shoot(cannonpos.x, cannonpos.y);
 
-            play_sound(shoot_snd, shoot_snd_buf);
+            shoot_snd.play();
         }
 
         /* Update objects */
         ++move_tick;
         if (move_tick == move_tick_max)
         {
+            // Invaders make 4 sounds in a loop on each step
             switch (step_on)
             {
             case 1:
-                play_sound(invader_step1_snd, invader_step1_snd_buf);
+                invader_step1_snd.play();
                 break;
 
             case 2:
-                play_sound(invader_step2_snd, invader_step2_snd_buf);
+                invader_step2_snd.play();
                 break;
 
             case 3:
-                play_sound(invader_step3_snd, invader_step3_snd_buf);
+                invader_step3_snd.play();
                 break;
 
             case 4:
-                play_sound(invader_step4_snd, invader_step4_snd_buf);
+                invader_step4_snd.play();
                 break;
 
             default:
@@ -364,7 +348,7 @@ int main()
                 step_on = 1;
         }
 
-        check_invader_hit(invaders, player_laser);
+        check_invader_hit(invaders, player_laser, invader_death_snd);
         player_laser.move();
 
         /* Display window and draw objects */
