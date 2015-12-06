@@ -8,9 +8,7 @@
 #include "Shield.hpp"
 #include "PlayerBullet.hpp"
 #include "Earth.hpp"
-#include "LargeInvader.hpp"
-#include "MediumInvader.hpp"
-#include "SmallInvader.hpp"
+#include "Invader.hpp"
 
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
@@ -50,11 +48,11 @@ void init_invaders(sf::Image &spritesheet, std::vector<std::vector<Invader*> > &
     // Create each row (each row has 11 invaders)
     for (unsigned i = 1; i <= 11; ++i)
     {
-        small_invaders.push_back(new SmallInvader(spritesheet));
-        medium_invaders1.push_back(new MediumInvader(spritesheet));
-        medium_invaders2.push_back(new MediumInvader(spritesheet));
-        large_invaders1.push_back(new LargeInvader(spritesheet));
-        large_invaders2.push_back(new LargeInvader(spritesheet));
+        small_invaders.push_back(new Invader(spritesheet, Invader::SMALL));
+        medium_invaders1.push_back(new Invader(spritesheet, Invader::MEDIUM));
+        medium_invaders2.push_back(new Invader(spritesheet, Invader::MEDIUM));
+        large_invaders1.push_back(new Invader(spritesheet, Invader::LARGE));
+        large_invaders2.push_back(new Invader(spritesheet, Invader::LARGE));
     }
 
     // Now add each row to the main vector
