@@ -23,7 +23,7 @@ public:
     ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw);
     ~ShieldWall();
 
-    bool checkCollisions(PlayerLaser &laser);
+    void handleCollisions(PlayerLaser &laser);
 
     void draw();
 
