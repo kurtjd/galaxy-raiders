@@ -7,9 +7,18 @@
 class Shield
 {
 private:
+    static const unsigned TXTR_X_START = 562;
+    static const unsigned TXTR_Y_START = 13;
+    static const unsigned TXTR_WIDTH = 80;
+    static const unsigned TXTR_HEIGHT = 59;
+
+    static const unsigned Y_POS = 520;
+
+    static const int IMPACT_SIZE = 10; // Size of impact crater from laser.
+
     // The sprite of the shield.
     sf::Image &spritesheet;
-    sf::Texture shield_txtr;
+    sf::Texture texture;
     sf::Sprite sprite;
 
     // Image made from texture for pixel collision

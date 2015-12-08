@@ -79,13 +79,13 @@ int main()
     sf::Image spritesheet = load_sprites("../sprites/invader_sprites.png");
 
     // Create Invaders!
-    InvaderFormation invaders(window, spritesheet, invader_death_snd, SCREEN_WIDTH);
+    InvaderFormation invaders(window, spritesheet, SCREEN_WIDTH, invader_death_snd, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd);
 
     // Create shields
     ShieldWall shields(window, spritesheet, SCREEN_WIDTH);
 
     // Create Core Cannon (player)
-    CoreCannon cannon = CoreCannon(spritesheet, SCREEN_WIDTH / 2);
+    CoreCannon cannon = CoreCannon(spritesheet, SCREEN_WIDTH, SCREEN_WIDTH / 2);
     
     // Create player laser
     PlayerLaser player_laser;
@@ -94,9 +94,6 @@ int main()
     // for the line at bottom of the screen)
     Earth earth(SCREEN_WIDTH);
     
-    // Used to play invader move sounds
-    unsigned step_on = 1;
-
 
     /* Begin game loop */
     while (window.isOpen())
@@ -118,9 +115,9 @@ int main()
 
         /* Handle keyboard input (this is realtime keyboard input, as opposed to 'event-based') */
         // Move Core Cannon
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && cannon.getX() < (SCREEN_WIDTH - (cannon.getWidth() / 2) - 10))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
             cannon.move(1);
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && cannon.getX() > (0 + (cannon.getWidth() / 2) + 10))
+        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
             cannon.move(-1);
 
         // Shoot laser
@@ -128,45 +125,15 @@ int main()
         {
             sf::Vector2f cannonpos = cannon.getSprite().getPosition();
             player_laser.shoot(cannonpos.x, cannonpos.y);
-
             shoot_snd.play();
         }
 
         /* Update objects */
-        if (invaders.move())
-        {
-            // Invaders make 4 sounds in a loop on each step
-            switch (step_on)
-            {
-            case 1:
-                invader_step1_snd.play();
-                break;
-
-            case 2:
-                invader_step2_snd.play();
-                break;
-
-            case 3:
-                invader_step3_snd.play();
-                break;
-
-            case 4:
-                invader_step4_snd.play();
-                break;
-
-            default:
-                break;
-            }
-
-
-            ++step_on;
-            if (step_on > 4)
-                step_on = 1;
-        }
+        invaders.move();
+        player_laser.move();
 
         invaders.checkHit(player_laser);
         shields.handleCollisions(player_laser);
-        player_laser.move();
 
         /* Display window and draw objects */
         draw_objects(window, invaders, shields, cannon, player_laser, earth);

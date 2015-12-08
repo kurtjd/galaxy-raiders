@@ -3,7 +3,7 @@
 
 Earth::Earth(unsigned screenw)
 {
-    this->shape = sf::RectangleShape(sf::Vector2f(screenw, 2));
-    this->shape.setPosition(0, 680);
+    this->shape = sf::RectangleShape(sf::Vector2f(screenw, this->HEIGHT));
+    this->shape.setPosition(this->X, this->Y);
     this->shape.setFillColor(sf::Color::Green);
 }

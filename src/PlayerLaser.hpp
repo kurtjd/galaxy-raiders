@@ -6,6 +6,9 @@
 class PlayerLaser
 {
 private:
+    static const unsigned WIDTH = 3;
+    static const unsigned HEIGHT = 15;
+
     static const int SPEED = 10;
     sf::RectangleShape laser;
     bool is_shooting;

@@ -14,7 +14,38 @@ void InvaderFormation::incDeathTick()
     }
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw): window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), has_hit_edge(false)
+void InvaderFormation::playStepSound()
+{
+// Invaders make 4 sounds in a loop on each step
+    switch (this->step_on)
+    {
+    case 1:
+        this->step1.play();
+        break;
+
+    case 2:
+        this->step2.play();
+        break;
+
+    case 3:
+        this->step3.play();
+        break;
+
+    case 4:
+        this->step4.play();
+        break;
+
+    default:
+        break;
+    }
+
+
+    ++this->step_on;
+    if (this->step_on > 4)
+        this->step_on = 1;
+}
+
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw, SoundFx &death_snd, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4): step1(step1), step2(step2), step3(step3), step4(step4), window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), has_hit_edge(false)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -86,6 +117,7 @@ bool InvaderFormation::move()
         }
 
         this->move_tick = 0;
+        this->playStepSound();
 
         return true;
     }

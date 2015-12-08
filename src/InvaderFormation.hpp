@@ -12,6 +12,12 @@ typedef std::vector<InvaderRow> InvaderVector2D;
 class InvaderFormation
 {
 private:
+    // Sounds for stepping
+    SoundFx &step1;
+    SoundFx &step2;
+    SoundFx &step3;
+    SoundFx &step4;
+
     // Size of formation
     static const unsigned COLUMNS = 5;
     static const unsigned ROWS = 11;
@@ -41,13 +47,18 @@ private:
     unsigned move_tick_max;
     unsigned move_tick_change;
 
+    unsigned step_on;
+
     bool has_hit_edge;
 
     // Check if invaders are exploding and increment tick
     void incDeathTick();
 
+    // Cycles though 4 different sounds every step.
+    void playStepSound();
+
 public:
-    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, SoundFx &death_snd, unsigned screenw);
+    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw, SoundFx &death_snd, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4);
     ~InvaderFormation();
 
     // This is bool so main game can keep track when Invader actually moved

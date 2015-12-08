@@ -31,20 +31,20 @@ Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesh
     switch (this->type)
     {
     case Invader::LARGE:
-        frame1_rect = sf::IntRect(257, 35, 45, 30);
-        frame2_rect = sf::IntRect(315, 35, 45, 30);
+        frame1_rect = sf::IntRect(257, 35, 45, this->TXTR_HEIGHT);
+        frame2_rect = sf::IntRect(315, 35, 45, this->TXTR_HEIGHT);
         this->score_value = 10;
         break;
     
     case Invader::MEDIUM:
-        frame1_rect = sf::IntRect(126, 35, 41, 30);
-        frame2_rect = sf::IntRect(186, 35, 45, 30);
+        frame1_rect = sf::IntRect(126, 35, 41, this->TXTR_HEIGHT);
+        frame2_rect = sf::IntRect(186, 35, 45, this->TXTR_HEIGHT);
         this->score_value = 20;
         break;
     
     case Invader::SMALL:
-        frame1_rect = sf::IntRect(6, 35, 30, 30);
-        frame2_rect = sf::IntRect(64, 35, 30, 30);
+        frame1_rect = sf::IntRect(6, 35, 30, this->TXTR_HEIGHT);
+        frame2_rect = sf::IntRect(64, 35, 30, this->TXTR_HEIGHT);
         this->score_value = 30;
         break;
 
@@ -83,17 +83,13 @@ void Invader::dropDown()
     if (this->isDead())
         return;
 
-    // 35 is height of all Invaders
-    this->sprite.move(0, 35);
+    this->sprite.move(0, this->TXTR_HEIGHT);
     this->flipFrame();
 }
 
 void Invader::reverseDir()
 {
-    if (this->move_dir == 1)
-        this->move_dir = -1;
-    else if (this->move_dir == -1)
-        this->move_dir = 1;
+    this->move_dir *= -1;
 }
 
 bool Invader::checkHitEdge(int screenw)
@@ -104,6 +100,7 @@ bool Invader::checkHitEdge(int screenw)
     int x = this->sprite.getPosition().x;
     int half_width = (this->sprite.getTexture()->getSize().x) / 2;
 
+    // +/- 10 to stop from going slightly off screen
     if ((x >= (screenw - half_width - 10) && this->move_dir == 1) || (x <= (half_width + 10) && this->move_dir == -1))
         return true;
 

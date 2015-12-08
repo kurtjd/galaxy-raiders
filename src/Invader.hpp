@@ -11,6 +11,8 @@ class Invader
 public: enum InvaderType { LARGE, MEDIUM, SMALL };
 
 private:
+    static const unsigned TXTR_HEIGHT = 35; // Same for all Invader types
+
     static const unsigned DEATH_TICK_MAX = 10; // How long death sprite should show
     static const int SPEED = 10; // How far the invader moves each step
 

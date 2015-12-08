@@ -4,10 +4,10 @@
 
 Shield::Shield(sf::Image &spritesheet, int xpos): spritesheet(spritesheet)
 {
-    this->shield_txtr.loadFromImage(spritesheet, sf::IntRect(562, 13, 80, 59));
-    this->sprite.setTexture(this->shield_txtr);
-    this->sprite.setPosition(xpos, 520);
-    this->img = shield_txtr.copyToImage();
+    this->texture.loadFromImage(spritesheet, sf::IntRect(this->TXTR_X_START, this->TXTR_Y_START, this->TXTR_WIDTH, this->TXTR_HEIGHT));
+    this->sprite.setTexture(this->texture);
+    this->sprite.setPosition(xpos, this->Y_POS);
+    this->img = texture.copyToImage();
 }
 
 bool Shield::checkCollide(PlayerLaser &laser)
@@ -42,20 +42,24 @@ void Shield::damageShield(int x, int y)
     int oldx = x;
     int oldy = y;
 
-    for (x -= 10; x < (oldx + 10); ++x)
+    for (x -= this->IMPACT_SIZE; x < (oldx + this->IMPACT_SIZE); ++x)
     {
-        if (x < 0 || x > this->img.getSize().x)
+        /* Cast x and y to unsigned to get rid of warning.
+            They are int to begin with because they might be less than 0.
+            However, short-cicuit evaluation ensures they won't be negative
+            when compared to getSize() results. */
+        if (x < 0 || static_cast<unsigned>(x) >= this->img.getSize().x)
             continue;
 
-        for (y -= 10; y < (oldy + 10); ++y)
+        for (y -= this->IMPACT_SIZE; y < (oldy + this->IMPACT_SIZE); ++y)
         {
-            if (y < 0 || y > this->img.getSize().y)
+            if (y < 0 || static_cast<unsigned>(y) >= this->img.getSize().y)
                 continue;
 
             this->img.setPixel(x, y, sf::Color::Transparent);
         }
     }
     
-    this->shield_txtr.update(img);
-    this->sprite.setTexture(this->shield_txtr);
+    this->texture.update(img);
+    this->sprite.setTexture(this->texture);
 }

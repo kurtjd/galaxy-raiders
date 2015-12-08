@@ -1,13 +1,15 @@
+#include <cmath>
 #include <SFML/Graphics.hpp>
+#include "SoundFx.hpp"
 #include "PlayerLaser.hpp"
 
 PlayerLaser::PlayerLaser(): is_shooting(false)
 {
     // Create player laser (there is only ever 1 player laser on screen at a time)
-    this->laser = sf::RectangleShape(sf::Vector2f(3, 15));
+    this->laser = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->HEIGHT));
     this->laser.setPosition(999, 999); // Position it off screen until shot
     this->laser.setFillColor(sf::Color::White);
-    this->laser.setOrigin(2, 15); // Make the origin bottom of laser
+    this->laser.setOrigin(round(this->WIDTH / 2), this->HEIGHT); // Make the origin bottom of laser
 }
 
 void PlayerLaser::shoot(unsigned startx, unsigned starty)
