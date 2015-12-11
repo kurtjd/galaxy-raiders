@@ -17,7 +17,7 @@ private:
     static const int SPEED = 10; // How far the invader moves each step
 
     // Invaders have 2 frames in their animation, and 1 for death
-    sf::Image spritesheet;
+    sf::Image &spritesheet;
     sf::Texture frame1_txtr;
     sf::Texture frame2_txtr;
     sf::Texture frame3_txtr;

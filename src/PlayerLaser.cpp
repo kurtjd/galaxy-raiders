@@ -1,6 +1,5 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
-#include "SoundFx.hpp"
 #include "PlayerLaser.hpp"
 
 PlayerLaser::PlayerLaser(): is_shooting(false)

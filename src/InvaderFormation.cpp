@@ -45,7 +45,7 @@ void InvaderFormation::playStepSound()
         this->step_on = 1;
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw, SoundFx &death_snd, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4): step1(step1), step2(step2), step3(step3), step4(step4), window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), has_hit_edge(false)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw, SoundFx &death_snd, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4): step1(step1), step2(step2), step3(step3), step4(step4), window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -130,7 +130,7 @@ void InvaderFormation::shift()
     // Slow down move tick change if max is getting
     // close to 0, and don't go any lower than 1 so they
     // don't stop moving.
-    if (this->move_tick_max > 5)
+    if (this->move_tick_max > 20)
         this->move_tick_max -= this->move_tick_change;
     else if (this->move_tick_max > 1)
         --this->move_tick_max;
@@ -156,12 +156,20 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
             if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
             {
                 invader->die();
-                /*--this->move_tick_max; // Formation speeds up as they die
-                if (this->move_tick >= this->move_tick_max)
-                    this->move_tick = 0;*/
+
+                // Formation speeds up for every 2 Invaders killed.
+                ++this->num_killed;
+                if (!(this->num_killed % 2) && this->move_tick_max > 1)
+                {
+                    --this->move_tick_max;
+                    if (this->move_tick >= this->move_tick_max)
+                        this->move_tick = this->move_tick_max - 1; // This is to keep the formation moving
+                }
 
                 this->death_snd.play();
                 laser.stop();
+
+                return; // Only 1 Invader can be hit at a time, so this saves time.
             }
         }
 

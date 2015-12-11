@@ -48,6 +48,7 @@ private:
     unsigned move_tick_change;
 
     unsigned step_on;
+    unsigned num_killed; // Number of Invaders killed.
 
     bool has_hit_edge;
 
