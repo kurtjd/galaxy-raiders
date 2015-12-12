@@ -5,12 +5,12 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include "SoundFx.hpp"
-#include "InvaderFormation.hpp"
-#include "ShieldWall.hpp"
-#include "CoreCannon.hpp"
-#include "PlayerLaser.hpp"
-#include "Earth.hpp"
+#include "../inc/SoundFx.hpp"
+#include "../inc/InvaderFormation.hpp"
+#include "../inc/ShieldWall.hpp"
+#include "../inc/CoreCannon.hpp"
+#include "../inc/PlayerLaser.hpp"
+#include "../inc/Earth.hpp"
 
 /* Display Constants */
 const std::string SCREEN_TITLE = "Space Invaders!";
@@ -18,6 +18,9 @@ const unsigned SCREEN_WIDTH = 800;
 const unsigned SCREEN_HEIGHT = 730;
 const unsigned FRAME_RATE = 60;
 const sf::Color BG_COLOR = sf::Color::Black;
+
+const std::string SOUNDS_PATH = "sounds/";
+const std::string SPRITES_PATH = "sprites/";
 
 /*// Calculates the current FPS and updates the window title with it.
 void updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
@@ -68,15 +71,15 @@ int main()
     window.setFramerateLimit(FRAME_RATE);
 
     // Load sounds
-    SoundFx shoot_snd("../sounds/shoot_laser.wav");
-    SoundFx invader_death_snd("../sounds/invader_death.wav");
-    SoundFx invader_step1_snd("../sounds/invader_step1.wav");
-    SoundFx invader_step2_snd("../sounds/invader_step2.wav");
-    SoundFx invader_step3_snd("../sounds/invader_step3.wav");
-    SoundFx invader_step4_snd("../sounds/invader_step4.wav");
+    SoundFx shoot_snd(SOUNDS_PATH + "shoot_laser.wav");
+    SoundFx invader_death_snd(SOUNDS_PATH + "invader_death.wav");
+    SoundFx invader_step1_snd(SOUNDS_PATH + "invader_step1.wav");
+    SoundFx invader_step2_snd(SOUNDS_PATH + "invader_step2.wav");
+    SoundFx invader_step3_snd(SOUNDS_PATH + "invader_step3.wav");
+    SoundFx invader_step4_snd(SOUNDS_PATH + "invader_step4.wav");
 
     // Load spritesheet
-    sf::Image spritesheet = load_sprites("../sprites/invader_sprites.png");
+    sf::Image spritesheet = load_sprites(SPRITES_PATH + "invader_sprites.png");
 
     // Create Invaders!
     InvaderFormation invaders(window, spritesheet, SCREEN_WIDTH, invader_death_snd, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd);

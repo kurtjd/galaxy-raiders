@@ -38,8 +38,6 @@ private:
     // Cycle through animation
     void flipFrame();
 
-    
-
 public:
     Invader(sf::Image &spritesheet, InvaderType type);
     sf::Sprite& getSprite(){ return this->sprite; }

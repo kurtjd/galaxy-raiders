@@ -5,6 +5,7 @@
 
 class InvaderLaser
 {
+// The powered laser looks like a lightning bolt and does more damage to shields
 public: enum LaserType { NORMAL, POWERED };
 
 private:
@@ -16,9 +17,13 @@ private:
 
     LaserType type;
 
+    unsigned shield_dmg; // How much damage it does to shields
+
 public:
     InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y);
     sf::Sprite& getSprite(){ return this->sprite; }
+
+    void move();
 
 };
 

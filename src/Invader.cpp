@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Invader.hpp"
+#include "../inc/Invader.hpp"
 
 void Invader::setTextures(sf::IntRect frame1, sf::IntRect frame2, sf::IntRect frame3)
 {

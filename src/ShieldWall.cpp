@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "ShieldWall.hpp"
+#include "../inc/ShieldWall.hpp"
 
 ShieldWall::ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw): window(window), spritesheet(spritesheet)
 {

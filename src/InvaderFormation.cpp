@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "InvaderFormation.hpp"
+#include "../inc/InvaderFormation.hpp"
 
 void InvaderFormation::incDeathTick()
 {
@@ -79,6 +79,7 @@ InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesh
 
 InvaderFormation::~InvaderFormation()
 {
+    // Destroy Invaders
     for (unsigned i = 0; i < this->invaders.size(); ++i)
     {
         for (unsigned j = 0; j < this->invaders[i].size(); ++j)
@@ -86,8 +87,12 @@ InvaderFormation::~InvaderFormation()
 
         this->invaders[i].clear();
     }
-
     this->invaders.clear();
+
+    // Destroy lasers
+    for (unsigned i = 0; i < this->lasers.size(); ++i)
+        delete this->lasers[i];
+    this->lasers.clear();
 }
 
 bool InvaderFormation::move()

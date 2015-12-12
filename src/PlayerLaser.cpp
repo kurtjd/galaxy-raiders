@@ -1,12 +1,12 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
-#include "PlayerLaser.hpp"
+#include "../inc/PlayerLaser.hpp"
 
 PlayerLaser::PlayerLaser(): is_shooting(false)
 {
     // Create player laser (there is only ever 1 player laser on screen at a time)
     this->laser = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->HEIGHT));
-    this->laser.setPosition(999, 999); // Position it off screen until shot
+    this->laser.setPosition(899, 899); // Position it off screen until shot
     this->laser.setFillColor(sf::Color::White);
     this->laser.setOrigin(round(this->WIDTH / 2), this->HEIGHT); // Make the origin bottom of laser
 }

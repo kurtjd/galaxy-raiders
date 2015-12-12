@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "InvaderLaser.hpp"
+#include "../inc/InvaderLaser.hpp"
 
 InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y): spritesheet(spritesheet), type(type)
 {
@@ -9,10 +9,12 @@ InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, u
     {
     case InvaderLaser::NORMAL:
         txtr_rect = sf::IntRect(512, 108, 12, 22);
+        this->shield_dmg = 10;
         break;
 
     case InvaderLaser::POWERED:
         //txtr_rect = sf::IntRect();
+        this->shield_dmg = 15;
         break;
 
     default:
@@ -23,4 +25,9 @@ InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, u
     this->sprite.setTexture(this->txtr, true);
     
     this->sprite.setPosition(x, y);
+}
+
+void InvaderLaser::move()
+{
+    this->sprite.move(0, this->SPEED);
 }

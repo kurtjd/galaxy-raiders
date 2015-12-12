@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Shield.hpp"
-#include <iostream>
+#include "../inc/Shield.hpp"
 
 Shield::Shield(sf::Image &spritesheet, int xpos): spritesheet(spritesheet)
 {

@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Earth.hpp"
+#include "../inc/Earth.hpp"
 
 Earth::Earth(unsigned screenw)
 {

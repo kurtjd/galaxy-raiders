@@ -4,10 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include "SoundFx.hpp"
 #include "Invader.hpp"
+#include "InvaderLaser.hpp"
 #include "PlayerLaser.hpp"
 
 typedef std::vector<Invader*> InvaderRow;
 typedef std::vector<InvaderRow> InvaderVector2D;
+typedef std::vector<InvaderLaser*> Lasers;
 
 class InvaderFormation
 {
@@ -57,6 +59,9 @@ private:
 
     // Cycles though 4 different sounds every step.
     void playStepSound();
+
+    // Contains all lasers currently being fired by Invaders
+    Lasers lasers;
 
 public:
     InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw, SoundFx &death_snd, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4);
