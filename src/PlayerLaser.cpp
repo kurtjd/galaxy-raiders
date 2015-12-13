@@ -1,7 +1,7 @@
 #include <cmath>
 #include "../inc/PlayerLaser.hpp"
 
-PlayerLaser::PlayerLaser(): is_shooting(false)
+PlayerLaser::PlayerLaser(SoundFx &shoot_snd): is_shooting(false), shoot_snd(shoot_snd)
 {
     // Create player laser (there is only ever 1 player laser on screen at a time)
     this->laser = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->HEIGHT));
@@ -15,6 +15,7 @@ void PlayerLaser::shoot(unsigned startx, unsigned starty)
     // If laser is shooting, don't try to shoot again
     if (!this->is_shooting)
     {
+        this->shoot_snd.play();
         this->laser.setPosition(startx, starty);
         this->is_shooting = true;
     }

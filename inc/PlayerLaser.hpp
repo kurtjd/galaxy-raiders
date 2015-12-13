@@ -2,6 +2,7 @@
 #define PLAYERLASER_H
 
 #include <SFML/Graphics.hpp>
+#include "../inc/SoundFx.hpp"
 
 /* The laser shot by the player.
  * Only 1 on screen at a time. */
@@ -16,8 +17,10 @@ private:
     sf::RectangleShape laser;
     bool is_shooting;
 
+    SoundFx &shoot_snd;
+
 public:
-    PlayerLaser();
+    PlayerLaser(SoundFx &shoot_snd);
     sf::RectangleShape& getShape(){ return this->laser; }
     bool isShooting(){ return this->is_shooting; }
 

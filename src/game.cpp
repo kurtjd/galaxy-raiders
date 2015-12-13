@@ -9,17 +9,51 @@ sf::Image Game::load_sprites(std::string img)
     return spritesheet;
 }
 
+void Game::handle_events(sf::Window &window)
+{
+    sf::Event event;
+    while (window.pollEvent(event))
+    {
+        switch (event.type)
+        {
+        case sf::Event::Closed:
+            window.close();
+            break;
+
+        default:
+            break;
+        }
+    }
+}
+
+void Game::real_time_key(CoreCannon &cannon, PlayerLaser &player_laser)
+{
+    // Move Core Cannon
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        cannon.move(1);
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        cannon.move(-1);
+
+    // Shoot laser
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !player_laser.isShooting())
+    {
+        sf::Vector2f cannonpos = cannon.getSprite().getPosition();
+        player_laser.shoot(cannonpos.x, cannonpos.y);
+    }
+}
+
 void Game::draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
 {
     if (laser.isShooting())
         window.draw(laser.getShape());
 }
 
-void Game::update_objects(PlayerLaser &playerlaser, InvaderFormation &invaders, ShieldWall &shields)
+void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, InvaderFormation &invaders, ShieldWall &shields)
 {
-    playerlaser.move();
-    invaders.update(playerlaser);
-    shields.handleCollisions(playerlaser, invaders.getLasers());
+    Game::real_time_key(cannon, player_laser);
+    player_laser.move();
+    invaders.update(player_laser);
+    shields.handleCollisions(player_laser, invaders.getLasers());
 }
 
 void Game::draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)

@@ -39,51 +39,18 @@ int main()
     ShieldWall shields(window, spritesheet, Globals::SCREEN_WIDTH);
 
     // Create Core Cannon (player)
-    CoreCannon cannon = CoreCannon(spritesheet, Globals::SCREEN_WIDTH, Globals::SCREEN_WIDTH / 2);
+    CoreCannon cannon(spritesheet, Globals::SCREEN_WIDTH, Globals::SCREEN_WIDTH / 2);
     
     // Create player laser
-    PlayerLaser player_laser;
+    PlayerLaser player_laser(shoot_snd);
 
     
     /* Begin game loop */
     while (window.isOpen())
     {
-        // Check for events
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            switch (event.type)
-            {
-            case sf::Event::Closed:
-                window.close();
-                break;
-
-            default:
-                break;
-            }
-        }
-
-        /* Handle keyboard input (this is realtime keyboard input, as opposed to 'event-based') */
-        // Move Core Cannon
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            cannon.move(1);
-        else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            cannon.move(-1);
-
-        // Shoot laser
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !player_laser.isShooting())
-        {
-            sf::Vector2f cannonpos = cannon.getSprite().getPosition();
-            player_laser.shoot(cannonpos.x, cannonpos.y);
-            shoot_snd.play();
-        }
-
-        /* Update objects */
-        Game::update_objects(player_laser, invaders, shields);
-        
-        /* Display window and draw objects */
+        Game::handle_events(window);
+        Game::update_objects(cannon, player_laser, invaders, shields);
         Game::draw_objects(window, invaders, shields, cannon, player_laser, earth);
-
         Game::updateFPS(window, fps_clock, fps_timer);
     }
 }
