@@ -80,6 +80,9 @@ public:
 
     void draw();
 
+    // Methods dealing with lasers
+    void moveLasers();
+
 };
 
 #endif

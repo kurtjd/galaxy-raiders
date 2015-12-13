@@ -1,7 +1,3 @@
-#include <iostream>
-#include <cmath>
-#include <string>
-#include <vector>
 #include <SFML/Graphics.hpp>
 #include "../inc/globals.hpp"
 #include "../inc/misc.hpp"

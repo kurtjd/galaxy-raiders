@@ -2,11 +2,14 @@
 
 void InvaderFormation::incDeathTick()
 {
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    /*for (unsigned i = 0; i < this->invaders.size(); ++i)
     {
         for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+        {*/
+    for (auto& invader_row : this->invaders)
+    {
+        for (auto& invader : invader_row)
         {
-            Invader *invader = this->invaders[i][j];
             if (invader->isExploding())
                 invader->incDeathTick();
         }
@@ -15,7 +18,7 @@ void InvaderFormation::incDeathTick()
 
 void InvaderFormation::playStepSound()
 {
-// Invaders make 4 sounds in a loop on each step
+    // Invaders make 4 sounds in a loop on each step
     switch (this->step_on)
     {
     case 1:
@@ -79,18 +82,18 @@ InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesh
 InvaderFormation::~InvaderFormation()
 {
     // Destroy Invaders
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    for (auto& invader_row : this->invaders)
     {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
-            delete this->invaders[i][j];
+        for (auto& invader : invader_row)
+            delete invader;
 
-        this->invaders[i].clear();
+        invader_row.clear();
     }
     this->invaders.clear();
 
     // Destroy lasers
-    for (unsigned i = 0; i < this->lasers.size(); ++i)
-        delete this->lasers[i];
+    for (auto &laser : this->lasers)
+        delete laser;
     this->lasers.clear();
 }
 
@@ -107,12 +110,10 @@ bool InvaderFormation::move()
         }
         else
         {
-            for (unsigned i = 0; i < this->invaders.size(); ++i)
+            for (auto& invader_row : this->invaders)
             {
-                for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+                for (auto& invader : invader_row)
                 {
-                    Invader *invader = this->invaders[i][j];
-
                     invader->move();
                     if (invader->checkHitEdge(this->screenw))
                         this->has_hit_edge = true;
@@ -139,11 +140,10 @@ void InvaderFormation::shift()
     else if (this->move_tick_max > 1)
         --this->move_tick_max;
 
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    for (auto& invader_row : this->invaders)
     {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+        for (auto& invader : invader_row)
         {
-            Invader *invader = this->invaders[i][j];
             invader->dropDown();
             invader->reverseDir();
         }
@@ -152,11 +152,10 @@ void InvaderFormation::shift()
 
 void InvaderFormation::checkHit(PlayerLaser &laser)
 {
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    for (auto& invader_row : this->invaders)
     {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+        for (auto& invader : invader_row)
         {
-            Invader *invader = this->invaders[i][j];
             if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
             {
                 invader->die();
@@ -182,13 +181,18 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
 
 void InvaderFormation::draw()
 {
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    for (auto& invader_row : this->invaders)
     {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+        for (auto& invader : invader_row)
         {
-            Invader *invader = this->invaders[i][j];
             if (!invader->isDead() || (invader->isDead() && invader->isExploding()))
                 this->window.draw(invader->getSprite());
         }
     }
+}
+
+void InvaderFormation::moveLasers()
+{
+    for(auto& laser : this->lasers)
+        laser->move();
 }

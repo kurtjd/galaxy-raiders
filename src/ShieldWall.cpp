@@ -10,23 +10,22 @@ ShieldWall::ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, unsigne
 
 ShieldWall::~ShieldWall()
 {
-    for (unsigned i = 0; i < this->shields.size(); ++i)
-        delete this->shields[i];
-
+    for (auto& shield : shields)
+        delete shield;
     this->shields.clear();
 }
 
 void ShieldWall::handleCollisions(PlayerLaser &laser)
 {
-    for (unsigned i = 0; i < this->shields.size(); ++i)
+    for (auto& shield : shields)
     {
-        if (this->shields[i]->checkCollide(laser))
+        if (shield->checkCollide(laser))
             laser.stop();
     }
 }
 
 void ShieldWall::draw()
 {
-    for (unsigned i = 0; i < this->shields.size(); ++i)
-        this->window.draw(this->shields[i]->getSprite());
+    for (auto& shield : shields)
+        this->window.draw(shield->getSprite());
 }
