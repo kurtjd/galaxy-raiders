@@ -22,7 +22,7 @@ const sf::Color BG_COLOR = sf::Color::Black;
 const std::string SOUNDS_PATH = "sounds/";
 const std::string SPRITES_PATH = "sprites/";
 
-/*// Calculates the current FPS and updates the window title with it.
+// Calculates the current FPS and updates the window title with it.
 void updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
 {
     float fps = 1.0f / (fps_clock.getElapsedTime().asSeconds() - fps_timer);
@@ -30,7 +30,7 @@ void updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
     title << "Space Invaders! - " << round(fps) << "fps";
     window.setTitle(title.str());
     fps_timer = fps_clock.getElapsedTime().asSeconds();
-}*/
+}
 
 // Creates an Image object to be used as a texture for sprites.
 sf::Image load_sprites(std::string img)
@@ -62,9 +62,9 @@ void draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, ShieldWa
 
 int main()
 {
-    /*// Setup FPS timer
+    // Setup FPS timer
     sf::Clock fps_clock;
-    float fps_timer = fps_clock.getElapsedTime().asSeconds();*/
+    float fps_timer = fps_clock.getElapsedTime().asSeconds();
 
     // Create and render game window.
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), SCREEN_TITLE);
@@ -141,6 +141,6 @@ int main()
         /* Display window and draw objects */
         draw_objects(window, invaders, shields, cannon, player_laser, earth);
 
-        //updateFPS(window, fps_clock, fps_timer);
+        updateFPS(window, fps_clock, fps_timer);
     }
 }
