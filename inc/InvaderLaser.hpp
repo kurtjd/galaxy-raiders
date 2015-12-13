@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+/* The laser shot by Space Invaders. */
+
 class InvaderLaser
 {
 // The powered laser looks like a lightning bolt and does more damage to shields

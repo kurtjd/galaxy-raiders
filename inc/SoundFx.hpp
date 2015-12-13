@@ -4,6 +4,8 @@
 #include <string>
 #include <SFML/Audio.hpp>
 
+/* A simple helper class for SFML audio. */
+
 class SoundFx
 {
 private:

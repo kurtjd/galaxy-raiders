@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "../inc/InvaderLaser.hpp"
 
 InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y): spritesheet(spritesheet), type(type)

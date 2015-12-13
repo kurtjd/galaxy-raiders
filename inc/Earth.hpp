@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+/* The little line at the bottom of the screen. Everything you are fighting for! */
+
 class Earth
 {
 private:

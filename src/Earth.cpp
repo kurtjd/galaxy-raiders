@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "../inc/Earth.hpp"
 
 Earth::Earth(unsigned screenw)

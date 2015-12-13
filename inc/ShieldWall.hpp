@@ -5,6 +5,9 @@
 #include "Shield.hpp"
 #include "PlayerLaser.hpp"
 
+/* Controls behavior of each shield on screen.
+ * Mainly just checks for collisions with lasers. */
+
 typedef std::vector<Shield*> ShieldVector;
 
 class ShieldWall

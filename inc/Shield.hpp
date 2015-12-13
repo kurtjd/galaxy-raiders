@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "PlayerLaser.hpp"
 
+/* The shields protection the player from incoming fire. */
+
 class Shield
 {
 private:

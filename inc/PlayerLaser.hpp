@@ -3,6 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
+/* The laser shot by the player.
+ * Only 1 on screen at a time. */
+
 class PlayerLaser
 {
 private:

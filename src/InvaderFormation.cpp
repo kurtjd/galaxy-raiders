@@ -1,4 +1,3 @@
-#include <SFML/Graphics.hpp>
 #include "../inc/InvaderFormation.hpp"
 
 void InvaderFormation::incDeathTick()

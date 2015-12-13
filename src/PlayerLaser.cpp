@@ -1,5 +1,4 @@
 #include <cmath>
-#include <SFML/Graphics.hpp>
 #include "../inc/PlayerLaser.hpp"
 
 PlayerLaser::PlayerLaser(): is_shooting(false)

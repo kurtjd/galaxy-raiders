@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+/* The player's ship. */
+
 class CoreCannon
 {
 private:

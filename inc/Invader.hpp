@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 
+/* An individual Space Invader. */
+
 class Invader
 {
 // This is up here because I like private members first,

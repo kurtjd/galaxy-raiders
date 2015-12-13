@@ -1,4 +1,3 @@
-#include <SFML/Audio.hpp>
 #include "../inc/SoundFx.hpp"
 
 SoundFx::SoundFx(std::string filename)

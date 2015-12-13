@@ -7,6 +7,9 @@
 #include "InvaderLaser.hpp"
 #include "PlayerLaser.hpp"
 
+/* Represents the entire Space Invader formation.
+ * Coordinates movement and firing of all Space Invaders. */
+
 typedef std::vector<Invader*> InvaderRow;
 typedef std::vector<InvaderRow> InvaderVector2D;
 typedef std::vector<InvaderLaser*> Lasers;

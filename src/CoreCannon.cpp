@@ -1,5 +1,3 @@
-#include <iostream>
-#include <SFML/Graphics.hpp>
 #include "../inc/CoreCannon.hpp"
 
 CoreCannon::CoreCannon(sf::Image &spritesheet, unsigned screenw, int startx): spritesheet(spritesheet), screenw(screenw)
