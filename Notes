@@ -1,6 +1,0 @@
--Invaders shoot 2 bullets: Line that does normal damage, and lightning bolt that does more damage to barriers
--Invaders destroy shield when on top of them
--Invaders turn green when touch shield
--UFO:
-Worth 50, 100, or 150 points (random). However, hitting it on 23rd shot, then every 15 shots, receive 300 points.
--Invaders speed up as they get killed
