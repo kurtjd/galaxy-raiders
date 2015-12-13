@@ -1,0 +1,11 @@
+*.swp*
+*.o
+*.d
+.sh
+src/*.o
+src/*.d
+src/*.sh
+src/git
+invaders
+Notes
+Makefile
