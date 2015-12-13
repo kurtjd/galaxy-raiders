@@ -3,7 +3,6 @@
 
 #include <SFML/Graphics.hpp>
 #include "Shield.hpp"
-#include "PlayerLaser.hpp"
 
 /* Controls behavior of each shield on screen.
  * Mainly just checks for collisions with lasers. */
@@ -26,7 +25,7 @@ public:
     ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw);
     ~ShieldWall();
 
-    void handleCollisions(PlayerLaser &laser);
+    void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers);
 
     void draw();
 

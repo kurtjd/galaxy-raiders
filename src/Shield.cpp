@@ -8,7 +8,7 @@ Shield::Shield(sf::Image &spritesheet, int xpos): spritesheet(spritesheet)
     this->img = texture.copyToImage();
 }
 
-bool Shield::checkCollide(PlayerLaser &laser)
+void Shield::handleCollide(PlayerLaser &laser, Lasers &invader_lasers)
 {
     unsigned xpos = this->sprite.getPosition().x;
     unsigned ypos = this->sprite.getPosition().y;
@@ -22,17 +22,28 @@ bool Shield::checkCollide(PlayerLaser &laser)
             // Subtract xpos and ypos because the Image uses its own local coordinates
             sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
 
-            // Only true if hit green pixel
-            if (laser.getShape().getGlobalBounds().contains(x, y) && pixel.g > 0)
+            // Check to see if pixel collides with any Invader lasers.
+            bool invader_laser_hit = false;
+            for (auto& laser : invader_lasers)
             {
-                // Eh, probably shouldn't have side-effect in bool method, but it's too easy
+                if (laser->getSprite().getGlobalBounds().contains(x, y) && pixel.g > 0)
+                {
+                    invader_laser_hit = true;
+                    laser->remove();
+                    break; // Don't need to keep looking after first hit.
+                }
+            }
+
+            // Only true if hit green pixel
+            bool player_laser_hit = laser.getShape().getGlobalBounds().contains(x, y) && pixel.g > 0;
+            if (invader_laser_hit || player_laser_hit)
+            {
                 this->damageShield(x - xpos, y - ypos);
-                return true;
+                if (player_laser_hit)
+                    laser.stop();
             }
         }
     }
-
-    return false;
 }
 
 void Shield::damageShield(int x, int y)

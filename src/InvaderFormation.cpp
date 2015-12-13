@@ -1,11 +1,8 @@
+#include "../inc/misc.hpp"
 #include "../inc/InvaderFormation.hpp"
 
 void InvaderFormation::incDeathTick()
 {
-    /*for (unsigned i = 0; i < this->invaders.size(); ++i)
-    {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
-        {*/
     for (auto& invader_row : this->invaders)
     {
         for (auto& invader : invader_row)
@@ -47,7 +44,90 @@ void InvaderFormation::playStepSound()
         this->step_on = 1;
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw, SoundFx &death_snd, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4): step1(step1), step2(step2), step3(step3), step4(step4), window(window), spritesheet(spritesheet), death_snd(death_snd), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false)
+void InvaderFormation::increaseFire(int amount)
+{
+   this->shot_chance -= amount;
+   if (this->shot_chance < 10)
+       shot_chance = 10;
+}
+
+bool InvaderFormation::toShootOrNah()
+{
+    // Arbitrary number, there is 1/shot_chance of returning true.
+    return Misc::random(1, this->shot_chance) == 69;
+}
+
+void InvaderFormation::shootLaser(unsigned x, unsigned y)
+{
+    InvaderLaser *laser = new InvaderLaser(this->spritesheet, InvaderLaser::NORMAL, x, y);
+    this->lasers.push_back(laser);
+}
+
+void InvaderFormation::handleCollisions()
+{
+    for (unsigned i = 0; i < this->lasers.size(); ++i)
+    {
+        InvaderLaser *laser = this->lasers[i];
+        if (laser->getSprite().getGlobalBounds().intersects(earth.getShape().getGlobalBounds()))
+        {
+            this->lasers.erase(this->lasers.begin() + i);
+        }
+    }
+}
+
+void InvaderFormation::shootLasers()
+{
+    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+        {
+            Invader *invader = this->invaders[i][j];
+
+            // Only shoot if Invader is alive and hits the jackpot.
+            if (!invader->isDead() && this->toShootOrNah())
+            {
+                bool shoot = true;
+
+                // Only shoot a laser if there is no Invader below the current Invader.
+                for (unsigned k = i + 1; k <= this->invaders.size(); ++k)
+                {
+                    // Check value of k against size because we want the bottom row to shoot
+                    // but short-circuit saves us from going out of bounds.
+                    if (k != this->invaders.size() && !this->invaders[k][j]->isDead())
+                    {
+                        shoot = false;
+                        break; // Don't need to keep checking.
+                    }
+                }
+
+                if (shoot)
+                {
+                    sf::Vector2f invader_pos = invader->getSprite().getPosition();
+                    this->shootLaser(invader_pos.x, invader_pos.y);
+                }
+            }
+        }
+    }
+}
+
+void InvaderFormation::moveLasers()
+{
+    this->handleCollisions();
+    for(auto& laser : this->lasers)
+        laser->move();
+}
+
+void InvaderFormation::removeHitLasers()
+{
+    for (unsigned i = 0; i < this->lasers.size(); ++i)
+    {
+        InvaderLaser *laser = lasers[i];
+        if (laser->isHit())
+            this->lasers.erase(lasers.begin() + i);
+    }
+}
+
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), spritesheet(spritesheet), earth(earth), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -148,6 +228,9 @@ void InvaderFormation::shift()
             invader->reverseDir();
         }
     }
+
+    // Also increase the rate that Invaders fire
+    this->increaseFire(250);
 }
 
 void InvaderFormation::checkHit(PlayerLaser &laser)
@@ -169,6 +252,9 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
                         this->move_tick = this->move_tick_max - 1; // This is to keep the formation moving
                 }
 
+                // Also increase fire rate.
+                this->increaseFire(10);
+
                 this->death_snd.play();
                 laser.stop();
 
@@ -177,6 +263,13 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
         }
 
     }
+}
+
+void InvaderFormation::update(PlayerLaser &laser)
+{
+    this->move();
+    this->checkHit(laser);
+    this->updateLasers();
 }
 
 void InvaderFormation::draw()
@@ -191,8 +284,16 @@ void InvaderFormation::draw()
     }
 }
 
-void InvaderFormation::moveLasers()
+void InvaderFormation::updateLasers()
+{
+    this->removeHitLasers();
+    this->handleCollisions();
+    this->moveLasers();
+    this->shootLasers();
+}
+
+void InvaderFormation::drawLasers()
 {
     for(auto& laser : this->lasers)
-        laser->move();
+        this->window.draw(laser->getSprite());
 }

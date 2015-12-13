@@ -11,7 +11,7 @@ class InvaderLaser
 public: enum LaserType { NORMAL, POWERED };
 
 private:
-    static const int SPEED = 10;
+    static const int SPEED = 5;
 
     sf::Image &spritesheet;
     sf::Texture txtr;
@@ -19,12 +19,15 @@ private:
 
     LaserType type;
 
+    bool hit; // Whether or not hit something and about to be removed.
     unsigned shield_dmg; // How much damage it does to shields
 
 public:
     InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y);
     sf::Sprite& getSprite(){ return this->sprite; }
+    bool isHit(){ return this->hit; }
 
+    void remove();
     void move();
 
 };

@@ -15,6 +15,9 @@ namespace Game
     // Creates an Image object to be used as a texture for sprites.
     sf::Image load_sprites(std::string img);
 
+    // Update all game objects
+    void update_objects(PlayerLaser &playerlaser, InvaderFormation &invaders, ShieldWall &shields);
+
     // A wrapper for drawing player laser to check if it is shooting
     void draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser);
 

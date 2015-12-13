@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "PlayerLaser.hpp"
+#include "InvaderFormation.hpp"
 
 /* The shields protection the player from incoming fire. */
 
@@ -30,8 +31,8 @@ public:
     Shield(sf::Image &spritesheet, int xpos);
     sf::Sprite& getSprite(){ return this->sprite; }
 
-    // Checks for collisions with lasers
-    bool checkCollide(PlayerLaser &laser);
+    // Handles for collisions with lasers
+    void handleCollide(PlayerLaser &laser, Lasers &invader_lasers);
 
     // Add splash damage to shield
     void damageShield(int x, int y);

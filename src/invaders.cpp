@@ -1,3 +1,4 @@
+#include <ctime>
 #include <SFML/Graphics.hpp>
 #include "../inc/globals.hpp"
 #include "../inc/misc.hpp"
@@ -6,6 +7,8 @@
 
 int main()
 {
+    srand(time(0));
+
     // Setup FPS timer
     sf::Clock fps_clock;
     float fps_timer = fps_clock.getElapsedTime().asSeconds();
@@ -24,9 +27,13 @@ int main()
 
     // Load spritesheet
     sf::Image spritesheet = Game::load_sprites(Globals::SPRITES_PATH + "invader_sprites.png");
+    
+    // Create "Earth" (best name I could come up with
+    // for the line at bottom of the screen)
+    Earth earth(Globals::SCREEN_WIDTH);
 
     // Create Invaders!
-    InvaderFormation invaders(window, spritesheet, Globals::SCREEN_WIDTH, invader_death_snd, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd);
+    InvaderFormation invaders(window, spritesheet, earth, Globals::SCREEN_WIDTH, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
 
     // Create shields
     ShieldWall shields(window, spritesheet, Globals::SCREEN_WIDTH);
@@ -36,12 +43,8 @@ int main()
     
     // Create player laser
     PlayerLaser player_laser;
-    
-    // Create "Earth" (best name I could come up with
-    // for the line at bottom of the screen)
-    Earth earth(Globals::SCREEN_WIDTH);
-    
 
+    
     /* Begin game loop */
     while (window.isOpen())
     {
@@ -76,12 +79,8 @@ int main()
         }
 
         /* Update objects */
-        invaders.move();
-        player_laser.move();
-
-        invaders.checkHit(player_laser);
-        shields.handleCollisions(player_laser);
-
+        Game::update_objects(player_laser, invaders, shields);
+        
         /* Display window and draw objects */
         Game::draw_objects(window, invaders, shields, cannon, player_laser, earth);
 

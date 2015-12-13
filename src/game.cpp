@@ -15,10 +15,18 @@ void Game::draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
         window.draw(laser.getShape());
 }
 
+void Game::update_objects(PlayerLaser &playerlaser, InvaderFormation &invaders, ShieldWall &shields)
+{
+    playerlaser.move();
+    invaders.update(playerlaser);
+    shields.handleCollisions(playerlaser, invaders.getLasers());
+}
+
 void Game::draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
 {
     window.clear(Globals::BG_COLOR);
     invaders.draw();
+    invaders.drawLasers();
     shields.draw();
     window.draw(cannon.getSprite());
     Game::draw_player_laser(window, playerlaser);

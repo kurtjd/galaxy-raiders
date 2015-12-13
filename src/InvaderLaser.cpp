@@ -1,6 +1,6 @@
 #include "../inc/InvaderLaser.hpp"
 
-InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y): spritesheet(spritesheet), type(type)
+InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y): spritesheet(spritesheet), type(type), hit(false)
 {
     sf::IntRect txtr_rect;
 
@@ -22,8 +22,15 @@ InvaderLaser::InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, u
 
     this->txtr.loadFromImage(this->spritesheet, txtr_rect);
     this->sprite.setTexture(this->txtr, true);
+    this->sprite.setScale(0.8, 0.8);
+    this->sprite.setRotation(180);
     
     this->sprite.setPosition(x, y);
+}
+
+void InvaderLaser::remove()
+{
+    this->hit = true;
 }
 
 void InvaderLaser::move()
