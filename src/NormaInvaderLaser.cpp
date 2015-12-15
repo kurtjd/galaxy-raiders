@@ -1,22 +1,37 @@
 #include "../inc/NormalInvaderLaser.hpp"
 
-NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y): InvaderLaser(LaserType::NORMAL, 5, 15)
+void NormalInvaderLaser::moveHPart()
 {
-    // TODO: Get rid of magic numbers.
-    this->v_part = sf::RectangleShape(sf::Vector2f(2, 15));
-    this->h_part = sf::RectangleShape(sf::Vector2f(12, 2));
+    unsigned h_part_y = this->h_part.getPosition().y;
+    unsigned v_part_y = this->v_part.getPosition().y;
+
+    if ((h_part_y >= (v_part_y + this->HEIGHT - this->THICKNESS)) && this->h_part_movedir == 1)
+        this->h_part_movedir = -1;
+    else if ((h_part_y <= (v_part_y)) && this->h_part_movedir == -1)
+        this->h_part_movedir = 1;
+
+    // If moving down, need to move slightly faster than the vert part.
+    // Stays still if moving 'Up' (illusion created by vert part still moving down)
+    if (this->h_part_movedir == 1)
+        this->h_part.move(0, this->SPEED * this->h_part_moverate);
+}
+
+NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y): InvaderLaser(LaserType::NORMAL, 5, 15), h_part_movedir(1)
+{
+    this->v_part = sf::RectangleShape(sf::Vector2f(this->THICKNESS, this->HEIGHT));
+    this->h_part = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->THICKNESS));
 
     this->v_part.setFillColor(sf::Color::White);
     this->h_part.setFillColor(sf::Color::White);
 
-    this->v_part.setPosition(x + 5, y);
+    this->v_part.setPosition(x + ((this->WIDTH / 2) - 1), y);
     this->h_part.setPosition(x, y);
 }
 
 void NormalInvaderLaser::move()
 {
     this->v_part.move(0, this->SPEED);
-    this->h_part.move(0, this->SPEED);
+    this->moveHPart();
 }
 
 void NormalInvaderLaser::draw(sf::RenderWindow &window)

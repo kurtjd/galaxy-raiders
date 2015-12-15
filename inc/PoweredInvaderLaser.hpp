@@ -11,13 +11,14 @@ private:
 
 public:
     PoweredInvaderLaser(const unsigned x, const unsigned y);
+    virtual ~PoweredInvaderLaser(){}
 
-    void move();
-    void draw(sf::RenderWindow &window);
+    virtual void move();
+    virtual void draw(sf::RenderWindow &window);
 
     // Overload checkCollide method to allow rect or point
-    bool checkCollide(const unsigned x, const unsigned y) const;
-    bool checkCollide(const sf::FloatRect rect) const;
+    virtual bool checkCollide(const unsigned x, const unsigned y) const;
+    virtual bool checkCollide(const sf::FloatRect rect) const;
 
 };
 
