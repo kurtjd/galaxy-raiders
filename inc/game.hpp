@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../inc/SoundFx.hpp"
+#include "../inc/LivesDisplay.hpp"
 #include "../inc/PlayerLaser.hpp"
 #include "../inc/InvaderFormation.hpp"
 #include "../inc/ShieldWall.hpp"
@@ -28,8 +29,11 @@ namespace Game
     // A wrapper for drawing player laser to check if it is shooting
     void draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser);
 
+    // Draws text in space invaders font to the screen at given position
+    void draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y);
+
     // Draw all objects
-    void draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth);
+    void draw_objects(sf::RenderWindow &window, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth);
 
     // Calculates the current FPS and updates the window title with it.
     void updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_timer);

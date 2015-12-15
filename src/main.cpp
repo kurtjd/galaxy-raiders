@@ -44,13 +44,16 @@ int main()
     // Create player laser
     PlayerLaser player_laser(shoot_snd);
 
+    // Creates lives display
+    LivesDisplay lives_disp(spritesheet);
+
     
     /* Begin game loop */
     while (window.isOpen())
     {
         Game::handle_events(window);
         Game::update_objects(cannon, player_laser, invaders, shields);
-        Game::draw_objects(window, invaders, shields, cannon, player_laser, earth);
+        Game::draw_objects(window, lives_disp, invaders, shields, cannon, player_laser, earth);
         Game::updateFPS(window, fps_clock, fps_timer);
     }
 }

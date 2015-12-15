@@ -54,7 +54,7 @@ void InvaderFormation::increaseFire(int amount)
 bool InvaderFormation::toShootOrNah() const
 {
     // Arbitrary number, there is 1/shot_chance of returning true.
-    return Misc::random(1, this->shot_chance) == 69;
+    return Misc::random(1, this->shot_chance) == 1;
 }
 
 void InvaderFormation::shootLaser(unsigned x, unsigned y)

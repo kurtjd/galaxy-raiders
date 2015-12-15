@@ -16,6 +16,7 @@ namespace Globals
 
     const std::string SOUNDS_PATH = "sounds/";
     const std::string SPRITES_PATH = "sprites/";
+    const std::string FONTS_PATH = "fonts/";
 };
 
 #endif

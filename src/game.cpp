@@ -56,7 +56,22 @@ void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, Invader
     shields.handleCollisions(player_laser, invaders.getLasers());
 }
 
-void Game::draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
+void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y)
+{
+    sf::Font font;
+    font.loadFromFile(Globals::FONTS_PATH + "space_invaders.ttf");
+
+    sf::Text text;
+    text.setFont(font);
+    text.setString(msg);
+    text.setCharacterSize(24);
+    text.setColor(sf::Color::White);
+    text.setPosition(x, y);
+
+    window.draw(text);
+}
+
+void Game::draw_objects(sf::RenderWindow &window, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
 {
     window.clear(Globals::BG_COLOR);
     invaders.draw();
@@ -65,6 +80,7 @@ void Game::draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, Sh
     window.draw(cannon.getSprite());
     Game::draw_player_laser(window, playerlaser);
     window.draw(earth.getShape());
+    lives_disp.draw(window);
     window.display();
 }
 
