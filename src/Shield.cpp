@@ -10,35 +10,58 @@ Shield::Shield(sf::Image &spritesheet, int xpos): spritesheet(spritesheet)
 
 void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)
 {
+    // TODO: Make code DRYer by figuring out a way to not repeat pixel FOR loop.
+
+    sf::FloatRect shield_rect = this->sprite.getGlobalBounds();
     unsigned xpos = this->sprite.getPosition().x;
     unsigned ypos = this->sprite.getPosition().y;
-    unsigned width = this->sprite.getGlobalBounds().width;
-    unsigned height = this->sprite.getGlobalBounds().height;
+    unsigned width = shield_rect.width;
+    unsigned height = shield_rect.height;
 
-    // Only true if hit green pixel
-    for (unsigned x = xpos; x < (xpos + width); ++x)
+    // Check for invader laser collision
+    for (auto& laser : invader_lasers)
     {
-        for (unsigned y = ypos; y < (ypos + height); ++y)
+        // First check if laser rect intersects with shield rect
+        if (laser->checkCollide(shield_rect))
         {
-            // Subtract xpos and ypos because the Image uses its own local coordinates
-            sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
-
             // Check to see if pixel collides with any Invader lasers.
-            for (auto& laser : invader_lasers)
+            // Only true if hit green pixel
+            for (unsigned x = xpos; x < (xpos + width); ++x)
             {
-                if (laser->getSprite().getGlobalBounds().contains(x, y) && pixel.g > 0)
+                for (unsigned y = ypos; y < (ypos + height); ++y)
                 {
-                    laser->remove();
-                    this->damageShield(x - xpos, y - ypos, laser->getDmg());
-                    break; // Don't need to keep looking after first hit.
+                    // Subtract xpos and ypos because the Image uses its own local coordinates
+                    sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
+
+                    //if (laser->getSprite().getGlobalBounds().contains(x, y) && pixel.g > 0)
+                    if (pixel.g > 0 && laser->checkCollide(x, y))
+                    {
+                        laser->remove();
+                        this->damageShield(x - xpos, y - ypos, laser->getDmg());
+                        break; // Don't need to keep looking after first hit.
+                    }
                 }
             }
+        }
+    }
 
-            // Check to see if pixel collides with player laser.
-            if (player_laser.getShape().getGlobalBounds().contains(x, y) && pixel.g > 0)
+    // Check to see if pixel collides with player laser.
+    sf::FloatRect player_laser_rect = player_laser.getShape().getGlobalBounds();
+    if (player_laser_rect.intersects(shield_rect))
+    {
+        // Check to see if pixel collides with any Invader lasers.
+        // Only true if hit green pixel
+        for (unsigned x = xpos; x < (xpos + width); ++x)
+        {
+            for (unsigned y = ypos; y < (ypos + height); ++y)
             {
-                this->damageShield(x - xpos, y - ypos, player_laser.getDmg());
-                player_laser.stop();
+                // Subtract xpos and ypos because the Image uses its own local coordinates
+                sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
+                if (pixel.g > 0 && player_laser_rect.contains(x, y))
+                {
+                    this->damageShield(x - xpos, y - ypos, player_laser.getDmg());
+                    player_laser.stop();
+                }
             }
         }
     }

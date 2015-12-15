@@ -59,7 +59,7 @@ bool InvaderFormation::toShootOrNah() const
 
 void InvaderFormation::shootLaser(unsigned x, unsigned y)
 {
-    InvaderLaser *laser = new InvaderLaser(this->spritesheet, InvaderLaser::NORMAL, x, y);
+    InvaderLaser *laser = new InvaderLaser(InvaderLaser::NORMAL, x, y);
     this->lasers.push_back(laser);
 }
 
@@ -68,7 +68,8 @@ void InvaderFormation::handleCollisions()
     for (unsigned i = 0; i < this->lasers.size(); ++i)
     {
         InvaderLaser *laser = this->lasers[i];
-        if (laser->getSprite().getGlobalBounds().intersects(earth.getShape().getGlobalBounds()))
+        //if (laser->getSprite().getGlobalBounds().intersects(earth.getShape().getGlobalBounds()))
+        if (laser->checkCollide(earth.getShape().getGlobalBounds()))
         {
             this->lasers.erase(this->lasers.begin() + i);
         }
@@ -295,5 +296,6 @@ void InvaderFormation::updateLasers()
 void InvaderFormation::drawLasers()
 {
     for(auto& laser : this->lasers)
-        this->window.draw(laser->getSprite());
+        //this->window.draw(laser->getSprite());
+        laser->draw(this->window);
 }
