@@ -29,8 +29,12 @@ LivesDisplay::~LivesDisplay()
 
 void LivesDisplay::draw(sf::RenderWindow &window)
 {
+    // Draw number of lives left.
     Game::draw_text(window, "3", this->X + 30, this->Y + 2); 
 
+    Game::draw_text(window, "C R E D I T    00", this->X + 550, this->Y + 2); 
+
+    // Draw cannon representing each life.
     for (auto& cannon : this->cannons)
         window.draw(*cannon);
 }
