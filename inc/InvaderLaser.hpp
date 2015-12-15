@@ -19,9 +19,10 @@ protected:
 
     bool hit; // Whether or not hit something and about to be removed.
 
-public:
-    InvaderLaser(const LaserType type, const int speed, const unsigned shield_dmg);
+    // Make constructor protected because InvaderLasers should never be instantiated directly.
+    InvaderLaser(const LaserType type, const int speed, const unsigned shield_dmg): TYPE(type), SPEED(speed), SHIELD_DMG(shield_dmg), hit(false) {}
 
+public:
     /* Note to future self: 
      * Always declare virtual destructor if class will be derived from.
      * This ensures derived destructor is called first.
@@ -32,7 +33,7 @@ public:
     /* Methods whose behavior are the same for both types of lasers. */
     bool isHit() const { return this->hit; }
     unsigned getDmg() const { return this->SHIELD_DMG; }
-    void remove();
+    void remove(){ this->hit = true; }
 
     /* The below are all pure virtual methods and MUST be implemented by subclasses.
      * Their behavior differs depending on the type of laser. */
