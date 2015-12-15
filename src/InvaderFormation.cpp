@@ -59,7 +59,7 @@ bool InvaderFormation::toShootOrNah() const
 
 void InvaderFormation::shootLaser(unsigned x, unsigned y)
 {
-    InvaderLaser *laser = new InvaderLaser(InvaderLaser::NORMAL, x, y);
+    InvaderLaser *laser = new NormalInvaderLaser(x, y);
     this->lasers.push_back(laser);
 }
 

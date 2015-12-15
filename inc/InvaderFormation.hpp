@@ -4,7 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "SoundFx.hpp"
 #include "Invader.hpp"
-#include "InvaderLaser.hpp"
+#include "NormalInvaderLaser.hpp"
+#include "PoweredInvaderLaser.hpp"
 #include "PlayerLaser.hpp"
 #include "Earth.hpp"
 
