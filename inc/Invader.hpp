@@ -13,10 +13,10 @@ class Invader
 public: enum InvaderType { LARGE, MEDIUM, SMALL };
 
 private:
-    static const unsigned TXTR_HEIGHT = 35; // Same for all Invader types
+    static constexpr unsigned TXTR_HEIGHT = 35; // Same for all Invader types
 
-    static const unsigned DEATH_TICK_MAX = 10; // How long death sprite should show
-    static const int SPEED = 10; // How far the invader moves each step
+    static constexpr unsigned DEATH_TICK_MAX = 10; // How long death sprite should show
+    static constexpr int SPEED = 10; // How far the invader moves each step
 
     // Invaders have 2 frames in their animation, and 1 for death
     sf::Image &spritesheet;
@@ -35,17 +35,17 @@ private:
     unsigned death_tick; // Keep track of how long death sprite has shown
 
     // Load textures for each frame given a rectangle containing location of texture on spritesheet
-    void setTextures(sf::IntRect frame1, sf::IntRect frame2, sf::IntRect frame3);
+    void setTextures(const sf::IntRect frame1, const sf::IntRect frame2, const sf::IntRect frame3);
 
     // Cycle through animation
     void flipFrame();
 
 public:
-    Invader(sf::Image &spritesheet, InvaderType type);
-    sf::Sprite& getSprite(){ return this->sprite; }
-    unsigned getScoreValue(){ return this->score_value; }
-    bool isDead(){ return this->is_dead; }
-    bool isExploding(){ return this->is_exploding; }
+    Invader(sf::Image &spritesheet, const InvaderType type);
+    sf::Sprite& getSprite() { return this->sprite; }
+    unsigned getScoreValue() const { return this->score_value; }
+    bool isDead() const { return this->is_dead; }
+    bool isExploding() const { return this->is_exploding; }
     
     // Called when Invader is hit by bullet
     void die();
@@ -60,7 +60,7 @@ public:
     void reverseDir();
 
     // Checks if Invader hit edge of screen
-    bool checkHitEdge(int screenw);
+    bool checkHitEdge(const int screenw);
     
     // Increment death tick and hide once hit max
     void incDeathTick();

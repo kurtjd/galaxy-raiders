@@ -8,28 +8,28 @@
 class CoreCannon
 {
 private:
-    static const unsigned ALIVE_TXTR_X_START = 492;
-    static const unsigned ALIVE_TXTR_Y_START = 40;
-    static const unsigned ALIVE_TXTR_WIDTH = 48;
-    static const unsigned ALIVE_TXTR_HEIGHT = 30;
+    static constexpr unsigned ALIVE_TXTR_X_START = 492;
+    static constexpr unsigned ALIVE_TXTR_Y_START = 40;
+    static constexpr unsigned ALIVE_TXTR_WIDTH = 48;
+    static constexpr unsigned ALIVE_TXTR_HEIGHT = 30;
 
-    static const unsigned Y_POS = 623;
+    static constexpr unsigned Y_POS = 623;
 
-    static const int SPEED = 5; // Movement speed of cannon
+    static constexpr int SPEED = 5; // Movement speed of cannon
 
     sf::Image spritesheet;
     sf::Texture alive_txtr;
     sf::Texture dead_txtr;
     sf::Sprite sprite;
 
-    unsigned screenw;
+    const unsigned SCREENW;
 
 public:
-    CoreCannon(sf::Image &spritesheet, unsigned screenw, int startx);
-    void move(int dir);
-    sf::Sprite& getSprite(){ return this->sprite; }
-    unsigned getX(){ return this->sprite.getPosition().x; }
-    unsigned getWidth(){ return this->getSprite().getGlobalBounds().width; }
+    CoreCannon(const sf::Image &spritesheet, const unsigned screenw, const int startx);
+    void move(const int dir);
+    const sf::Sprite& getSprite() const { return this->sprite; }
+    unsigned getX() const { return this->sprite.getPosition().x; }
+    unsigned getWidth() const { return this->getSprite().getGlobalBounds().width; }
 
 };
 

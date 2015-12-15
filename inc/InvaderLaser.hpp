@@ -2,6 +2,7 @@
 #define INVADERLASER_H
 
 #include <SFML/Graphics.hpp>
+#include "../inc/globals.hpp"
 
 /* The laser shot by Space Invaders. */
 
@@ -11,11 +12,13 @@ class InvaderLaser
 public: enum LaserType { NORMAL, POWERED };
 
 private:
-    static const int SPEED = 5;
+    static constexpr int SPEED = 5;
 
     sf::Image &spritesheet;
     sf::Texture txtr;
     sf::Sprite sprite;
+
+    /* Normal Laser Info */
 
     LaserType type;
 
@@ -23,9 +26,10 @@ private:
     unsigned shield_dmg; // How much damage it does to shields
 
 public:
-    InvaderLaser(sf::Image &spritesheet, LaserType type, unsigned x, unsigned y);
+    InvaderLaser(sf::Image &spritesheet, const LaserType type, const unsigned x, const unsigned y);
     sf::Sprite& getSprite(){ return this->sprite; }
-    bool isHit(){ return this->hit; }
+    bool isHit() const { return this->hit; }
+    unsigned getDmg() const { return this->shield_dmg; }
 
     void remove();
     void move();

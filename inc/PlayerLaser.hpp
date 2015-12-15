@@ -10,10 +10,11 @@
 class PlayerLaser
 {
 private:
-    static const unsigned WIDTH = 3;
-    static const unsigned HEIGHT = 15;
+    static constexpr unsigned WIDTH = 3;
+    static constexpr unsigned HEIGHT = 15;
+    static constexpr unsigned SHIELD_DMG = 10;
 
-    static const int SPEED = 10;
+    static constexpr int SPEED = 10;
     sf::RectangleShape laser;
     bool is_shooting;
 
@@ -22,10 +23,11 @@ private:
 public:
     PlayerLaser(SoundFx &shoot_snd);
     sf::RectangleShape& getShape(){ return this->laser; }
-    bool isShooting(){ return this->is_shooting; }
+    bool isShooting() const { return this->is_shooting; }
+    unsigned getDmg() const { return this->SHIELD_DMG; }
 
     // Begins the shooting movement
-    void shoot(unsigned startx, unsigned starty);
+    void shoot(const unsigned startx, const unsigned starty);
 
     // Laser moves upwards after shot
     void move();

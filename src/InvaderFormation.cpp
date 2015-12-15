@@ -51,7 +51,7 @@ void InvaderFormation::increaseFire(int amount)
        shot_chance = 10;
 }
 
-bool InvaderFormation::toShootOrNah()
+bool InvaderFormation::toShootOrNah() const
 {
     // Arbitrary number, there is 1/shot_chance of returning true.
     return Misc::random(1, this->shot_chance) == 69;
@@ -127,7 +127,7 @@ void InvaderFormation::removeHitLasers()
     }
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), spritesheet(spritesheet), earth(earth), screenw(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), spritesheet(spritesheet), earth(earth), SCREENW(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -195,7 +195,7 @@ bool InvaderFormation::move()
                 for (auto& invader : invader_row)
                 {
                     invader->move();
-                    if (invader->checkHitEdge(this->screenw))
+                    if (invader->checkHitEdge(this->SCREENW))
                         this->has_hit_edge = true;
                 }
             }

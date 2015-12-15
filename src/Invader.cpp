@@ -1,10 +1,15 @@
 #include "../inc/Invader.hpp"
 
-void Invader::setTextures(sf::IntRect frame1, sf::IntRect frame2, sf::IntRect frame3)
+void Invader::setTextures(const sf::IntRect frame1, const sf::IntRect frame2, const sf::IntRect frame3)
 {
     this->frame1_txtr.loadFromImage(this->spritesheet, frame1);
     this->frame2_txtr.loadFromImage(this->spritesheet, frame2);
     this->frame3_txtr.loadFromImage(this->spritesheet, frame3);
+
+    // Smoothen out the textures
+    this->frame1_txtr.setSmooth(true);
+    this->frame2_txtr.setSmooth(true);
+    this->frame3_txtr.setSmooth(true);
 }
 
 void Invader::flipFrame()
@@ -21,7 +26,7 @@ void Invader::flipFrame()
     }
 }
 
-Invader::Invader(sf::Image &spritesheet, InvaderType type): spritesheet(spritesheet), type(type), move_dir(1), is_dead(false), frame_on(1), death_tick(0)
+Invader::Invader(sf::Image &spritesheet, const InvaderType type): spritesheet(spritesheet), type(type), move_dir(1), is_dead(false), frame_on(1), death_tick(0)
 {
     sf::IntRect frame1_rect;
     sf::IntRect frame2_rect;
@@ -91,7 +96,7 @@ void Invader::reverseDir()
     this->move_dir *= -1;
 }
 
-bool Invader::checkHitEdge(int screenw)
+bool Invader::checkHitEdge(const int screenw)
 {
     if (this->isDead())
         return false;

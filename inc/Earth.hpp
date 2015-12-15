@@ -8,15 +8,15 @@
 class Earth
 {
 private:
-    static const unsigned HEIGHT = 2;
-    static const unsigned X = 0;
-    static const unsigned Y = 680;
+    static constexpr unsigned HEIGHT = 2;
+    static constexpr unsigned X = 0;
+    static constexpr unsigned Y = 680;
 
     sf::RectangleShape shape;
 
 public:
-    Earth(unsigned screenw);
-    sf::RectangleShape& getShape(){ return this->shape; }
+    Earth(const unsigned screenw);
+    const sf::RectangleShape& getShape() const { return this->shape; }
 
 };
 

@@ -13,8 +13,8 @@ class ShieldWall
 {
 private:
     // Where the first shield starts and the gap between subsequent shields
-    static const unsigned STARTX = 97;
-    static const unsigned GAP = 175;
+    static constexpr unsigned STARTX = 97;
+    static constexpr unsigned GAP = 175;
 
     ShieldVector shields;
 
@@ -22,7 +22,7 @@ private:
     sf::Image &spritesheet;
 
 public:
-    ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, unsigned screenw);
+    ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, const unsigned screenw);
     ~ShieldWall();
 
     void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers);

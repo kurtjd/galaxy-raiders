@@ -6,7 +6,7 @@
 namespace Misc
 {
     // Simple integer random function.
-    unsigned random(unsigned low, unsigned high);
+    unsigned random(const unsigned low, const unsigned high);
 
 };
 

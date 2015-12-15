@@ -8,13 +8,14 @@ Shield::Shield(sf::Image &spritesheet, int xpos): spritesheet(spritesheet)
     this->img = texture.copyToImage();
 }
 
-void Shield::handleCollide(PlayerLaser &laser, Lasers &invader_lasers)
+void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)
 {
     unsigned xpos = this->sprite.getPosition().x;
     unsigned ypos = this->sprite.getPosition().y;
     unsigned width = this->sprite.getGlobalBounds().width;
     unsigned height = this->sprite.getGlobalBounds().height;
 
+    // Only true if hit green pixel
     for (unsigned x = xpos; x < (xpos + width); ++x)
     {
         for (unsigned y = ypos; y < (ypos + height); ++y)
@@ -23,35 +24,32 @@ void Shield::handleCollide(PlayerLaser &laser, Lasers &invader_lasers)
             sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
 
             // Check to see if pixel collides with any Invader lasers.
-            bool invader_laser_hit = false;
             for (auto& laser : invader_lasers)
             {
                 if (laser->getSprite().getGlobalBounds().contains(x, y) && pixel.g > 0)
                 {
-                    invader_laser_hit = true;
                     laser->remove();
+                    this->damageShield(x - xpos, y - ypos, laser->getDmg());
                     break; // Don't need to keep looking after first hit.
                 }
             }
 
-            // Only true if hit green pixel
-            bool player_laser_hit = laser.getShape().getGlobalBounds().contains(x, y) && pixel.g > 0;
-            if (invader_laser_hit || player_laser_hit)
+            // Check to see if pixel collides with player laser.
+            if (player_laser.getShape().getGlobalBounds().contains(x, y) && pixel.g > 0)
             {
-                this->damageShield(x - xpos, y - ypos);
-                if (player_laser_hit)
-                    laser.stop();
+                this->damageShield(x - xpos, y - ypos, player_laser.getDmg());
+                player_laser.stop();
             }
         }
     }
 }
 
-void Shield::damageShield(int x, int y)
+void Shield::damageShield(int x, int y, const int dmg)
 {
     int oldx = x;
     int oldy = y;
 
-    for (x -= this->IMPACT_SIZE; x < (oldx + this->IMPACT_SIZE); ++x)
+    for (x -= dmg; x < (oldx + dmg); ++x)
     {
         /* Cast x and y to unsigned to get rid of warning.
             They are int to begin with because they might be less than 0.
@@ -60,7 +58,7 @@ void Shield::damageShield(int x, int y)
         if (x < 0 || static_cast<unsigned>(x) >= this->img.getSize().x)
             continue;
 
-        for (y -= this->IMPACT_SIZE; y < (oldy + this->IMPACT_SIZE); ++y)
+        for (y -= dmg; y < (oldy + dmg); ++y)
         {
             if (y < 0 || static_cast<unsigned>(y) >= this->img.getSize().y)
                 continue;

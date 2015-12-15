@@ -10,7 +10,7 @@ PlayerLaser::PlayerLaser(SoundFx &shoot_snd): is_shooting(false), shoot_snd(shoo
     this->laser.setOrigin(round(this->WIDTH / 2), this->HEIGHT); // Make the origin bottom of laser
 }
 
-void PlayerLaser::shoot(unsigned startx, unsigned starty)
+void PlayerLaser::shoot(const unsigned startx, const unsigned starty)
 {
     // If laser is shooting, don't try to shoot again
     if (!this->is_shooting)

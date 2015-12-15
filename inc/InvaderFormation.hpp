@@ -19,23 +19,23 @@ class InvaderFormation
 {
 private:
     // Size of formation
-    static const unsigned COLUMNS = 5;
-    static const unsigned ROWS = 11;
+    static constexpr unsigned COLUMNS = 5;
+    static constexpr unsigned ROWS = 11;
 
     // Where the formation starts on screen
-    static const unsigned STARTX = 120;
-    static const unsigned STARTY = 100;
+    static constexpr unsigned STARTX = 120;
+    static constexpr unsigned STARTY = 100;
 
     // The space between each invader in the formation
-    static const unsigned XGAP = 55;
-    static const unsigned YGAP = 50;
+    static constexpr unsigned XGAP = 55;
+    static constexpr unsigned YGAP = 50;
 
     // Gameplay
-    static const unsigned MOVE_TICK_MAX_START = 45;
-    static const unsigned MOVE_TICK_CHANGE_START = 5;
+    static constexpr unsigned MOVE_TICK_MAX_START = 45;
+    static constexpr unsigned MOVE_TICK_CHANGE_START = 5;
 
     // Chance of each Invader shooting: 1/SHOT_CHANCE
-    static const int SHOT_CHANCE_START = 2000;
+    static constexpr int SHOT_CHANCE_START = 2000;
 
     sf::RenderWindow &window;
     sf::Image &spritesheet;
@@ -44,7 +44,7 @@ private:
     // Earth, the line at the bottom of the screen.
     Earth &earth;
 
-    unsigned screenw;
+    const unsigned SCREENW;
     
     // When move_tick hits move_tick_max, the formation moves
     // move_tick_max is lowered every time formation hits edge of screen
@@ -73,11 +73,11 @@ private:
     void playStepSound();
 
     // Increases rate of fire by lowering shot chance
-    void increaseFire(int amount);
+    void increaseFire(const int amount);
 
     // Private methods dealing with lasers
-    bool toShootOrNah();
-    void shootLaser(unsigned x, unsigned y);
+    bool toShootOrNah() const;
+    void shootLaser(const unsigned x, const unsigned y);
     void handleCollisions();
     void shootLasers();
     void moveLasers();
@@ -87,7 +87,7 @@ private:
     Lasers lasers;
 
 public:
-    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
+    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
     ~InvaderFormation();
     Lasers& getLasers(){ return this->lasers; }
 

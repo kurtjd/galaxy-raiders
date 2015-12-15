@@ -10,14 +10,12 @@
 class Shield
 {
 private:
-    static const unsigned TXTR_X_START = 562;
-    static const unsigned TXTR_Y_START = 13;
-    static const unsigned TXTR_WIDTH = 80;
-    static const unsigned TXTR_HEIGHT = 59;
+    static constexpr unsigned TXTR_X_START = 562;
+    static constexpr unsigned TXTR_Y_START = 13;
+    static constexpr unsigned TXTR_WIDTH = 80;
+    static constexpr unsigned TXTR_HEIGHT = 59;
 
-    static const unsigned Y_POS = 520;
-
-    static const int IMPACT_SIZE = 10; // Size of impact crater from laser.
+    static constexpr unsigned Y_POS = 520;
 
     // The sprite of the shield.
     sf::Image &spritesheet;
@@ -28,14 +26,14 @@ private:
     sf::Image img;
 
 public:
-    Shield(sf::Image &spritesheet, int xpos);
+    Shield(sf::Image &spritesheet, const int xpos);
     sf::Sprite& getSprite(){ return this->sprite; }
 
     // Handles for collisions with lasers
-    void handleCollide(PlayerLaser &laser, Lasers &invader_lasers);
+    void handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers);
 
     // Add splash damage to shield
-    void damageShield(int x, int y);
+    void damageShield(int x, int y, const int dmg);
 
 };
 

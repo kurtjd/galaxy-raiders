@@ -2,7 +2,7 @@
 #include "../inc/game.hpp"
 #include "../inc/globals.hpp"
 
-sf::Image Game::load_sprites(std::string img)
+sf::Image Game::load_sprites(const std::string img)
 {
     sf::Image spritesheet;
     spritesheet.loadFromFile(img);
@@ -68,7 +68,7 @@ void Game::draw_objects(sf::RenderWindow &window, InvaderFormation &invaders, Sh
     window.display();
 }
 
-void Game::updateFPS(sf::Window &window, sf::Clock &fps_clock, float &fps_timer)
+void Game::updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_timer)
 {
     float fps = 1.0f / (fps_clock.getElapsedTime().asSeconds() - fps_timer);
     std::ostringstream title;
