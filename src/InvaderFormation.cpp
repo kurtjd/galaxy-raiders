@@ -128,7 +128,7 @@ void InvaderFormation::removeHitLasers()
     }
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), spritesheet(spritesheet), earth(earth), SCREENW(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), spritesheet(spritesheet), earth(earth), SCREENW(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), game_score(game_score), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -243,6 +243,7 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
             if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
             {
                 invader->die();
+                this->game_score += invader->getScoreValue();
 
                 // Formation speeds up for every 2 Invaders killed.
                 ++this->num_killed;

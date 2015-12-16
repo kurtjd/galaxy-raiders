@@ -25,7 +25,7 @@ private:
 
     // Where the formation starts on screen
     static constexpr unsigned STARTX = 120;
-    static constexpr unsigned STARTY = 100;
+    static constexpr unsigned STARTY = 150;
 
     // The space between each invader in the formation
     static constexpr unsigned XGAP = 55;
@@ -59,6 +59,9 @@ private:
     bool has_hit_edge;
 
     int shot_chance;
+
+    // The game's score, initialized in main()
+    unsigned &game_score;
     
     // Sounds for stepping
     SoundFx &step1;
@@ -88,7 +91,7 @@ private:
     Lasers lasers;
 
 public:
-    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
+    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
     ~InvaderFormation();
     Lasers& getLasers(){ return this->lasers; }
 

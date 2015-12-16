@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../inc/SoundFx.hpp"
+#include "../inc/ScoreDisplay.hpp"
 #include "../inc/LivesDisplay.hpp"
 #include "../inc/PlayerLaser.hpp"
 #include "../inc/InvaderFormation.hpp"
@@ -33,7 +34,7 @@ namespace Game
     void draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y);
 
     // Draw all objects
-    void draw_objects(sf::RenderWindow &window, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth);
+    void draw_objects(sf::RenderWindow &window, ScoreDisplay &score_disp, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth);
 
     // Calculates the current FPS and updates the window title with it.
     void updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_timer);

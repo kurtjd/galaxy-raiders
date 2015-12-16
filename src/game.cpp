@@ -71,9 +71,10 @@ void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsi
     window.draw(text);
 }
 
-void Game::draw_objects(sf::RenderWindow &window, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
+void Game::draw_objects(sf::RenderWindow &window, ScoreDisplay &score_disp, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
 {
     window.clear(Globals::BG_COLOR);
+    score_disp.draw(window);
     invaders.draw();
     invaders.drawLasers();
     shields.draw();
