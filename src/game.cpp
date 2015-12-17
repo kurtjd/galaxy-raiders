@@ -80,7 +80,7 @@ void Game::draw_objects(sf::RenderWindow &window, ScoreDisplay &score_disp, Live
     shields.draw();
     window.draw(cannon.getSprite());
     Game::draw_player_laser(window, playerlaser);
-    window.draw(earth.getShape());
+    window.draw(earth.getSprite());
     lives_disp.draw(window);
     window.display();
 }

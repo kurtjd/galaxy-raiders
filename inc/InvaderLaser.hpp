@@ -37,6 +37,7 @@ public:
 
     /* The below are all pure virtual methods and MUST be implemented by subclasses.
      * Their behavior differs depending on the type of laser. */
+    virtual unsigned getX() const = 0;
     virtual void move() = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
 

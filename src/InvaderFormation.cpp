@@ -68,9 +68,9 @@ void InvaderFormation::handleCollisions()
     for (unsigned i = 0; i < this->lasers.size(); ++i)
     {
         InvaderLaser *laser = this->lasers[i];
-        //if (laser->getSprite().getGlobalBounds().intersects(earth.getShape().getGlobalBounds()))
-        if (laser->checkCollide(earth.getShape().getGlobalBounds()))
+        if (laser->checkCollide(earth.getSprite().getGlobalBounds()))
         {
+            earth.destroy(laser->getX());
             this->lasers.erase(this->lasers.begin() + i);
         }
     }

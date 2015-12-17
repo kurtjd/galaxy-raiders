@@ -28,6 +28,11 @@ NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y): Inva
     this->h_part.setPosition(x, y);
 }
 
+unsigned NormalInvaderLaser::getX() const
+{
+    return this->v_part.getPosition().x;
+}
+
 void NormalInvaderLaser::move()
 {
     this->v_part.move(0, this->SPEED);

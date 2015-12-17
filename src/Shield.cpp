@@ -91,5 +91,4 @@ void Shield::damageShield(int x, int y, const int dmg)
     }
     
     this->texture.update(img);
-    this->sprite.setTexture(this->texture);
 }

@@ -27,6 +27,7 @@ public:
     NormalInvaderLaser(const unsigned x, const unsigned y);
     virtual ~NormalInvaderLaser(){}
 
+    virtual unsigned getX() const;
     virtual void move();
     virtual void draw(sf::RenderWindow &window);
 

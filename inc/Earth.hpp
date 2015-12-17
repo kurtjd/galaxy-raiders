@@ -11,12 +11,17 @@ private:
     static constexpr unsigned HEIGHT = 2;
     static constexpr unsigned X = 0;
     static constexpr unsigned Y = 680;
+    static constexpr unsigned SPLASH_DMG = 5;
 
-    sf::RectangleShape shape;
+    sf::Image img;
+    sf::Texture texture;
+    sf::Sprite sprite;
 
 public:
     Earth(const unsigned screenw);
-    const sf::RectangleShape& getShape() const { return this->shape; }
+    const sf::Sprite& getSprite() const { return this->sprite; }
+
+    void destroy(const unsigned x);
 
 };
 
