@@ -48,10 +48,11 @@ void Game::draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
         window.draw(laser.getShape());
 }
 
-void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, InvaderFormation &invaders, ShieldWall &shields)
+void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields)
 {
     Game::real_time_key(cannon, player_laser);
     player_laser.move();
+    ufo.update();
     invaders.update(player_laser);
     shields.handleCollisions(player_laser, invaders.getLasers());
 }
@@ -71,10 +72,11 @@ void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsi
     window.draw(text);
 }
 
-void Game::draw_objects(sf::RenderWindow &window, ScoreDisplay &score_disp, LivesDisplay &lives_disp, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
+void Game::draw_objects(sf::RenderWindow &window, ScoreDisplay &score_disp, LivesDisplay &lives_disp, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, CoreCannon &cannon, PlayerLaser &playerlaser, Earth &earth)
 {
     window.clear(Globals::BG_COLOR);
     score_disp.draw(window);
+    ufo.draw(window);
     invaders.draw();
     invaders.drawLasers();
     shields.draw();

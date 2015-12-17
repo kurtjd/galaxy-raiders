@@ -28,6 +28,8 @@ int main()
     
     Earth earth(Globals::SCREEN_WIDTH);
 
+    UFO ufo(spritesheet);
+
     InvaderFormation invaders(window, spritesheet, earth, Globals::SCREEN_WIDTH, game_score, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
 
     ShieldWall shields(window, spritesheet, Globals::SCREEN_WIDTH);
@@ -45,8 +47,8 @@ int main()
     while (window.isOpen())
     {
         Game::handle_events(window);
-        Game::update_objects(cannon, player_laser, invaders, shields);
-        Game::draw_objects(window, score_disp, lives_disp, invaders, shields, cannon, player_laser, earth);
+        Game::update_objects(cannon, player_laser, ufo, invaders, shields);
+        Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth);
         Game::updateFPS(window, fps_clock, fps_timer);
     }
 }

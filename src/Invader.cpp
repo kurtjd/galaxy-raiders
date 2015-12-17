@@ -57,7 +57,7 @@ Invader::Invader(sf::Image &spritesheet, const InvaderType type): spritesheet(sp
     }
 
     // Death frame (same for all types)
-    sf::IntRect frame3_rect(555, 107, 48, 102);
+    sf::IntRect frame3_rect(555, 107, 48, 27);
 
     this->setTextures(frame1_rect, frame2_rect, frame3_rect);
     this->sprite.setTexture(this->frame1_txtr, true);
