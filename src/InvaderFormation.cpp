@@ -129,56 +129,6 @@ void InvaderFormation::removeHitLasers()
     }
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), game_score(game_score), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
-{
-    // Vector for each row in the formation
-    InvaderRow small_invaders;
-    InvaderRow medium_invaders1;
-    InvaderRow medium_invaders2;
-    InvaderRow large_invaders1;
-    InvaderRow large_invaders2;
-
-    for (unsigned i = 1; i <= this->ROWS; ++i)
-    {
-        small_invaders.push_back(new Invader(textures, Invader::SMALL));
-        medium_invaders1.push_back(new Invader(textures, Invader::MEDIUM));
-        medium_invaders2.push_back(new Invader(textures, Invader::MEDIUM));
-        large_invaders1.push_back(new Invader(textures, Invader::LARGE));
-        large_invaders2.push_back(new Invader(textures, Invader::LARGE));
-    }
-
-    // Now add each row to the main vector
-    this->invaders.push_back(small_invaders);
-    this->invaders.push_back(medium_invaders1);
-    this->invaders.push_back(medium_invaders2);
-    this->invaders.push_back(large_invaders1);
-    this->invaders.push_back(large_invaders2);
-
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
-    {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
-            this->invaders[i][j]->getSprite().setPosition(this->STARTX + (j * this->XGAP), this->STARTY + (i * this->YGAP));
-    }
-}
-
-InvaderFormation::~InvaderFormation()
-{
-    // Destroy Invaders
-    for (auto& invader_row : this->invaders)
-    {
-        for (auto& invader : invader_row)
-            delete invader;
-
-        invader_row.clear();
-    }
-    this->invaders.clear();
-
-    // Destroy lasers
-    for (auto &laser : this->lasers)
-        delete laser;
-    this->lasers.clear();
-}
-
 bool InvaderFormation::move()
 {
     this->incDeathTick(); // move() is called every frame so we put this here.
@@ -235,7 +185,7 @@ void InvaderFormation::shift()
     this->increaseFire(250);
 }
 
-void InvaderFormation::checkHit(PlayerLaser &laser)
+void InvaderFormation::checkHit(PlayerLaser &laser, unsigned &game_score)
 {
     for (auto& invader_row : this->invaders)
     {
@@ -244,7 +194,9 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
             if (!invader->isDead() && invader->getSprite().getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
             {
                 invader->die();
-                this->game_score += invader->getScoreValue();
+
+                // Increases the main game score, originally defined in main()
+                game_score += invader->getScoreValue();
 
                 // Formation speeds up for every 2 Invaders killed.
                 ++this->num_killed;
@@ -268,24 +220,7 @@ void InvaderFormation::checkHit(PlayerLaser &laser)
     }
 }
 
-void InvaderFormation::update(PlayerLaser &laser)
-{
-    this->move();
-    this->checkHit(laser);
-    this->updateLasers();
-}
 
-void InvaderFormation::draw()
-{
-    for (auto& invader_row : this->invaders)
-    {
-        for (auto& invader : invader_row)
-        {
-            if (!invader->isDead() || (invader->isDead() && invader->isExploding()))
-                this->window.draw(invader->getSprite());
-        }
-    }
-}
 
 void InvaderFormation::updateLasers()
 {
@@ -300,4 +235,73 @@ void InvaderFormation::drawLasers()
     for(auto& laser : this->lasers)
         //this->window.draw(laser->getSprite());
         laser->draw(this->window);
+}
+
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
+{
+    // Vector for each row in the formation
+    InvaderRow small_invaders;
+    InvaderRow medium_invaders1;
+    InvaderRow medium_invaders2;
+    InvaderRow large_invaders1;
+    InvaderRow large_invaders2;
+
+    for (unsigned i = 1; i <= this->ROWS; ++i)
+    {
+        small_invaders.push_back(new Invader(textures, Invader::SMALL));
+        medium_invaders1.push_back(new Invader(textures, Invader::MEDIUM));
+        medium_invaders2.push_back(new Invader(textures, Invader::MEDIUM));
+        large_invaders1.push_back(new Invader(textures, Invader::LARGE));
+        large_invaders2.push_back(new Invader(textures, Invader::LARGE));
+    }
+
+    // Now add each row to the main vector
+    this->invaders.push_back(small_invaders);
+    this->invaders.push_back(medium_invaders1);
+    this->invaders.push_back(medium_invaders2);
+    this->invaders.push_back(large_invaders1);
+    this->invaders.push_back(large_invaders2);
+
+    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+            this->invaders[i][j]->getSprite().setPosition(this->STARTX + (j * this->XGAP), this->STARTY + (i * this->YGAP));
+    }
+}
+
+InvaderFormation::~InvaderFormation()
+{
+    // Destroy Invaders
+    for (auto& invader_row : this->invaders)
+    {
+        for (auto& invader : invader_row)
+            delete invader;
+
+        invader_row.clear();
+    }
+    this->invaders.clear();
+
+    // Destroy lasers
+    for (auto &laser : this->lasers)
+        delete laser;
+    this->lasers.clear();
+}
+
+void InvaderFormation::update(PlayerLaser &laser, unsigned &game_score)
+{
+    this->move();
+    this->checkHit(laser, game_score);
+    this->updateLasers();
+}
+
+void InvaderFormation::draw()
+{
+    for (auto& invader_row : this->invaders)
+    {
+        for (auto& invader : invader_row)
+        {
+            if (!invader->isDead() || (invader->isDead() && invader->isExploding()))
+                this->window.draw(invader->getSprite());
+        }
+    }
 }

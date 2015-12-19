@@ -41,16 +41,16 @@ void Game::draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
         window.draw(laser.getShape());
 }
 
-void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields)
+void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, unsigned &game_score)
 {
     Game::real_time_key(cannon, player_laser);
     player_laser.move();
-    ufo.update();
-    invaders.update(player_laser);
+    ufo.update(player_laser, game_score);
+    invaders.update(player_laser, game_score);
     shields.handleCollisions(player_laser, invaders.getLasers());
 }
 
-void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y)
+void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y, sf::Color color, unsigned size)
 {
     sf::Font font;
     font.loadFromFile(Globals::FONTS_PATH + "space_invaders.ttf");
@@ -58,8 +58,8 @@ void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsi
     sf::Text text;
     text.setFont(font);
     text.setString(msg);
-    text.setCharacterSize(24);
-    text.setColor(sf::Color::White);
+    text.setCharacterSize(size);
+    text.setColor(color);
     text.setPosition(x, y);
 
     window.draw(text);

@@ -14,7 +14,9 @@ private:
 
 public:
     SoundFx(std::string filename);
-    void play();
+    void play(bool loop = false);
+    void stop();
+    void setVolume(float volume);
 
 };
 

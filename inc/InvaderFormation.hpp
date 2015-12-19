@@ -57,9 +57,6 @@ private:
 
     int shot_chance;
 
-    // The game's score, initialized in main()
-    unsigned &game_score;
-    
     // Sounds for stepping
     SoundFx &step1;
     SoundFx &step2;
@@ -87,25 +84,25 @@ private:
     // Contains all lasers currently being fired by Invaders
     Lasers lasers;
 
-public:
-    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
-    ~InvaderFormation();
-    Lasers& getLasers(){ return this->lasers; }
-
     // This is bool so main game can keep track when Invader actually moved
     bool move();
 
     // Increase speed, drop down, and reverse direction!
     void shift();
 
-    void checkHit(PlayerLaser &laser);
+    void checkHit(PlayerLaser &laser, unsigned &game_score);
 
-    void update(PlayerLaser &laser);
+    // Methods dealing with lasers
+    void updateLasers();
+
+public:
+    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
+    ~InvaderFormation();
+    Lasers& getLasers(){ return this->lasers; }
+
+    void update(PlayerLaser &laser, unsigned &game_score);
 
     void draw();
-
-    // Public methods dealing with lasers
-    void updateLasers();
     void drawLasers();
 
 };

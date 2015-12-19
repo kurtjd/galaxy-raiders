@@ -31,7 +31,7 @@ Textures::Textures()
     this->SMALL_INV_1.loadFromImage(this->spritesheet, SMALL_INV_1_RECT);
     this->SMALL_INV_2.loadFromImage(this->spritesheet, SMALL_INV_2_RECT);
 
-    sf::IntRect INVADER_DEATH_RECT(555, 107, 48, 27);
+    sf::IntRect INVADER_DEATH_RECT(555, 107, 48, 30);
     this->INVADER_DEATH.loadFromImage(this->spritesheet, INVADER_DEATH_RECT);
 
     sf::IntRect SHIELD_RECT(562, 13, 80, 59);
