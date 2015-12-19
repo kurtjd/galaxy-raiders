@@ -2,13 +2,6 @@
 #include "../inc/game.hpp"
 #include "../inc/globals.hpp"
 
-sf::Image Game::load_sprites(const std::string img)
-{
-    sf::Image spritesheet;
-    spritesheet.loadFromFile(img);
-    return spritesheet;
-}
-
 void Game::handle_events(sf::Window &window)
 {
     sf::Event event;

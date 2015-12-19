@@ -1,11 +1,11 @@
 #include "../inc/Shield.hpp"
 
-Shield::Shield(sf::Image &spritesheet, int xpos): spritesheet(spritesheet)
+Shield::Shield(Textures &textures, int xpos)
 {
-    this->texture.loadFromImage(spritesheet, sf::IntRect(this->TXTR_X_START, this->TXTR_Y_START, this->TXTR_WIDTH, this->TXTR_HEIGHT));
+    this->img = textures.SHIELD.copyToImage();
+    this->texture.loadFromImage(img);
     this->sprite.setTexture(this->texture);
     this->sprite.setPosition(xpos, this->Y_POS);
-    this->img = texture.copyToImage();
 }
 
 void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)

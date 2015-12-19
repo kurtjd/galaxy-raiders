@@ -19,10 +19,9 @@ private:
     ShieldVector shields;
 
     sf::RenderWindow &window;
-    sf::Image &spritesheet;
 
 public:
-    ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, const unsigned screenw);
+    ShieldWall(sf::RenderWindow &window, Textures &textures, const unsigned screenw);
     ~ShieldWall();
 
     void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers);

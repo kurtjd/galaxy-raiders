@@ -1,3 +1,4 @@
+#include "../inc/globals.hpp"
 #include "../inc/misc.hpp"
 #include "../inc/InvaderFormation.hpp"
 
@@ -128,7 +129,7 @@ void InvaderFormation::removeHitLasers()
     }
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), spritesheet(spritesheet), earth(earth), SCREENW(screenw), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), game_score(game_score), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), game_score(game_score), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -139,11 +140,11 @@ InvaderFormation::InvaderFormation(sf::RenderWindow &window, sf::Image &spritesh
 
     for (unsigned i = 1; i <= this->ROWS; ++i)
     {
-        small_invaders.push_back(new Invader(this->spritesheet, Invader::SMALL));
-        medium_invaders1.push_back(new Invader(this->spritesheet, Invader::MEDIUM));
-        medium_invaders2.push_back(new Invader(this->spritesheet, Invader::MEDIUM));
-        large_invaders1.push_back(new Invader(this->spritesheet, Invader::LARGE));
-        large_invaders2.push_back(new Invader(this->spritesheet, Invader::LARGE));
+        small_invaders.push_back(new Invader(textures, Invader::SMALL));
+        medium_invaders1.push_back(new Invader(textures, Invader::MEDIUM));
+        medium_invaders2.push_back(new Invader(textures, Invader::MEDIUM));
+        large_invaders1.push_back(new Invader(textures, Invader::LARGE));
+        large_invaders2.push_back(new Invader(textures, Invader::LARGE));
     }
 
     // Now add each row to the main vector
@@ -196,7 +197,7 @@ bool InvaderFormation::move()
                 for (auto& invader : invader_row)
                 {
                     invader->move();
-                    if (invader->checkHitEdge(this->SCREENW))
+                    if (invader->checkHitEdge(Globals::SCREEN_WIDTH))
                         this->has_hit_edge = true;
                 }
             }

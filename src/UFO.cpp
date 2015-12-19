@@ -13,13 +13,9 @@ void UFO::appear()
     this->sprite.setPosition(0 + 10, this->Y);
 }
 
-UFO::UFO(sf::Image &spritesheet): SCORES({50, 100, 150}), spritesheet(spritesheet), on_screen(false)
+UFO::UFO(const Textures &textures): SCORES({50, 100, 150}), on_screen(false)
 {
-    this->alive_txtr.loadFromImage(this->spritesheet, sf::IntRect(this->ALIVE_TXTR_X, this->ALIVE_TXTR_Y, this->ALIVE_TXTR_WIDTH, this->ALIVE_TXTR_HEIGHT));
-
-    this->dead_txtr.loadFromImage(this->spritesheet, sf::IntRect(this->DEAD_TXTR_X, this->DEAD_TXTR_Y, this->DEAD_TXTR_WIDTH, this->DEAD_TXTR_HEIGHT));
-
-    this->sprite.setTexture(this->alive_txtr);
+    this->sprite.setTexture(textures.UFO);
     this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().width / 2);
 
     // Sprite image is a little large

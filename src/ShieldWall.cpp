@@ -1,11 +1,11 @@
 #include "../inc/ShieldWall.hpp"
 
-ShieldWall::ShieldWall(sf::RenderWindow &window, sf::Image &spritesheet, const unsigned screenw): window(window), spritesheet(spritesheet)
+ShieldWall::ShieldWall(sf::RenderWindow &window, Textures &textures, const unsigned screenw): window(window)
 {
     // This loop creates 4 shields across the screen.
     // -5 is to stop part of 5th shield from drawing at edge
     for (unsigned i = this->STARTX; i < screenw - 5; i += this->GAP)
-        this->shields.push_back(new Shield(spritesheet, i));
+        this->shields.push_back(new Shield(textures, i));
 }
 
 ShieldWall::~ShieldWall()

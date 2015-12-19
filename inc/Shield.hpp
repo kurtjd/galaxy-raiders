@@ -2,6 +2,7 @@
 #define SHIELD_H
 
 #include <SFML/Graphics.hpp>
+#include "Textures.hpp"
 #include "PlayerLaser.hpp"
 #include "InvaderFormation.hpp"
 
@@ -10,15 +11,9 @@
 class Shield
 {
 private:
-    static constexpr unsigned TXTR_X_START = 562;
-    static constexpr unsigned TXTR_Y_START = 13;
-    static constexpr unsigned TXTR_WIDTH = 80;
-    static constexpr unsigned TXTR_HEIGHT = 59;
-
     static constexpr unsigned Y_POS = 520;
 
-    // The sprite of the shield.
-    sf::Image &spritesheet;
+    // Individual shields have unique texture because they are destructable.
     sf::Texture texture;
     sf::Sprite sprite;
 
@@ -26,7 +21,7 @@ private:
     sf::Image img;
 
 public:
-    Shield(sf::Image &spritesheet, const int xpos);
+    Shield(Textures &textures, const int xpos);
     sf::Sprite& getSprite(){ return this->sprite; }
 
     // Handles for collisions with lasers

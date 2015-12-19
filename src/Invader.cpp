@@ -1,54 +1,39 @@
 #include "../inc/Invader.hpp"
 
-void Invader::setTextures(const sf::IntRect frame1, const sf::IntRect frame2, const sf::IntRect frame3)
-{
-    this->frame1_txtr.loadFromImage(this->spritesheet, frame1);
-    this->frame2_txtr.loadFromImage(this->spritesheet, frame2);
-    this->frame3_txtr.loadFromImage(this->spritesheet, frame3);
-
-    // Smoothen out the textures
-    this->frame1_txtr.setSmooth(true);
-    this->frame2_txtr.setSmooth(true);
-    this->frame3_txtr.setSmooth(true);
-}
-
 void Invader::flipFrame()
 {
     if (this->frame_on == 1)
     {
-        this->sprite.setTexture(this->frame2_txtr, true);
+        this->sprite.setTexture(*(this->frame2_txtr), true);
         this->frame_on = 2;
     }
     else
     {
-        this->sprite.setTexture(this->frame1_txtr, true);
+        this->sprite.setTexture(*(this->frame1_txtr), true);
         this->frame_on = 1;
     }
 }
 
-Invader::Invader(sf::Image &spritesheet, const InvaderType type): spritesheet(spritesheet), type(type), move_dir(1), is_dead(false), frame_on(1), death_tick(0)
+Invader::Invader(Textures &textures, const InvaderType type): type(type), move_dir(1), is_dead(false), frame_on(1), death_tick(0)
 {
-    sf::IntRect frame1_rect;
-    sf::IntRect frame2_rect;
-
     // Load different textures and set different score values based on type of Invader
     switch (this->type)
     {
     case Invader::LARGE:
-        frame1_rect = sf::IntRect(257, 35, 45, this->TXTR_HEIGHT);
-        frame2_rect = sf::IntRect(315, 35, 45, this->TXTR_HEIGHT);
+        this->frame1_txtr = &(textures.LARGE_INV_1);
+        this->frame2_txtr = &(textures.LARGE_INV_2);
         this->score_value = 10;
         break;
     
     case Invader::MEDIUM:
-        frame1_rect = sf::IntRect(126, 35, 41, this->TXTR_HEIGHT);
-        frame2_rect = sf::IntRect(186, 35, 45, this->TXTR_HEIGHT);
+        this->frame1_txtr = &(textures.MEDIUM_INV_1);
+        this->frame2_txtr = &(textures.MEDIUM_INV_2);
         this->score_value = 20;
         break;
     
     case Invader::SMALL:
-        frame1_rect = sf::IntRect(6, 35, 30, this->TXTR_HEIGHT);
-        frame2_rect = sf::IntRect(64, 35, 30, this->TXTR_HEIGHT);
+        this->frame1_txtr = &(textures.SMALL_INV_1);
+        this->frame2_txtr = &(textures.SMALL_INV_2);
         this->score_value = 30;
         break;
 
@@ -56,11 +41,8 @@ Invader::Invader(sf::Image &spritesheet, const InvaderType type): spritesheet(sp
         break;
     }
 
-    // Death frame (same for all types)
-    sf::IntRect frame3_rect(555, 107, 48, 27);
-
-    this->setTextures(frame1_rect, frame2_rect, frame3_rect);
-    this->sprite.setTexture(this->frame1_txtr, true);
+    this->frame3_txtr = &(textures.INVADER_DEATH);
+    this->sprite.setTexture(*(this->frame1_txtr), true);
     
     // Put the point of origin in center of invader.
     this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().width / 2);
@@ -68,7 +50,7 @@ Invader::Invader(sf::Image &spritesheet, const InvaderType type): spritesheet(sp
 
 void Invader::die()
 {
-    this->sprite.setTexture(this->frame3_txtr, true);
+    this->sprite.setTexture(*(this->frame3_txtr), true);
     this->is_exploding = true;
     this->is_dead = true;
 }
@@ -87,7 +69,7 @@ void Invader::dropDown()
     if (this->isDead())
         return;
 
-    this->sprite.move(0, this->TXTR_HEIGHT);
+    this->sprite.move(0, this->HEIGHT);
     this->flipFrame();
 }
 

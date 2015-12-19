@@ -2,6 +2,7 @@
 #define INVADER_H
 
 #include <SFML/Graphics.hpp>
+#include "Textures.hpp"
 
 /* An individual Space Invader. */
 
@@ -13,16 +14,15 @@ class Invader
 public: enum InvaderType { LARGE, MEDIUM, SMALL };
 
 private:
-    static constexpr unsigned TXTR_HEIGHT = 35; // Same for all Invader types
-
+    static constexpr unsigned HEIGHT = 35;
     static constexpr unsigned DEATH_TICK_MAX = 10; // How long death sprite should show
     static constexpr int SPEED = 10; // How far the invader moves each step
 
-    // Invaders have 2 frames in their animation, and 1 for death
-    sf::Image &spritesheet;
-    sf::Texture frame1_txtr;
-    sf::Texture frame2_txtr;
-    sf::Texture frame3_txtr;
+    // Invaders have 2 frames in their animation.
+    // They are pointers instead of references because they can't be default initialized.
+    sf::Texture *frame1_txtr;
+    sf::Texture *frame2_txtr;
+    sf::Texture *frame3_txtr;
     sf::Sprite sprite;
 
     InvaderType type;
@@ -34,14 +34,11 @@ private:
 
     unsigned death_tick; // Keep track of how long death sprite has shown
 
-    // Load textures for each frame given a rectangle containing location of texture on spritesheet
-    void setTextures(const sf::IntRect frame1, const sf::IntRect frame2, const sf::IntRect frame3);
-
     // Cycle through animation
     void flipFrame();
 
 public:
-    Invader(sf::Image &spritesheet, const InvaderType type);
+    Invader(Textures &textures, const InvaderType type);
     sf::Sprite& getSprite() { return this->sprite; }
     unsigned getScoreValue() const { return this->score_value; }
     bool isDead() const { return this->is_dead; }

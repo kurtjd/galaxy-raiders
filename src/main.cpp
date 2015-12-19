@@ -4,6 +4,7 @@
 #include "../inc/misc.hpp"
 #include "../inc/game.hpp"
 #include "../inc/SoundFx.hpp"
+#include "../inc/Textures.hpp"
 
 int main()
 {
@@ -17,6 +18,9 @@ int main()
     sf::RenderWindow window(sf::VideoMode(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT), Globals::SCREEN_TITLE);
     window.setFramerateLimit(Globals::FRAME_RATE);
 
+    // This loads all textures.
+    Textures textures;
+
     SoundFx shoot_snd(Globals::SOUNDS_PATH + "shoot_laser.wav");
     SoundFx invader_death_snd(Globals::SOUNDS_PATH + "invader_death.wav");
     SoundFx invader_step1_snd(Globals::SOUNDS_PATH + "invader_step1.wav");
@@ -24,23 +28,21 @@ int main()
     SoundFx invader_step3_snd(Globals::SOUNDS_PATH + "invader_step3.wav");
     SoundFx invader_step4_snd(Globals::SOUNDS_PATH + "invader_step4.wav");
 
-    sf::Image spritesheet = Game::load_sprites(Globals::SPRITES_PATH + "invader_sprites.png");
-    
     Earth earth(Globals::SCREEN_WIDTH);
 
-    UFO ufo(spritesheet);
+    UFO ufo(textures);
 
-    InvaderFormation invaders(window, spritesheet, earth, Globals::SCREEN_WIDTH, game_score, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
+    InvaderFormation invaders(window, textures, earth, game_score, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
 
-    ShieldWall shields(window, spritesheet, Globals::SCREEN_WIDTH);
+    ShieldWall shields(window, textures, Globals::SCREEN_WIDTH);
 
-    CoreCannon cannon(spritesheet, Globals::SCREEN_WIDTH, Globals::SCREEN_WIDTH / 2);
+    CoreCannon cannon(textures, Globals::SCREEN_WIDTH / 2);
     
     PlayerLaser player_laser(shoot_snd);
 
     ScoreDisplay score_disp(game_score);
 
-    LivesDisplay lives_disp(spritesheet);
+    LivesDisplay lives_disp(textures);
 
     
     /* Begin game loop */

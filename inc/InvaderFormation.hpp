@@ -39,14 +39,11 @@ private:
     static constexpr int SHOT_CHANCE_START = 2000;
 
     sf::RenderWindow &window;
-    sf::Image &spritesheet;
     InvaderVector2D invaders;
 
     // Earth, the line at the bottom of the screen.
     Earth &earth;
 
-    const unsigned SCREENW;
-    
     // When move_tick hits move_tick_max, the formation moves
     // move_tick_max is lowered every time formation hits edge of screen
     unsigned move_tick;
@@ -91,7 +88,7 @@ private:
     Lasers lasers;
 
 public:
-    InvaderFormation(sf::RenderWindow &window, sf::Image &spritesheet, Earth &earth, const unsigned screenw, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
+    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned &game_score, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
     ~InvaderFormation();
     Lasers& getLasers(){ return this->lasers; }
 

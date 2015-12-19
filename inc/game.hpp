@@ -16,9 +16,6 @@
 
 namespace Game
 {
-    // Creates an Image object to be used as a texture for sprites.
-    sf::Image load_sprites(const std::string img);
-
     // Handles any events that pop up (mainly window close)
     void handle_events(sf::Window &window);
 

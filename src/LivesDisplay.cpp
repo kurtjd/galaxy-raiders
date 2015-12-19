@@ -1,23 +1,16 @@
 #include "../inc/LivesDisplay.hpp"
 #include "../inc/game.hpp"
 
-void LivesDisplay::initCannons()
+LivesDisplay::LivesDisplay(Textures &textures): lives(LIVES_START)
 {
     // Subtract 1 from LIVES_START because the last life is the player's cannon.
     for (unsigned i = 0; i < (this->LIVES_START - 1); ++i)
     {
         sf::Sprite *sprite = new sf::Sprite;
-        sprite->setTexture(this->cannon_txtr);
+        sprite->setTexture(textures.CORECANNON);
         sprite->setPosition(this->X + 75 + (i * 55), this->Y);
         this->cannons.push_back(sprite);
     }
-}
-
-LivesDisplay::LivesDisplay(sf::Image &spritesheet): spritesheet(spritesheet), lives(LIVES_START)
-{
-    this->cannon_txtr.loadFromImage(spritesheet, sf::IntRect(this->CANNON_TXTR_X_START, this->CANNON_TXTR_Y_START, this->CANNON_TXTR_WIDTH, this->CANNON_TXTR_HEIGHT));
-
-    this->initCannons();
 }
 
 LivesDisplay::~LivesDisplay()
