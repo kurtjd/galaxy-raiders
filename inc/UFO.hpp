@@ -52,6 +52,8 @@ public:
     void update(PlayerLaser &laser, unsigned &game_score);
     void draw(sf::RenderWindow &window);
 
+    void pause();
+
 };
 
 #endif

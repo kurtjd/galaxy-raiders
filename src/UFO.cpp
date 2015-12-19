@@ -123,3 +123,21 @@ void UFO::draw(sf::RenderWindow &window)
             Game::draw_text(window, tmp_score_txt, this->sprite.getPosition().x - 5, this->Y - 15, sf::Color::Red);
     }
 }
+
+void UFO::pause()
+{
+    if (!this->exploding && !this->show_score)
+    {
+        if (this->move_sound.getStatus() == sf::SoundSource::Status::Playing)
+            this->move_sound.pause();
+        else if (this->move_sound.getStatus() == sf::SoundSource::Status::Paused)
+            this->move_sound.play(true);
+    }
+    else
+    {
+        if (this->killed_sound.getStatus() == sf::SoundSource::Status::Playing)
+            this->killed_sound.pause();
+        else if (this->killed_sound.getStatus() == sf::SoundSource::Status::Paused)
+            this->killed_sound.play();
+    }
+}

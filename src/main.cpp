@@ -54,11 +54,11 @@ int main()
 
     LivesDisplay lives_disp(textures);
 
-    
+
     /* Begin game loop */
     while (window.isOpen())
     {
-        Game::handle_events(window);
+        Game::handle_events(window, ufo);
         Game::update_objects(cannon, player_laser, ufo, invaders, shields, game_score);
         Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth);
         Game::updateFPS(window, fps_clock, fps_timer);

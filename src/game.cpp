@@ -2,7 +2,7 @@
 #include "../inc/game.hpp"
 #include "../inc/globals.hpp"
 
-void Game::handle_events(sf::Window &window)
+void Game::handle_events(sf::Window &window, UFO &ufo)
 {
     sf::Event event;
     while (window.pollEvent(event))
@@ -11,6 +11,19 @@ void Game::handle_events(sf::Window &window)
         {
         case sf::Event::Closed:
             window.close();
+            break;
+
+        case sf::Event::KeyReleased:
+            switch (event.key.code)
+            {
+                case sf::Keyboard::P:
+                    pause(ufo);
+                    break;
+
+                default:
+                    break;
+            }
+
             break;
 
         default:
@@ -43,6 +56,10 @@ void Game::draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
 
 void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, unsigned &game_score)
 {
+    // Don't do anything if paused.
+    if (Globals::GAME_STATE == Globals::States::PAUSED)
+        return;
+
     Game::real_time_key(cannon, player_laser);
     player_laser.move();
     ufo.update(player_laser, game_score);
@@ -87,4 +104,14 @@ void Game::updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_
     title << Globals::SCREEN_TITLE << " - " << round(fps) << "fps";
     window.setTitle(title.str());
     fps_timer = fps_clock.getElapsedTime().asSeconds();
+}
+
+void Game::pause(UFO &ufo)
+{
+    if (Globals::GAME_STATE == Globals::States::PAUSED)
+        Globals::GAME_STATE = Globals::States::PLAY;
+    else
+        Globals::GAME_STATE = Globals::States::PAUSED;
+
+    ufo.pause();
 }

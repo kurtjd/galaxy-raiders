@@ -17,7 +17,7 @@
 namespace Game
 {
     // Handles any events that pop up (mainly window close)
-    void handle_events(sf::Window &window);
+    void handle_events(sf::Window &window, UFO &ufo);
 
     // Handles real-time keyboard input
     void real_time_key(CoreCannon &cannon, PlayerLaser &player_laser);
@@ -36,6 +36,8 @@ namespace Game
 
     // Calculates the current FPS and updates the window title with it.
     void updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_timer);
+
+    void pause(UFO &ufo);
 
 };
 

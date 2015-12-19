@@ -12,6 +12,11 @@ void SoundFx::play(bool loop)
     this->sound.play();
 }
 
+void SoundFx::pause()
+{
+    this->sound.pause();
+}
+
 void SoundFx::stop()
 {
     this->sound.stop();

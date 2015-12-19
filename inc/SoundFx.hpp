@@ -14,7 +14,9 @@ private:
 
 public:
     SoundFx(std::string filename);
+    sf::SoundSource::Status getStatus(){ return sound.getStatus(); }
     void play(bool loop = false);
+    void pause();
     void stop();
     void setVolume(float volume);
 

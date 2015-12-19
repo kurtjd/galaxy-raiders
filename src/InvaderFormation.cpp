@@ -238,6 +238,14 @@ void InvaderFormation::updateLasers()
     this->shootLasers();
 }
 
+void InvaderFormation::removeLasers()
+{
+    // Destroy lasers
+    for (auto &laser : this->lasers)
+        delete laser;
+    this->lasers.clear();
+}
+
 void InvaderFormation::drawLasers()
 {
     for(auto& laser : this->lasers)
@@ -289,10 +297,7 @@ InvaderFormation::~InvaderFormation()
     }
     this->invaders.clear();
 
-    // Destroy lasers
-    for (auto &laser : this->lasers)
-        delete laser;
-    this->lasers.clear();
+    this->removeLasers();
 }
 
 void InvaderFormation::update(PlayerLaser &laser, unsigned &game_score)

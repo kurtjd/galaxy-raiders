@@ -84,6 +84,7 @@ private:
     void moveLasers();
     void removeHitLasers();
     void updateLasers();
+    void removeLasers();
 
     // Contains all lasers currently being fired by Invaders
     Lasers lasers;
