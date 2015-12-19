@@ -33,7 +33,6 @@ void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)
                     // Subtract xpos and ypos because the Image uses its own local coordinates
                     sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
 
-                    //if (laser->getSprite().getGlobalBounds().contains(x, y) && pixel.g > 0)
                     if (pixel.g > 0 && laser->checkCollide(x, y))
                     {
                         laser->remove();
@@ -65,6 +64,43 @@ void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)
             }
         }
     }
+}
+
+void Shield::handleCollideInvaders(InvaderFormation &invaders)
+{
+    sf::FloatRect shield_rect = this->sprite.getGlobalBounds();
+    unsigned xpos = this->sprite.getPosition().x;
+    unsigned ypos = this->sprite.getPosition().y;
+    unsigned width = shield_rect.width;
+    unsigned height = shield_rect.height;
+
+    // Check for invader invader collision
+    for (auto& invader_row : invaders.getInvaders())
+    {
+        for (auto& invader : invader_row)
+        {
+            // First check if invader rect intersects with shield rect
+            if (invader->getSprite().getGlobalBounds().intersects(shield_rect))
+            {
+                // Check to see if pixel collides with any Invaders.
+                // Only true if hit green pixel
+                for (unsigned x = xpos; x < (xpos + width); ++x)
+                {
+                    for (unsigned y = ypos; y < (ypos + height); ++y)
+                    {
+                        // Subtract xpos and ypos because the Image uses its own local coordinates
+                        sf::Color pixel = this->img.getPixel(x - xpos, y - ypos);
+
+                        // If pixels touch, 'remove' that pixel to simulate destruction.
+                        if (pixel.g > 0 && invader->getSprite().getGlobalBounds().contains(x, y))
+                            this->img.setPixel(x - xpos, y - ypos, sf::Color::Transparent);
+                    }
+                }
+            }
+        }
+    }
+
+    this->texture.update(img);
 }
 
 void Shield::damageShield(int x, int y, const int dmg)

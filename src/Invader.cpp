@@ -64,13 +64,16 @@ void Invader::move()
     this->flipFrame();
 }
 
-void Invader::dropDown()
+void Invader::dropDown(const unsigned shield_line)
 {
     if (this->isDead())
         return;
 
     this->sprite.move(0, this->HEIGHT);
     this->flipFrame();
+
+    if (this->sprite.getPosition().y >= shield_line)
+        this->sprite.setColor(sf::Color::Green);
 }
 
 void Invader::reverseDir()

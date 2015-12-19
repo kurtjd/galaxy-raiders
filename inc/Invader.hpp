@@ -51,7 +51,7 @@ public:
     void move();
 
     // The invader shifts down one row
-    void dropDown();
+    void dropDown(const unsigned shield_line);
 
     // The invader reverses its direction of movement
     void reverseDir();

@@ -25,6 +25,9 @@ public:
     // Handles for collisions with lasers
     void handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers);
 
+    // Invaders destroy the shield as they pass over it.
+    void handleCollideInvaders(InvaderFormation &invaders);
+
     // Add splash damage to shield
     void damageShield(int x, int y, const int dmg);
 

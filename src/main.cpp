@@ -39,11 +39,12 @@ int main()
     Earth earth(Globals::SCREEN_WIDTH);
 
     UFO ufo(textures, ufo_move_snd, ufo_killed_snd);
+    
+    InvaderFormation invaders(window, textures, earth, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
 
     ShieldWall shields(window, textures, Globals::SCREEN_WIDTH);
     const unsigned SHIELD_LINE = shields.getY() - 20; //-20 because shield y doesn't start at top of shield.
-
-    InvaderFormation invaders(window, textures, earth, SHIELD_LINE, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
+    invaders.setShieldLine(SHIELD_LINE);
 
     CoreCannon cannon(textures, Globals::SCREEN_WIDTH / 2);
     

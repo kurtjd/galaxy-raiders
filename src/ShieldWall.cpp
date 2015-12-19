@@ -15,10 +15,13 @@ ShieldWall::~ShieldWall()
     this->shields.clear();
 }
 
-void ShieldWall::handleCollisions(PlayerLaser &laser, Lasers &invader_lasers)
+void ShieldWall::handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders)
 {
     for (auto& shield : shields)
+    {
         shield->handleCollide(laser, invader_lasers);
+        shield->handleCollideInvaders(invaders);
+    }
 }
 
 void ShieldWall::draw()

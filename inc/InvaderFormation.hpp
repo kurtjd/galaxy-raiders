@@ -38,7 +38,7 @@ private:
     // Chance of each Invader shooting: 1/SHOT_CHANCE
     static constexpr int SHOT_CHANCE_START = 2000;
 
-    const unsigned SHIELD_LINE;
+    unsigned SHIELD_LINE;
 
     sf::RenderWindow &window;
     InvaderVector2D invaders;
@@ -66,6 +66,7 @@ private:
     SoundFx &step4;
     SoundFx &death_snd;
 
+
     // Check if invaders are exploding and increment tick
     void incDeathTick();
 
@@ -82,6 +83,7 @@ private:
     void shootLasers();
     void moveLasers();
     void removeHitLasers();
+    void updateLasers();
 
     // Contains all lasers currently being fired by Invaders
     Lasers lasers;
@@ -94,18 +96,18 @@ private:
 
     void checkHit(PlayerLaser &laser, unsigned &game_score);
 
-    // Methods dealing with lasers
-    void updateLasers();
-
 public:
-    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned shield_line, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
+    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
     ~InvaderFormation();
     Lasers& getLasers(){ return this->lasers; }
+    InvaderVector2D& getInvaders(){ return this->invaders; }
 
     void update(PlayerLaser &laser, unsigned &game_score);
 
     void draw();
     void drawLasers();
+
+    void setShieldLine(const unsigned shield_line);
 
 };
 

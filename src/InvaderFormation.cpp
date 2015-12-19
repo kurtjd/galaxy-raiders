@@ -184,7 +184,7 @@ void InvaderFormation::shift()
     {
         for (auto& invader : invader_row)
         {
-            invader->dropDown();
+            invader->dropDown(this->SHIELD_LINE);
             invader->reverseDir();
         }
     }
@@ -245,7 +245,7 @@ void InvaderFormation::drawLasers()
         laser->draw(this->window);
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned shield_line, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): SHIELD_LINE(shield_line), window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;
@@ -312,4 +312,9 @@ void InvaderFormation::draw()
                 this->window.draw(invader->getSprite());
         }
     }
+}
+
+void InvaderFormation::setShieldLine(const unsigned shield_line)
+{
+    this->SHIELD_LINE = shield_line;
 }

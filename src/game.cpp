@@ -47,7 +47,7 @@ void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &uf
     player_laser.move();
     ufo.update(player_laser, game_score);
     invaders.update(player_laser, game_score);
-    shields.handleCollisions(player_laser, invaders.getLasers());
+    shields.handleCollisions(player_laser, invaders.getLasers(), invaders);
 }
 
 void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y, sf::Color color, unsigned size)
