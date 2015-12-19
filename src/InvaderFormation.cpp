@@ -65,9 +65,9 @@ void InvaderFormation::shootLaser(unsigned x, unsigned y)
     // Normal lasers have a slightly greater chance of being created.
     unsigned dice_roll = Misc::random(1, 10);
     if (dice_roll <= 6)
-        laser = new NormalInvaderLaser(x, y);
+        laser = new NormalInvaderLaser(x, y, this->SHIELD_LINE);
     else
-        laser = new PoweredInvaderLaser(x, y);
+        laser = new PoweredInvaderLaser(x, y, this->SHIELD_LINE);
 
     this->lasers.push_back(laser);
 }
@@ -245,7 +245,7 @@ void InvaderFormation::drawLasers()
         laser->draw(this->window);
 }
 
-InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
+InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned shield_line, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd): SHIELD_LINE(shield_line), window(window), earth(earth), move_tick(0), move_tick_max(MOVE_TICK_MAX_START), move_tick_change(MOVE_TICK_CHANGE_START), step_on(1), num_killed(0), has_hit_edge(false), shot_chance(SHOT_CHANCE_START), step1(step1), step2(step2), step3(step3), step4(step4), death_snd(death_snd)
 {
     // Vector for each row in the formation
     InvaderRow small_invaders;

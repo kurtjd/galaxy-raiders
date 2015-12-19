@@ -38,6 +38,8 @@ private:
     // Chance of each Invader shooting: 1/SHOT_CHANCE
     static constexpr int SHOT_CHANCE_START = 2000;
 
+    const unsigned SHIELD_LINE;
+
     sf::RenderWindow &window;
     InvaderVector2D invaders;
 
@@ -96,7 +98,7 @@ private:
     void updateLasers();
 
 public:
-    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
+    InvaderFormation(sf::RenderWindow &window, Textures &textures, Earth &earth, unsigned shield_line, SoundFx &step1, SoundFx &step2, SoundFx &step3, SoundFx &step4, SoundFx &death_snd);
     ~InvaderFormation();
     Lasers& getLasers(){ return this->lasers; }
 

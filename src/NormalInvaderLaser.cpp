@@ -16,7 +16,7 @@ void NormalInvaderLaser::moveHPart()
         this->h_part.move(0, this->SPEED * this->h_part_moverate);
 }
 
-NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y): InvaderLaser(LaserType::NORMAL, 5, 15), h_part_movedir(1)
+NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line): InvaderLaser(LaserType::NORMAL, 5, 15, shield_line), h_part_movedir(1)
 {
     this->v_part = sf::RectangleShape(sf::Vector2f(this->THICKNESS, this->HEIGHT));
     this->h_part = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->THICKNESS));
@@ -37,6 +37,13 @@ void NormalInvaderLaser::move()
 {
     this->v_part.move(0, this->SPEED);
     this->moveHPart();
+
+    // Change color to green once past the shields.
+    if (this->v_part.getPosition().y >= this->SHIELD_LINE)
+    {
+        this->v_part.setFillColor(sf::Color::Green);
+        this->h_part.setFillColor(sf::Color::Green);
+    }
 }
 
 void NormalInvaderLaser::draw(sf::RenderWindow &window)

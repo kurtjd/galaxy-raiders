@@ -11,8 +11,6 @@
 class Shield
 {
 private:
-    static constexpr unsigned Y_POS = 520;
-
     // Individual shields have unique texture because they are destructable.
     sf::Texture texture;
     sf::Sprite sprite;
@@ -21,7 +19,7 @@ private:
     sf::Image img;
 
 public:
-    Shield(Textures &textures, const int xpos);
+    Shield(Textures &textures, const int xpos, const int ypos);
     sf::Sprite& getSprite(){ return this->sprite; }
 
     // Handles for collisions with lasers

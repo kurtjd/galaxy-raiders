@@ -24,7 +24,7 @@ private:
     void flip();
 
 public:
-    PoweredInvaderLaser(const unsigned x, const unsigned y);
+    PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line);
     virtual ~PoweredInvaderLaser(){}
 
     virtual unsigned getX() const;

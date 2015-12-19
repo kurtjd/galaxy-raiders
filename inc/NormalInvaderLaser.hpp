@@ -24,7 +24,7 @@ private:
     void moveHPart();
 
 public:
-    NormalInvaderLaser(const unsigned x, const unsigned y);
+    NormalInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line);
     virtual ~NormalInvaderLaser(){}
 
     virtual unsigned getX() const;

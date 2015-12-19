@@ -12,6 +12,8 @@ typedef std::vector<Shield*> ShieldVector;
 class ShieldWall
 {
 private:
+    static constexpr unsigned Y = 520;
+
     // Where the first shield starts and the gap between subsequent shields
     static constexpr unsigned STARTX = 97;
     static constexpr unsigned GAP = 175;
@@ -23,6 +25,8 @@ private:
 public:
     ShieldWall(sf::RenderWindow &window, Textures &textures, const unsigned screenw);
     ~ShieldWall();
+
+    unsigned getY() const { return this->Y; }
 
     void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers);
 

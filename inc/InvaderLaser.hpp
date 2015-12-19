@@ -17,10 +17,12 @@ protected:
     const int SPEED; // How fast the laser moves.
     const unsigned SHIELD_DMG; // How much damage it does to shields
 
+    const unsigned SHIELD_LINE;
+
     bool hit; // Whether or not hit something and about to be removed.
 
     // Make constructor protected because InvaderLasers should never be instantiated directly.
-    InvaderLaser(const LaserType type, const int speed, const unsigned shield_dmg): TYPE(type), SPEED(speed), SHIELD_DMG(shield_dmg), hit(false) {}
+    InvaderLaser(const LaserType type, const int speed, const unsigned shield_dmg, const unsigned shield_line): TYPE(type), SPEED(speed), SHIELD_DMG(shield_dmg), SHIELD_LINE(shield_line), hit(false) {}
 
 public:
     /* Note to future self: 

@@ -1,6 +1,6 @@
 #include "../inc/PoweredInvaderLaser.hpp"
 
-PoweredInvaderLaser::PoweredInvaderLaser(const unsigned x, const unsigned y): InvaderLaser(LaserType::POWERED, 6, 20), flip_tick(FLIP_TICK_MAX)
+PoweredInvaderLaser::PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line): InvaderLaser(LaserType::POWERED, 6, 20, shield_line), flip_tick(FLIP_TICK_MAX)
 {
     this->part1 = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->HEIGHT));
     this->part1.setOrigin(this->WIDTH / 2, this->HEIGHT / 2);
@@ -48,6 +48,15 @@ void PoweredInvaderLaser::move()
     this->part2.move(0, this->SPEED);
     this->part3.move(0, this->SPEED);
     this->part4.move(0, this->SPEED);
+
+    // Change color to green once past the shields.
+    if (this->part4.getPosition().y >= this->SHIELD_LINE)
+    {
+        this->part1.setFillColor(sf::Color::Green);
+        this->part2.setFillColor(sf::Color::Green);
+        this->part3.setFillColor(sf::Color::Green);
+        this->part4.setFillColor(sf::Color::Green);
+    }
 }
 
 void PoweredInvaderLaser::draw(sf::RenderWindow &window)

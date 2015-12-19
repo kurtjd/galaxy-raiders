@@ -5,7 +5,7 @@ ShieldWall::ShieldWall(sf::RenderWindow &window, Textures &textures, const unsig
     // This loop creates 4 shields across the screen.
     // -5 is to stop part of 5th shield from drawing at edge
     for (unsigned i = this->STARTX; i < screenw - 5; i += this->GAP)
-        this->shields.push_back(new Shield(textures, i));
+        this->shields.push_back(new Shield(textures, i, this->Y));
 }
 
 ShieldWall::~ShieldWall()
