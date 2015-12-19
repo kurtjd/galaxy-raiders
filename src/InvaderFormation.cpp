@@ -60,7 +60,15 @@ bool InvaderFormation::toShootOrNah() const
 
 void InvaderFormation::shootLaser(unsigned x, unsigned y)
 {
-    InvaderLaser *laser = new NormalInvaderLaser(x, y);
+    InvaderLaser *laser;
+    
+    // Normal lasers have a slightly greater chance of being created.
+    unsigned dice_roll = Misc::random(1, 10);
+    if (dice_roll <= 6)
+        laser = new NormalInvaderLaser(x, y);
+    else
+        laser = new PoweredInvaderLaser(x, y);
+
     this->lasers.push_back(laser);
 }
 
