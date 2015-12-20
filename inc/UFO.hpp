@@ -49,6 +49,8 @@ private:
 public:
     UFO(Textures &textures, SoundFx &ufo_move_snd, SoundFx &ufo_killed_snd);
 
+    void reset();
+
     void update(PlayerLaser &laser, unsigned &game_score);
     void draw(sf::RenderWindow &window);
 

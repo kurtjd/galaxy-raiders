@@ -1,12 +1,17 @@
 #include <iostream>
 #include "../inc/Earth.hpp"
 
-Earth::Earth(const unsigned screenw)
+Earth::Earth(const unsigned screenw): WIDTH(screenw)
 {
-    this->img.create(screenw, this->HEIGHT, sf::Color::Green);
+    this->reset(); 
+    this->sprite.setPosition(this->X, this->Y);
+}
+
+void Earth::reset()
+{
+    this->img.create(this->WIDTH, this->HEIGHT, sf::Color::Green);
     this->texture.loadFromImage(this->img);
     this->sprite.setTexture(this->texture);
-    this->sprite.setPosition(this->X, this->Y);
 }
 
 void Earth::destroy(const unsigned x)

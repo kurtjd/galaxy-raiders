@@ -29,7 +29,8 @@ void CoreCannon::reset()
     // Put the point of origin in center of cannon.
     this->sprite.setOrigin(this->sprite.getTexture()->getSize().x / 2, this->sprite.getTexture()->getSize().y / 2);
 
-    Globals::GAME_STATE = Globals::States::PLAY;
+    if (Globals::GAME_STATE != Globals::States::WAVE_SETUP)
+        Globals::GAME_STATE = Globals::States::PLAY;
 }
 
 CoreCannon::CoreCannon(Textures &textures, SoundFx &killed_sound, const int startx): killed_sound(killed_sound), START_X(startx), textures(textures), frame_on(1), hit(false), death_tick(DEATH_TICK_MAX), frame_tick(FRAME_TICK_MAX)

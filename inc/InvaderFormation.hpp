@@ -25,18 +25,20 @@ private:
 
     // Where the formation starts on screen
     static constexpr unsigned STARTX = 120;
-    static constexpr unsigned STARTY = 150;
+    const unsigned STARTY = 150;
 
     // The space between each invader in the formation
     static constexpr unsigned XGAP = 55;
     static constexpr unsigned YGAP = 50;
+
+    static constexpr unsigned WAVE_SHIFT_Y = 50;
 
     // Gameplay
     static constexpr unsigned MOVE_TICK_MAX_START = 45;
     static constexpr unsigned MOVE_TICK_CHANGE_START = 5;
 
     // Chance of each Invader shooting: 1/SHOT_CHANCE
-    static constexpr int SHOT_CHANCE_START = 2000;
+    static constexpr int SHOT_CHANCE_START = 1500;
 
     unsigned SHIELD_LINE;
 
@@ -101,10 +103,14 @@ public:
     ~InvaderFormation();
     Lasers& getLasers(){ return this->lasers; }
     InvaderVector2D& getInvaders(){ return this->invaders; }
+    unsigned getTotal() const { return this->COLUMNS * this->ROWS; }
+    unsigned getNumKilled() const { return this->num_killed; }
+
+    void reset(unsigned wave_on = 0);
 
     void update(PlayerLaser &laser, unsigned &game_score);
 
-    void draw();
+    void draw(int amount = -1);
     void drawLasers();
 
     void setShieldLine(const unsigned shield_line);

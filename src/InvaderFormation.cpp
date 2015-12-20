@@ -2,6 +2,23 @@
 #include "../inc/misc.hpp"
 #include "../inc/InvaderFormation.hpp"
 
+void InvaderFormation::reset(unsigned wave_on)
+{
+    this->move_tick = 0;
+    this->move_tick_max = MOVE_TICK_MAX_START;
+    this->move_tick_change = MOVE_TICK_CHANGE_START;
+    this->step_on = 1;
+    this->num_killed = 0;
+    this->has_hit_edge = false;
+    this->shot_chance = this->SHOT_CHANCE_START;
+
+    for (unsigned i = 0; i < this->invaders.size(); ++i)
+    {
+        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
+            this->invaders[i][j]->reset(this->STARTX + (j * this->XGAP), (this->STARTY + (wave_on * this->WAVE_SHIFT_Y)) + (i * this->YGAP));
+    }
+}
+
 void InvaderFormation::incDeathTick()
 {
     for (auto& invader_row : this->invaders)
@@ -249,7 +266,6 @@ void InvaderFormation::removeLasers()
 void InvaderFormation::drawLasers()
 {
     for(auto& laser : this->lasers)
-        //this->window.draw(laser->getSprite());
         laser->draw(this->window);
 }
 
@@ -278,11 +294,7 @@ InvaderFormation::InvaderFormation(sf::RenderWindow &window, Textures &textures,
     this->invaders.push_back(large_invaders1);
     this->invaders.push_back(large_invaders2);
 
-    for (unsigned i = 0; i < this->invaders.size(); ++i)
-    {
-        for (unsigned j = 0; j < this->invaders[i].size(); ++j)
-            this->invaders[i][j]->getSprite().setPosition(this->STARTX + (j * this->XGAP), this->STARTY + (i * this->YGAP));
-    }
+    this->reset(); 
 }
 
 InvaderFormation::~InvaderFormation()
@@ -307,14 +319,24 @@ void InvaderFormation::update(PlayerLaser &laser, unsigned &game_score)
     this->updateLasers();
 }
 
-void InvaderFormation::draw()
+void InvaderFormation::draw(int amount)
 {
-    for (auto& invader_row : this->invaders)
+    //for (auto& invader_row : this->invaders)
+    // Draw rows from the bottom up
+    for (auto iter = this->invaders.end() - 1; iter != this->invaders.begin() - 1; --iter)
     {
-        for (auto& invader : invader_row)
+        for (auto& invader : *iter)
         {
             if (!invader->isDead() || (invader->isDead() && invader->isExploding()))
+            {
                 this->window.draw(invader->getSprite());
+                --amount;
+
+                // The default for amount is -1, so if left at default,
+                // this will never get ran, which means all Invaders will be drawn.
+                if (amount == 0)
+                    return;
+            }
         }
     }
 }

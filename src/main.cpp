@@ -9,6 +9,7 @@
 int main()
 {
     unsigned game_score = 0;
+    unsigned wave_on = 0;
 
     srand(time(0));
 
@@ -41,7 +42,7 @@ int main()
     Earth earth(Globals::SCREEN_WIDTH);
 
     UFO ufo(textures, ufo_move_snd, ufo_killed_snd);
-    
+
     InvaderFormation invaders(window, textures, earth, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
 
     ShieldWall shields(window, textures, Globals::SCREEN_WIDTH);
@@ -49,6 +50,7 @@ int main()
     invaders.setShieldLine(SHIELD_LINE);
 
     CoreCannon cannon(textures, player_killed_snd, 100);
+
     
     PlayerLaser player_laser(shoot_snd);
 
@@ -61,7 +63,7 @@ int main()
     while (window.isOpen())
     {
         Game::handle_events(window, ufo);
-        Game::update_objects(cannon, player_laser, ufo, invaders, shields, lives_disp, game_score);
+        Game::update_objects(cannon, player_laser, earth, ufo, invaders, shields, lives_disp, game_score, wave_on);
         Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth);
         Game::updateFPS(window, fps_clock, fps_timer);
     }

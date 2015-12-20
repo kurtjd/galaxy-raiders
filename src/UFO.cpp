@@ -11,20 +11,9 @@ bool UFO::toAppearOrNah()
 
 void UFO::appear()
 {
-    this->death_tick = this->DEATH_TICK_MAX;
-    this->score_tick = this->SCORE_TICK_MAX;
-    this->exploding = false;
-    this->show_score = false;
+    this->reset();
     this->on_screen = true;
-
-    // Have to redo this every time because when killed, its texture changes.
-    this->sprite.setTexture(this->ufo_txtr, true);
     this->sprite.setPosition(0 + 10, this->Y);
-
-    // The image is a little big so shrink it.
-    this->sprite.setScale(this->SCALE, this->SCALE);
-    this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().width / 2);
-
     this->move_sound.play(true);
 }
 
@@ -33,11 +22,7 @@ void UFO::move()
     this->sprite.move(this->SPEED, 0);
 
     if (this->sprite.getPosition().x > Globals::SCREEN_WIDTH)
-    {
-        this->on_screen = false;
-        this->sprite.setPosition(999, 999);
-        this->move_sound.stop();
-    }
+        this->reset();
 }
 
 void UFO::handleHit(PlayerLaser &laser, unsigned &game_score)
@@ -80,14 +65,29 @@ void UFO::incScoreTick()
 {
     --this->score_tick;
     if (this->score_tick <= 0)
-    {
-        this->on_screen = false;
-        this->sprite.setPosition(999, 999);
-    }
+        this->reset();
 }
 
 UFO::UFO(Textures &textures, SoundFx &ufo_move_snd, SoundFx &ufo_killed_snd): SCORES({50, 100, 150}), ufo_txtr(textures.UFO), explode_txtr(textures.INVADER_DEATH), on_screen(false), exploding(false), show_score(false), death_tick(DEATH_TICK_MAX), score_tick(SCORE_TICK_MAX), move_sound(ufo_move_snd), killed_sound(ufo_killed_snd)
 {
+}
+
+void UFO::reset()
+{
+    this->on_screen = false;
+    this->exploding = false;
+    this->show_score = false;
+    this->death_tick = this->DEATH_TICK_MAX;
+    this->score_tick = this->SCORE_TICK_MAX;
+    this->move_sound.stop();
+    this->killed_sound.stop();
+    this->sprite.setPosition(999, 999);
+    
+    this->sprite.setTexture(this->ufo_txtr, true);
+
+    // The image is a little big so shrink it.
+    this->sprite.setScale(this->SCALE, this->SCALE);
+    this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().width / 2);
 }
 
 void UFO::update(PlayerLaser &laser, unsigned &game_score)

@@ -9,6 +9,7 @@ class Earth
 {
 private:
     static constexpr unsigned HEIGHT = 2;
+    const unsigned WIDTH;
     static constexpr unsigned X = 0;
     static constexpr unsigned Y = 680;
     static constexpr unsigned SPLASH_DMG = 5;
@@ -20,6 +21,8 @@ private:
 public:
     Earth(const unsigned screenw);
     const sf::Sprite& getSprite() const { return this->sprite; }
+
+    void reset();
 
     void destroy(const unsigned x);
 

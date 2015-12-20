@@ -29,12 +29,12 @@ private:
     unsigned frame_tick;
 
     void flipFrame();
-    void reset();
 
 public:
     CoreCannon(Textures &textures, SoundFx &killed_sound, const int startx);
     bool isHit() const { return this->hit; }
 
+    void reset();
     void move(const int dir);
     const sf::Sprite& getSprite() const { return this->sprite; }
     unsigned getX() const { return this->sprite.getPosition().x; }

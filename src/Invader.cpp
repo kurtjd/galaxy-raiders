@@ -1,5 +1,17 @@
 #include "../inc/Invader.hpp"
 
+void Invader::reset(const unsigned x, const unsigned y)
+{
+    this->move_dir = 1;
+    this->is_dead = false;
+    this->frame_on = 1;
+    this->death_tick = 0;
+
+    this->sprite.setTexture(*(this->frame1_txtr), true);
+    this->sprite.setColor(sf::Color::White); // In case it was turned green in previous wave.
+    this->sprite.setPosition(x, y);
+}
+
 void Invader::flipFrame()
 {
     if (this->frame_on == 1)

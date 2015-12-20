@@ -17,10 +17,13 @@ private:
 
     // Image made from texture for pixel collision
     sf::Image img;
+    Textures &textures;
 
 public:
     Shield(Textures &textures, const int xpos, const int ypos);
     sf::Sprite& getSprite(){ return this->sprite; }
+
+    void reset();
 
     // Handles for collisions with lasers
     void handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers);

@@ -34,6 +34,7 @@ private:
 
     unsigned death_tick; // Keep track of how long death sprite has shown
 
+
     // Cycle through animation
     void flipFrame();
 
@@ -43,6 +44,8 @@ public:
     unsigned getScoreValue() const { return this->score_value; }
     bool isDead() const { return this->is_dead; }
     bool isExploding() const { return this->is_exploding; }
+
+    void reset(const unsigned x, const unsigned y);
     
     // Called when Invader is hit by bullet
     void die();

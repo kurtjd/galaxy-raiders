@@ -15,6 +15,12 @@ ShieldWall::~ShieldWall()
     this->shields.clear();
 }
 
+void ShieldWall::reset()
+{
+    for (auto& shield : shields)
+        shield->reset();
+}
+
 void ShieldWall::handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders)
 {
     for (auto& shield : shields)

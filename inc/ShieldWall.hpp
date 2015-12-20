@@ -26,6 +26,8 @@ public:
     ShieldWall(sf::RenderWindow &window, Textures &textures, const unsigned screenw);
     ~ShieldWall();
 
+    void reset();
+
     unsigned getY() const { return this->Y; }
 
     void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders);
