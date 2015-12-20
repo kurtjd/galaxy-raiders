@@ -23,7 +23,7 @@ namespace Game
     void real_time_key(CoreCannon &cannon, PlayerLaser &player_laser);
 
     // Update all game objects
-    void update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, unsigned &game_score);
+    void update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, LivesDisplay &lives_disp, unsigned &game_score);
 
     // A wrapper for drawing player laser to check if it is shooting
     void draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser);
@@ -38,6 +38,7 @@ namespace Game
     void updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_timer);
 
     void pause(UFO &ufo);
+    void handle_player_kill(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp);
 
 };
 

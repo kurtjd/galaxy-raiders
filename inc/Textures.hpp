@@ -29,6 +29,8 @@ public:
     sf::Texture SHIELD;
     
     sf::Texture CORECANNON;
+    sf::Texture CORECANNON_DEATH_1;
+    sf::Texture CORECANNON_DEATH_2;
 
     // Actually loads the textures into memory for use by sprites.
     Textures();

@@ -1,10 +1,11 @@
+#include <sstream>
 #include "../inc/LivesDisplay.hpp"
 #include "../inc/game.hpp"
 
 LivesDisplay::LivesDisplay(Textures &textures): lives(LIVES_START)
 {
-    // Subtract 1 from LIVES_START because the last life is the player's cannon.
-    for (unsigned i = 0; i < (this->LIVES_START - 1); ++i)
+    // Subtract 1 from lives because the last life is the player's cannon.
+    for (unsigned i = 0; i < (this->lives - 1); ++i)
     {
         sf::Sprite *sprite = new sf::Sprite;
         sprite->setTexture(textures.CORECANNON);
@@ -20,10 +21,26 @@ LivesDisplay::~LivesDisplay()
     this->cannons.clear();
 }
 
+void LivesDisplay::removeLife()
+{
+    // Removes the last cannon from the vector.
+    if (this->lives > 1)
+    {
+        delete this->cannons[this->lives - 2];
+        this->cannons.pop_back();
+    }
+
+    if (this->lives > 0)
+        --this->lives;
+}
+
 void LivesDisplay::draw(sf::RenderWindow &window)
 {
+    std::ostringstream lives_left;
+    lives_left << this->lives;
+
     // Draw number of lives left.
-    Game::draw_text(window, "3", this->X + 30, this->Y + 2); 
+    Game::draw_text(window, lives_left.str(), this->X + 30, this->Y + 2); 
 
     Game::draw_text(window, "C R E D I T    0 0", this->X + 550, this->Y + 2); 
 

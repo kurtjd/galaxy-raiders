@@ -38,5 +38,9 @@ Textures::Textures()
     this->SHIELD.loadFromImage(this->spritesheet, SHIELD_RECT);
 
     sf::IntRect CORECANNON_RECT(492, 40, 48, 30);
+    sf::IntRect CORECANNON_DEATH_1_RECT(421, 104, 54, 29);
+    sf::IntRect CORECANNON_DEATH_2_RECT(485, 104, 55, 29);
     this->CORECANNON.loadFromImage(this->spritesheet, CORECANNON_RECT);
+    this->CORECANNON_DEATH_1.loadFromImage(this->spritesheet, CORECANNON_DEATH_1_RECT);
+    this->CORECANNON_DEATH_2.loadFromImage(this->spritesheet, CORECANNON_DEATH_2_RECT);
 }

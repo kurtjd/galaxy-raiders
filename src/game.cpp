@@ -41,7 +41,7 @@ void Game::real_time_key(CoreCannon &cannon, PlayerLaser &player_laser)
         cannon.move(-1);
 
     // Shoot laser
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !player_laser.isShooting())
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !cannon.isHit() && !player_laser.isShooting())
     {
         sf::Vector2f cannonpos = cannon.getSprite().getPosition();
         player_laser.shoot(cannonpos.x, cannonpos.y);
@@ -54,17 +54,22 @@ void Game::draw_player_laser(sf::RenderWindow &window, PlayerLaser &laser)
         window.draw(laser.getShape());
 }
 
-void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, unsigned &game_score)
+void Game::update_objects(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, InvaderFormation &invaders, ShieldWall &shields, LivesDisplay &lives_disp, unsigned &game_score)
 {
     // Don't do anything if paused.
     if (Globals::GAME_STATE == Globals::States::PAUSED)
         return;
 
-    Game::real_time_key(cannon, player_laser);
-    player_laser.move();
-    ufo.update(player_laser, game_score);
-    invaders.update(player_laser, game_score);
-    shields.handleCollisions(player_laser, invaders.getLasers(), invaders);
+    if (Globals::GAME_STATE != Globals::States::PLAYER_KILLED)
+    {
+        Game::real_time_key(cannon, player_laser);
+        player_laser.move();
+        ufo.update(player_laser, game_score);
+        invaders.update(player_laser, game_score);
+        shields.handleCollisions(player_laser, invaders.getLasers(), invaders);
+    }
+
+    cannon.update(invaders, player_laser, ufo, lives_disp);
 }
 
 void Game::draw_text(sf::RenderWindow &window, const std::string msg, const unsigned x, const unsigned y, sf::Color color, unsigned size)
@@ -108,10 +113,23 @@ void Game::updateFPS(sf::Window &window, const sf::Clock &fps_clock, float &fps_
 
 void Game::pause(UFO &ufo)
 {
+    // Don't attempt to pause game if player is in middle of death.
+    if (Globals::GAME_STATE == Globals::States::PLAYER_KILLED)
+        return;
+
     if (Globals::GAME_STATE == Globals::States::PAUSED)
         Globals::GAME_STATE = Globals::States::PLAY;
     else
         Globals::GAME_STATE = Globals::States::PAUSED;
 
     ufo.pause();
+}
+
+void Game::handle_player_kill(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp)
+{
+    invaders.removeLasers();
+    player_laser.stop();
+    ufo.pause();
+    lives_disp.removeLife();
+    Globals::GAME_STATE = Globals::States::PLAYER_KILLED;
 }

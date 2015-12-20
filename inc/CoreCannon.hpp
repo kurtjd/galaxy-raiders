@@ -2,24 +2,45 @@
 #define PLAYERcannon_H
 
 #include <SFML/Graphics.hpp>
+#include "SoundFx.hpp"
 #include "Textures.hpp"
+#include "InvaderFormation.hpp"
 
 /* The player's ship. */
 
 class CoreCannon
 {
 private:
-    static constexpr unsigned Y_POS = 623;
-    static constexpr int SPEED = 5; // Movement speed of cannon
+    SoundFx &killed_sound;
 
+    const unsigned START_X;
+    static constexpr unsigned Y = 623;
+
+    static constexpr int SPEED = 5; // Movement speed of cannon
+    static constexpr unsigned DEATH_TICK_MAX = 50;
+    static constexpr unsigned FRAME_TICK_MAX = 3;
+
+    Textures &textures;
     sf::Sprite sprite;
 
+    unsigned frame_on;
+    bool hit;
+    unsigned death_tick;
+    unsigned frame_tick;
+
+    void flipFrame();
+    void reset();
+
 public:
-    CoreCannon(Textures &textures, const int startx);
+    CoreCannon(Textures &textures, SoundFx &killed_sound, const int startx);
+    bool isHit() const { return this->hit; }
+
     void move(const int dir);
     const sf::Sprite& getSprite() const { return this->sprite; }
     unsigned getX() const { return this->sprite.getPosition().x; }
     unsigned getWidth() const { return this->getSprite().getGlobalBounds().width; }
+    void handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp);
+    void update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp);
 
 };
 

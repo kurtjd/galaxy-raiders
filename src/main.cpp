@@ -24,6 +24,8 @@ int main()
     SoundFx shoot_snd(Globals::SOUNDS_PATH + "shoot_laser.wav");
     shoot_snd.setVolume(70);
 
+    SoundFx player_killed_snd(Globals::SOUNDS_PATH + "player_death.wav");
+
     SoundFx ufo_move_snd(Globals::SOUNDS_PATH + "ufo_move.wav");
     SoundFx ufo_killed_snd(Globals::SOUNDS_PATH + "ufo_killed.wav");
     ufo_move_snd.setVolume(50);
@@ -46,7 +48,7 @@ int main()
     const unsigned SHIELD_LINE = shields.getY() - 20; //-20 because shield y doesn't start at top of shield.
     invaders.setShieldLine(SHIELD_LINE);
 
-    CoreCannon cannon(textures, Globals::SCREEN_WIDTH / 2);
+    CoreCannon cannon(textures, player_killed_snd, 100);
     
     PlayerLaser player_laser(shoot_snd);
 
@@ -59,7 +61,7 @@ int main()
     while (window.isOpen())
     {
         Game::handle_events(window, ufo);
-        Game::update_objects(cannon, player_laser, ufo, invaders, shields, game_score);
+        Game::update_objects(cannon, player_laser, ufo, invaders, shields, lives_disp, game_score);
         Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth);
         Game::updateFPS(window, fps_clock, fps_timer);
     }

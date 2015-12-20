@@ -22,9 +22,9 @@ private:
 public:
     LivesDisplay(Textures &textures);
     ~LivesDisplay();
-
     unsigned getLives() const { return this->lives; }
 
+    void removeLife();
     void draw(sf::RenderWindow &window);
 
 };
