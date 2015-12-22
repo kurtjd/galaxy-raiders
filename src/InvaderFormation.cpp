@@ -12,10 +12,12 @@ void InvaderFormation::reset(unsigned wave_on)
     this->has_hit_edge = false;
     this->shot_chance = this->SHOT_CHANCE_START;
 
+    this->removeLasers();
+
     for (unsigned i = 0; i < this->invaders.size(); ++i)
     {
         for (unsigned j = 0; j < this->invaders[i].size(); ++j)
-            this->invaders[i][j]->reset(this->STARTX + (j * this->XGAP), (this->STARTY + (wave_on * this->WAVE_SHIFT_Y)) + (i * this->YGAP));
+            this->invaders[i][j]->reset(this->STARTX + (j * this->XGAP), (this->STARTY + (wave_on * Invader::getHeight())) + (i * this->YGAP));
     }
 }
 

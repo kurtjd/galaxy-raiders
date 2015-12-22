@@ -18,11 +18,15 @@ private:
 
     //Current number of lives left.
     unsigned lives;
+    
+    Textures &textures;
 
 public:
     LivesDisplay(Textures &textures);
     ~LivesDisplay();
     unsigned getLives() const { return this->lives; }
+
+    void reset();
 
     void removeLife();
     void draw(sf::RenderWindow &window);

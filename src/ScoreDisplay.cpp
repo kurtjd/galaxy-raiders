@@ -2,7 +2,7 @@
 #include "../inc/ScoreDisplay.hpp"
 #include "../inc/game.hpp"
 
-ScoreDisplay::ScoreDisplay(const unsigned &score): game_score(score)
+ScoreDisplay::ScoreDisplay(unsigned &score): game_score(score)
 {
 
 }

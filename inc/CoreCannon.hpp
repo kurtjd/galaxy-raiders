@@ -39,7 +39,7 @@ public:
     const sf::Sprite& getSprite() const { return this->sprite; }
     unsigned getX() const { return this->sprite.getPosition().x; }
     unsigned getWidth() const { return this->getSprite().getGlobalBounds().width; }
-    void handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp);
+    void handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo);
     void update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp);
 
 };

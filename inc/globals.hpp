@@ -12,6 +12,7 @@ namespace Globals
     // The different states the game can be in.
     enum States
     {
+        MENU, // The opening game menu
         PLAY, // The player is actually playing the game
         PAUSED, // Player has paused the game
         WAVE_SETUP, // When a new wave begins, this draws the Invaders fancyily

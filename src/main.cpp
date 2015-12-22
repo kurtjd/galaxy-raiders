@@ -51,7 +51,6 @@ int main()
 
     CoreCannon cannon(textures, player_killed_snd, 100);
 
-    
     PlayerLaser player_laser(shoot_snd);
 
     ScoreDisplay score_disp(game_score);
@@ -64,7 +63,7 @@ int main()
     {
         Game::handle_events(window, ufo);
         Game::update_objects(cannon, player_laser, earth, ufo, invaders, shields, lives_disp, game_score, wave_on);
-        Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth);
+        Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth, wave_on);
         Game::updateFPS(window, fps_clock, fps_timer);
     }
 }

@@ -2,16 +2,28 @@
 #include "../inc/LivesDisplay.hpp"
 #include "../inc/game.hpp"
 
-LivesDisplay::LivesDisplay(Textures &textures): lives(LIVES_START)
+void LivesDisplay::reset()
 {
+    // First clear
+    for (auto& cannon : this->cannons)
+        delete cannon;
+    this->cannons.clear();
+
+    this->lives = this->LIVES_START;
+
     // Subtract 1 from lives because the last life is the player's cannon.
     for (unsigned i = 0; i < (this->lives - 1); ++i)
     {
         sf::Sprite *sprite = new sf::Sprite;
-        sprite->setTexture(textures.CORECANNON);
+        sprite->setTexture(this->textures.CORECANNON);
         sprite->setPosition(this->X + 75 + (i * 55), this->Y);
         this->cannons.push_back(sprite);
     }
+}
+
+LivesDisplay::LivesDisplay(Textures &textures): lives(LIVES_START), textures(textures)
+{
+    this->reset(); 
 }
 
 LivesDisplay::~LivesDisplay()
@@ -30,8 +42,12 @@ void LivesDisplay::removeLife()
         this->cannons.pop_back();
     }
 
+    // If player is out of lives it's game over!
     if (this->lives > 0)
         --this->lives;
+
+    if (lives == 0)
+        Globals::GAME_STATE = Globals::States::GAME_OVER;
 }
 
 void LivesDisplay::draw(sf::RenderWindow &window)

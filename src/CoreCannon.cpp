@@ -29,7 +29,7 @@ void CoreCannon::reset()
     // Put the point of origin in center of cannon.
     this->sprite.setOrigin(this->sprite.getTexture()->getSize().x / 2, this->sprite.getTexture()->getSize().y / 2);
 
-    if (Globals::GAME_STATE != Globals::States::WAVE_SETUP)
+    if (Globals::GAME_STATE != Globals::States::WAVE_SETUP && Globals::GAME_STATE != Globals::States::GAME_OVER && Globals::GAME_STATE != Globals::States::MENU)
         Globals::GAME_STATE = Globals::States::PLAY;
 }
 
@@ -46,7 +46,7 @@ void CoreCannon::move(const int dir)
         this->sprite.move(this->SPEED * dir, 0);
 }
 
-void CoreCannon::handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp)
+void CoreCannon::handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo)
 {
     for (auto& laser : invaders.getLasers())
     {
@@ -56,7 +56,7 @@ void CoreCannon::handleHit(InvaderFormation &invaders, PlayerLaser &player_laser
             this->sprite.setTexture(this->textures.CORECANNON_DEATH_1, true);
             this->killed_sound.play();
 
-            Game::handle_player_kill(invaders, player_laser, ufo, lives_disp);
+            Game::handle_player_kill(invaders, player_laser, ufo);
             return;
         }
     }
@@ -64,12 +64,13 @@ void CoreCannon::handleHit(InvaderFormation &invaders, PlayerLaser &player_laser
 
 void CoreCannon::update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp)
 {
-    this->handleHit(invaders, player_laser, ufo, lives_disp);
+    this->handleHit(invaders, player_laser, ufo);
     if (this->hit)
     {
         --this->death_tick;
         if (this->death_tick <= 0)
         {
+            lives_disp.removeLife();
             ufo.pause(); // Unpauses the UFO... (yeah I know)
             this->reset();
         }

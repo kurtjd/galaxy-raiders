@@ -10,12 +10,13 @@ private:
     static constexpr unsigned Y = 0;
 
     // Reference to the game score, which is a variable declared in main().
-    const unsigned &game_score;
+    unsigned &game_score;
 
 public:
-    ScoreDisplay(const unsigned &score);
+    ScoreDisplay(unsigned &score);
 
     void draw(sf::RenderWindow &window);
+    void reset() { this->game_score = 0; }
 
 };
 

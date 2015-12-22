@@ -41,6 +41,7 @@ private:
 public:
     Invader(Textures &textures, const InvaderType type);
     sf::Sprite& getSprite() { return this->sprite; }
+    static unsigned getHeight() { return Invader::HEIGHT; }
     unsigned getScoreValue() const { return this->score_value; }
     bool isDead() const { return this->is_dead; }
     bool isExploding() const { return this->is_exploding; }
