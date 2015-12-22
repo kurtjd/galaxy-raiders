@@ -175,10 +175,13 @@ void Game::handle_player_kill(InvaderFormation &invaders, PlayerLaser &player_la
     Globals::GAME_STATE = Globals::States::PLAYER_KILLED;
 }
 
-void Game::setup_wave(InvaderFormation &invaders, PlayerLaser &player_laser, CoreCannon &cannon, ShieldWall &shields, Earth &earth, UFO &ufo, unsigned &wave_on)
+void Game::setup_wave(InvaderFormation &invaders, PlayerLaser &player_laser, CoreCannon &cannon, ShieldWall &shields, Earth &earth, UFO &ufo, unsigned &wave_on, bool start_game)
 {
     Globals::GAME_STATE = Globals::States::WAVE_SETUP;
-    ++wave_on;
+
+    // If the game just started, don't try to increase the wave number.
+    if (!start_game)
+        ++wave_on;
 
     invaders.reset(wave_on);
     player_laser.stop();
@@ -262,6 +265,5 @@ void Game::draw_menu(sf::RenderWindow &window)
 
 void Game::play_game(InvaderFormation &invaders, PlayerLaser &player_laser, CoreCannon &cannon, ShieldWall &shields, Earth &earth, UFO &ufo, unsigned &wave_on)
 {
-    // FIX ME so I don't start the game at once wave up.
-    setup_wave(invaders, player_laser, cannon, shields, earth, ufo, wave_on);
+    setup_wave(invaders, player_laser, cannon, shields, earth, ufo, wave_on, true);
 }

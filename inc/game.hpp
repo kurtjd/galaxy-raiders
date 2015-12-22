@@ -41,7 +41,7 @@ namespace Game
 
     void handle_player_kill(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo);
 
-    void setup_wave(InvaderFormation &invaders, PlayerLaser &player_laser, CoreCannon &cannon, ShieldWall &shields, Earth &earth, UFO &ufo, unsigned &wave_on);
+    void setup_wave(InvaderFormation &invaders, PlayerLaser &player_laser, CoreCannon &cannon, ShieldWall &shields, Earth &earth, UFO &ufo, unsigned &wave_on, bool start_game = false);
 
     void draw_wave(InvaderFormation &invaders);
 
