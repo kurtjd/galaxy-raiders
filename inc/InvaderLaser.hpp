@@ -3,6 +3,8 @@
 
 #include <SFML/Graphics.hpp>
 #include "../inc/globals.hpp"
+#include "../inc/Invader.hpp"
+
 
 /* The laser shot by Space Invaders. */
 
@@ -21,8 +23,16 @@ protected:
 
     bool hit; // Whether or not hit something and about to be removed.
 
+    bool will_hurt; // Whether or not the laser will actually hurt the player.
+
+    // The Invader that shot this bullet.
+    Invader &owner;
+
     // Make constructor protected because InvaderLasers should never be instantiated directly.
-    InvaderLaser(const LaserType type, const int speed, const unsigned shield_dmg, const unsigned shield_line): TYPE(type), SPEED(speed), SHIELD_DMG(shield_dmg), SHIELD_LINE(shield_line), hit(false) {}
+    InvaderLaser(const LaserType type, const int speed, const unsigned shield_dmg, const unsigned shield_line, const bool will_hurt, Invader &owner): TYPE(type), SPEED(speed), SHIELD_DMG(shield_dmg), SHIELD_LINE(shield_line), hit(false), will_hurt(will_hurt), owner(owner)
+    {
+        owner.incLasersOnScreen();
+    }
 
 public:
     /* Note to future self: 
@@ -30,16 +40,23 @@ public:
      * This ensures derived destructor is called first.
      * Though in this case subclasses don't implement their own destructors.
      * Compiler still complains without it. */
-    virtual ~InvaderLaser(){}
+    virtual ~InvaderLaser()
+    {
+        this->owner.decLasersOnScreen();
+    }
 
     /* Methods whose behavior are the same for both types of lasers. */
     bool isHit() const { return this->hit; }
+    bool willHurt() const { return this->will_hurt; }
+    void setHit() { this->hit = true; }
     unsigned getDmg() const { return this->SHIELD_DMG; }
+    LaserType getType() const { return this->TYPE; }
     void remove(){ this->hit = true; }
 
     /* The below are all pure virtual methods and MUST be implemented by subclasses.
      * Their behavior differs depending on the type of laser. */
     virtual unsigned getX() const = 0;
+    virtual unsigned getY() const = 0;
     virtual void move() = 0;
     virtual void draw(sf::RenderWindow &window) = 0;
 

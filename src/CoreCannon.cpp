@@ -46,25 +46,30 @@ void CoreCannon::move(const int dir)
         this->sprite.move(this->SPEED * dir, 0);
 }
 
-void CoreCannon::handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo)
+void CoreCannon::die(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, Explosions &explosions)
+{
+    this->hit = true;
+    this->sprite.setTexture(this->textures.CORECANNON_DEATH_1, true);
+    this->killed_sound.play();
+
+    Game::handle_player_kill(invaders, player_laser, ufo, explosions);
+}
+
+void CoreCannon::handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, Explosions &explosions)
 {
     for (auto& laser : invaders.getLasers())
     {
-        if (!this->hit && (laser->checkCollide(this->sprite.getGlobalBounds())))
+        if (!this->hit && laser->willHurt() && (laser->checkCollide(this->sprite.getGlobalBounds())))
         {
-            this->hit = true;
-            this->sprite.setTexture(this->textures.CORECANNON_DEATH_1, true);
-            this->killed_sound.play();
-
-            Game::handle_player_kill(invaders, player_laser, ufo);
+            this->die(invaders, player_laser, ufo, explosions);
             return;
         }
     }
 }
 
-void CoreCannon::update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp)
+void CoreCannon::update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp, Explosions &explosions)
 {
-    this->handleHit(invaders, player_laser, ufo);
+    this->handleHit(invaders, player_laser, ufo, explosions);
     if (this->hit)
     {
         --this->death_tick;

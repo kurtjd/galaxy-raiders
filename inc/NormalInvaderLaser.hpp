@@ -24,10 +24,11 @@ private:
     void moveHPart();
 
 public:
-    NormalInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line);
+    NormalInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line, const bool will_hurt, Invader &owner);
     virtual ~NormalInvaderLaser(){}
 
     virtual unsigned getX() const;
+    virtual unsigned getY() const;
     virtual void move();
     virtual void draw(sf::RenderWindow &window);
 

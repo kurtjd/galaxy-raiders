@@ -13,7 +13,7 @@ void Shield::reset()
     this->sprite.setTexture(this->texture);
 }
 
-void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)
+void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers, Explosions &explosions)
 {
     // TODO: Make code DRYer by figuring out a way to not repeat pixel FOR loop.
 
@@ -40,6 +40,7 @@ void Shield::handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers)
 
                     if (pixel.g > 0 && laser->checkCollide(x, y))
                     {
+                        explosions.newExplosion(sf::Color::Green, laser->getX(), laser->getY());
                         laser->remove();
                         this->damageShield(x - xpos, y - ypos, laser->getDmg());
                         break; // Don't need to keep looking after first hit.

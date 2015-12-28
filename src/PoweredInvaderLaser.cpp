@@ -1,6 +1,6 @@
 #include "../inc/PoweredInvaderLaser.hpp"
 
-PoweredInvaderLaser::PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line): InvaderLaser(LaserType::POWERED, 6, 20, shield_line), flip_tick(FLIP_TICK_MAX)
+PoweredInvaderLaser::PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line, const bool will_hurt, Invader &owner): InvaderLaser(LaserType::POWERED, 6, 20, shield_line, will_hurt, owner), flip_tick(FLIP_TICK_MAX)
 {
     this->part1 = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->HEIGHT));
     this->part1.setOrigin(this->WIDTH / 2, this->HEIGHT / 2);
@@ -39,6 +39,11 @@ void PoweredInvaderLaser::flip()
 unsigned PoweredInvaderLaser::getX() const
 {
     return this->part2.getPosition().x;
+}
+
+unsigned PoweredInvaderLaser::getY() const
+{
+    return this->part2.getPosition().y;
 }
 
 void PoweredInvaderLaser::move()

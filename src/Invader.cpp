@@ -4,8 +4,10 @@ void Invader::reset(const unsigned x, const unsigned y)
 {
     this->move_dir = 1;
     this->is_dead = false;
+    this->is_exploding = false;
     this->frame_on = 1;
     this->death_tick = 0;
+    this->lasers_on_screen = 0;
 
     this->sprite.setTexture(*(this->frame1_txtr), true);
     this->sprite.setColor(sf::Color::White); // In case it was turned green in previous wave.
@@ -26,7 +28,7 @@ void Invader::flipFrame()
     }
 }
 
-Invader::Invader(Textures &textures, const InvaderType type): type(type), move_dir(1), is_dead(false), frame_on(1), death_tick(0)
+Invader::Invader(Textures &textures, const InvaderType type): type(type), move_dir(1), is_dead(false), is_exploding(false), frame_on(1), death_tick(0), lasers_on_screen(0)
 {
     // Load different textures and set different score values based on type of Invader
     switch (this->type)

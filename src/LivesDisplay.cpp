@@ -50,6 +50,22 @@ void LivesDisplay::removeLife()
         Globals::GAME_STATE = Globals::States::GAME_OVER;
 }
 
+void LivesDisplay::addLife()
+{
+    sf::Sprite *sprite = new sf::Sprite;
+    sprite->setTexture(this->textures.CORECANNON);
+    sprite->setPosition(this->X + 75 + ((this->lives - 1) * 55), this->Y);
+    this->cannons.push_back(sprite);
+
+    ++this->lives;
+}
+
+void LivesDisplay::setLives(const unsigned num)
+{
+    while (this->lives > num)
+        this->removeLife();
+}
+
 void LivesDisplay::draw(sf::RenderWindow &window)
 {
     std::ostringstream lives_left;

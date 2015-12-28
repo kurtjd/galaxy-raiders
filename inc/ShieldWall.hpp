@@ -30,7 +30,7 @@ public:
 
     unsigned getY() const { return this->Y; }
 
-    void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders);
+    void handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders, Explosions &explosions);
 
     void draw();
 

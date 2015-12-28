@@ -21,11 +21,11 @@ void ShieldWall::reset()
         shield->reset();
 }
 
-void ShieldWall::handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders)
+void ShieldWall::handleCollisions(PlayerLaser &laser, Lasers &invader_lasers, InvaderFormation &invaders, Explosions &explosions)
 {
     for (auto& shield : shields)
     {
-        shield->handleCollide(laser, invader_lasers);
+        shield->handleCollide(laser, invader_lasers, explosions);
         shield->handleCollideInvaders(invaders);
     }
 }

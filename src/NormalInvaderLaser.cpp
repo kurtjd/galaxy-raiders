@@ -16,7 +16,7 @@ void NormalInvaderLaser::moveHPart()
         this->h_part.move(0, this->SPEED * this->h_part_moverate);
 }
 
-NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line): InvaderLaser(LaserType::NORMAL, 5, 15, shield_line), h_part_movedir(1)
+NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line, const bool will_hurt, Invader &owner): InvaderLaser(LaserType::NORMAL, 5, 15, shield_line, will_hurt, owner), h_part_movedir(1)
 {
     this->v_part = sf::RectangleShape(sf::Vector2f(this->THICKNESS, this->HEIGHT));
     this->h_part = sf::RectangleShape(sf::Vector2f(this->WIDTH, this->THICKNESS));
@@ -31,6 +31,11 @@ NormalInvaderLaser::NormalInvaderLaser(const unsigned x, const unsigned y, const
 unsigned NormalInvaderLaser::getX() const
 {
     return this->v_part.getPosition().x;
+}
+
+unsigned NormalInvaderLaser::getY() const
+{
+    return this->v_part.getPosition().y;
 }
 
 void NormalInvaderLaser::move()

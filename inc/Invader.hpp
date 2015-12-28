@@ -34,6 +34,8 @@ private:
 
     unsigned death_tick; // Keep track of how long death sprite has shown
 
+    unsigned lasers_on_screen;
+
 
     // Cycle through animation
     void flipFrame();
@@ -45,6 +47,8 @@ public:
     unsigned getScoreValue() const { return this->score_value; }
     bool isDead() const { return this->is_dead; }
     bool isExploding() const { return this->is_exploding; }
+    int getMoveDir() const { return this->move_dir; }
+    unsigned getLasersOnScreen() const { return this->lasers_on_screen; }
 
     void reset(const unsigned x, const unsigned y);
     
@@ -65,6 +69,9 @@ public:
     
     // Increment death tick and hide once hit max
     void incDeathTick();
+
+    void incLasersOnScreen() { ++this->lasers_on_screen; }
+    void decLasersOnScreen() { --this->lasers_on_screen; }
 
 };
 

@@ -24,10 +24,11 @@ private:
     void flip();
 
 public:
-    PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line);
+    PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line, const bool will_hurt, Invader &owner);
     virtual ~PoweredInvaderLaser(){}
 
     virtual unsigned getX() const;
+    virtual unsigned getY() const;
     virtual void move();
     virtual void draw(sf::RenderWindow &window);
 

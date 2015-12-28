@@ -35,6 +35,7 @@ private:
     bool show_score;
     unsigned death_tick;
     unsigned score_tick;
+    unsigned shots_fired;
 
     SoundFx &move_sound;
     SoundFx &killed_sound;
@@ -49,12 +50,15 @@ private:
 public:
     UFO(Textures &textures, SoundFx &ufo_move_snd, SoundFx &ufo_killed_snd);
 
+    void reposition();
     void reset();
 
     void update(PlayerLaser &laser, unsigned &game_score);
     void draw(sf::RenderWindow &window);
 
     void pause();
+
+    void incShotsFired();
 
 };
 

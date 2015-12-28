@@ -11,7 +11,7 @@ bool UFO::toAppearOrNah()
 
 void UFO::appear()
 {
-    this->reset();
+    this->reposition();
     this->on_screen = true;
     this->sprite.setPosition(0 + 10, this->Y);
     this->move_sound.play(true);
@@ -22,17 +22,25 @@ void UFO::move()
     this->sprite.move(this->SPEED, 0);
 
     if (this->sprite.getPosition().x > Globals::SCREEN_WIDTH)
-        this->reset();
+        this->reposition();
 }
 
 void UFO::handleHit(PlayerLaser &laser, unsigned &game_score)
 {
     if (laser.isShooting() && this->sprite.getGlobalBounds().intersects(laser.getShape().getGlobalBounds()))
     {
-        // Pick a random score to add to main score.
-        unsigned score = this->SCORES[Misc::random(0, this->SCORES.size() - 1)];
-        game_score += score;
+        unsigned score;
 
+        // First check for epic hit which is worth 300.
+        // This is true on the 23rd shot, and on every 15 shots thereafter.
+        if (this->shots_fired == 23 || (this->shots_fired > 23 && (this->shots_fired - 23) % 15 == 0))
+            score = 300;
+
+        // If not, pick a random score to add to main score.
+        else
+            score = this->SCORES[Misc::random(0, this->SCORES.size() - 1)];
+
+        game_score += score;
         std::ostringstream score_txt;
         score_txt << score;
         this->tmp_score_txt = score_txt.str();
@@ -65,14 +73,14 @@ void UFO::incScoreTick()
 {
     --this->score_tick;
     if (this->score_tick <= 0)
-        this->reset();
+        this->reposition();
 }
 
-UFO::UFO(Textures &textures, SoundFx &ufo_move_snd, SoundFx &ufo_killed_snd): SCORES({50, 100, 150}), ufo_txtr(textures.UFO), explode_txtr(textures.INVADER_DEATH), on_screen(false), exploding(false), show_score(false), death_tick(DEATH_TICK_MAX), score_tick(SCORE_TICK_MAX), move_sound(ufo_move_snd), killed_sound(ufo_killed_snd)
+UFO::UFO(Textures &textures, SoundFx &ufo_move_snd, SoundFx &ufo_killed_snd): SCORES({50, 100, 150}), ufo_txtr(textures.UFO), explode_txtr(textures.INVADER_DEATH), on_screen(false), exploding(false), show_score(false), death_tick(DEATH_TICK_MAX), score_tick(SCORE_TICK_MAX), shots_fired(0), move_sound(ufo_move_snd), killed_sound(ufo_killed_snd)
 {
 }
 
-void UFO::reset()
+void UFO::reposition()
 {
     this->on_screen = false;
     this->exploding = false;
@@ -88,6 +96,12 @@ void UFO::reset()
     // The image is a little big so shrink it.
     this->sprite.setScale(this->SCALE, this->SCALE);
     this->sprite.setOrigin(this->sprite.getGlobalBounds().width / 2, this->sprite.getGlobalBounds().width / 2);
+}
+
+void UFO::reset()
+{
+    this->shots_fired = 0;
+    this->reposition();
 }
 
 void UFO::update(PlayerLaser &laser, unsigned &game_score)
@@ -140,4 +154,9 @@ void UFO::pause()
         else if (this->killed_sound.getStatus() == sf::SoundSource::Status::Paused)
             this->killed_sound.play();
     }
+}
+
+void UFO::incShotsFired()
+{
+    ++this->shots_fired;
 }

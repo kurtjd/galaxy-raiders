@@ -26,7 +26,7 @@ public:
     void reset();
 
     // Handles for collisions with lasers
-    void handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers);
+    void handleCollide(PlayerLaser &player_laser, Lasers &invader_lasers, Explosions &explosions);
 
     // Invaders destroy the shield as they pass over it.
     void handleCollideInvaders(InvaderFormation &invaders);

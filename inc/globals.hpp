@@ -30,6 +30,8 @@ namespace Globals
     const std::string SPRITES_PATH = "sprites/";
     const std::string FONTS_PATH = "fonts/";
 
+    const std::string HS_FILE = "misc/definitely_NOT_highscore.sav";
+
     extern States GAME_STATE;
 };
 

@@ -1,6 +1,7 @@
 #include "../inc/globals.hpp"
 #include "../inc/misc.hpp"
 #include "../inc/InvaderFormation.hpp"
+#include "../inc/CoreCannon.hpp"
 
 void InvaderFormation::reset(unsigned wave_on)
 {
@@ -77,29 +78,40 @@ bool InvaderFormation::toShootOrNah() const
     return Misc::random(1, this->shot_chance) == 1;
 }
 
-void InvaderFormation::shootLaser(unsigned x, unsigned y)
+void InvaderFormation::shootLaser(unsigned x, unsigned y, const bool will_hurt, Invader &owner)
 {
-    InvaderLaser *laser;
-    
     // Normal lasers have a slightly greater chance of being created.
     unsigned dice_roll = Misc::random(1, 10);
     if (dice_roll <= 6)
-        laser = new NormalInvaderLaser(x, y, this->SHIELD_LINE);
+        this->lasers.push_back(new NormalInvaderLaser(x, y, this->SHIELD_LINE, will_hurt, owner));
     else
-        laser = new PoweredInvaderLaser(x, y, this->SHIELD_LINE);
-
-    this->lasers.push_back(laser);
+        this->lasers.push_back(new PoweredInvaderLaser(x, y, this->SHIELD_LINE, will_hurt, owner));
 }
 
-void InvaderFormation::handleCollisions()
+void InvaderFormation::handleCollisions(Explosions &explosions, PlayerLaser &player_laser)
 {
     for (unsigned i = 0; i < this->lasers.size(); ++i)
     {
         InvaderLaser *laser = this->lasers[i];
+
+        // Check collision with earth
         if (laser->checkCollide(earth.getSprite().getGlobalBounds()))
         {
             earth.destroy(laser->getX());
-            this->lasers.erase(this->lasers.begin() + i);
+            laser->setHit();
+            explosions.newExplosion(sf::Color::Green, laser->getX(), laser->getY());
+        }
+
+        // Check collision with player laser
+        if (laser->checkCollide(player_laser.getShape().getGlobalBounds()))
+        {
+            // Player laser always gets destroyed.
+            explosions.newExplosion(sf::Color::White, laser->getX(), laser->getY());
+            player_laser.stop();
+
+            // Normal lasers have a 1 in 3 chance of being destroyed if hit by player laser.
+            if (laser->getType() == InvaderLaser::LaserType::NORMAL && (Misc::random(1, 3) == 2))
+                laser->setHit();
         }
     }
 }
@@ -112,8 +124,8 @@ void InvaderFormation::shootLasers()
         {
             Invader *invader = this->invaders[i][j];
 
-            // Only shoot if Invader is alive and hits the jackpot.
-            if (!invader->isDead() && this->toShootOrNah())
+            // Only shoot if Invader is alive and hits the jackpot, and has less than 3 lasers on screen already.
+            if (!invader->isDead() && invader->getLasersOnScreen() < 3 && this->toShootOrNah())
             {
                 bool shoot = true;
 
@@ -132,16 +144,17 @@ void InvaderFormation::shootLasers()
                 if (shoot)
                 {
                     sf::Vector2f invader_pos = invader->getSprite().getPosition();
-                    this->shootLaser(invader_pos.x, invader_pos.y);
+                    // If the Invader is right above the player, it's laser won't hurt.
+                    this->shootLaser(invader_pos.x, invader_pos.y, invader->getSprite().getPosition().y < (this->INVADE_LINE - 40), *invader);
                 }
             }
         }
     }
 }
 
-void InvaderFormation::moveLasers()
+void InvaderFormation::moveLasers(Explosions &explosions, PlayerLaser &player_laser)
 {
-    this->handleCollisions();
+    this->handleCollisions(explosions, player_laser);
     for(auto& laser : this->lasers)
         laser->move();
 }
@@ -152,12 +165,24 @@ void InvaderFormation::removeHitLasers()
     {
         InvaderLaser *laser = lasers[i];
         if (laser->isHit())
+        {
+            delete laser;
             this->lasers.erase(lasers.begin() + i);
+        }
     }
 }
 
-bool InvaderFormation::move()
+bool InvaderFormation::move(CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp, Explosions &explosions)
 {
+    // The last Invader moves faster to the left than the right.
+    if (this->getNumKilled() == (this->getTotal() - 1))
+    {
+        if (this->invaders[0][0]->getMoveDir() == 1)
+            this->move_tick_max = 2;
+        else
+            this->move_tick_max = 1;
+    }
+
     this->incDeathTick(); // move() is called every frame so we put this here.
     ++this->move_tick;
     if (this->move_tick == this->move_tick_max)
@@ -173,6 +198,13 @@ bool InvaderFormation::move()
             {
                 for (auto& invader : invader_row)
                 {
+                    // If Invader has made it far enough down, game over.
+                    if (invader->getSprite().getPosition().y >= this->INVADE_LINE)
+                    {
+                        cannon.die(*this, player_laser, ufo, explosions);
+                        lives_disp.setLives(0);
+                    }
+
                     invader->move();
                     if (invader->checkHitEdge(Globals::SCREEN_WIDTH))
                         this->has_hit_edge = true;
@@ -191,12 +223,8 @@ bool InvaderFormation::move()
 
 void InvaderFormation::shift()
 {
-    // Slow down move tick change if max is getting
-    // close to 0, and don't go any lower than 1 so they
-    // don't stop moving.
-    if (this->move_tick_max > 20)
-        this->move_tick_max -= this->move_tick_change;
-    else if (this->move_tick_max > 1)
+    // Don't let Invaders get too fast.
+    if (this->move_tick_max > 2)
         --this->move_tick_max;
 
     for (auto& invader_row : this->invaders)
@@ -209,7 +237,7 @@ void InvaderFormation::shift()
     }
 
     // Also increase the rate that Invaders fire
-    this->increaseFire(250);
+    this->increaseFire(10);
 }
 
 void InvaderFormation::checkHit(PlayerLaser &laser, unsigned &game_score)
@@ -225,17 +253,31 @@ void InvaderFormation::checkHit(PlayerLaser &laser, unsigned &game_score)
                 // Increases the main game score, originally defined in main()
                 game_score += invader->getScoreValue();
 
-                // Formation speeds up for every 2 Invaders killed.
                 ++this->num_killed;
-                if (!(this->num_killed % 2) && this->move_tick_max > 1)
+
+                // If last Invader, move fast as possible.
+                if (this->getNumKilled() == (this->getTotal() - 1))
                 {
-                    --this->move_tick_max;
+                    this->move_tick = 0;
+                    this->move_tick_max = 1;
+                }
+
+                // Formation speeds up for every 6 Invaders killed.
+                else if (!(this->num_killed % 6) && this->move_tick_max > 1)
+                {
+                    this->move_tick_max -= 5;
+                    
+                    // This is to keep the formation moving
                     if (this->move_tick >= this->move_tick_max)
-                        this->move_tick = this->move_tick_max - 1; // This is to keep the formation moving
+                        this->move_tick = this->move_tick_max - 1; 
+
+                    // Don't let Invaders move too fast...
+                    if (this->move_tick_max < 2)
+                        this->move_tick_max = 2;
                 }
 
                 // Also increase fire rate.
-                this->increaseFire(10);
+                this->increaseFire(17);
 
                 this->death_snd.play();
                 laser.stop();
@@ -247,20 +289,18 @@ void InvaderFormation::checkHit(PlayerLaser &laser, unsigned &game_score)
     }
 }
 
-
-
-void InvaderFormation::updateLasers()
+void InvaderFormation::updateLasers(Explosions &explosions, PlayerLaser &player_laser)
 {
     this->removeHitLasers();
-    this->handleCollisions();
-    this->moveLasers();
+    this->handleCollisions(explosions, player_laser);
+    this->moveLasers(explosions, player_laser);
     this->shootLasers();
 }
 
 void InvaderFormation::removeLasers()
 {
     // Destroy lasers
-    for (auto &laser : this->lasers)
+    for (auto& laser : this->lasers)
         delete laser;
     this->lasers.clear();
 }
@@ -314,11 +354,11 @@ InvaderFormation::~InvaderFormation()
     this->removeLasers();
 }
 
-void InvaderFormation::update(PlayerLaser &laser, unsigned &game_score)
+void InvaderFormation::update(PlayerLaser &laser, CoreCannon &cannon, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp, Explosions &explosions, unsigned &game_score)
 {
-    this->move();
+    this->move(cannon, player_laser, ufo, lives_disp, explosions);
     this->checkHit(laser, game_score);
-    this->updateLasers();
+    this->updateLasers(explosions, player_laser);
 }
 
 void InvaderFormation::draw(int amount)

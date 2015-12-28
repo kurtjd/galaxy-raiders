@@ -2,7 +2,10 @@
 #define PLAYERLASER_H
 
 #include <SFML/Graphics.hpp>
-#include "../inc/SoundFx.hpp"
+#include "SoundFx.hpp"
+#include "Explosions.hpp"
+
+class UFO;
 
 /* The laser shot by the player.
  * Only 1 on screen at a time. */
@@ -27,10 +30,10 @@ public:
     unsigned getDmg() const { return this->SHIELD_DMG; }
 
     // Begins the shooting movement
-    void shoot(const unsigned startx, const unsigned starty);
+    void shoot(const unsigned startx, const unsigned starty, UFO &ufo);
 
     // Laser moves upwards after shot
-    void move();
+    void move(Explosions &explosions);
 
     // Called to make the laser stop shooting
     void stop();

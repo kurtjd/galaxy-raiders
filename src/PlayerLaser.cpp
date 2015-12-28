@@ -1,5 +1,6 @@
 #include <cmath>
 #include "../inc/PlayerLaser.hpp"
+#include "../inc/UFO.hpp"
 
 PlayerLaser::PlayerLaser(SoundFx &shoot_snd): is_shooting(false), shoot_snd(shoot_snd)
 {
@@ -10,18 +11,19 @@ PlayerLaser::PlayerLaser(SoundFx &shoot_snd): is_shooting(false), shoot_snd(shoo
     this->laser.setOrigin(round(this->WIDTH / 2), this->HEIGHT); // Make the origin bottom of laser
 }
 
-void PlayerLaser::shoot(const unsigned startx, const unsigned starty)
+void PlayerLaser::shoot(const unsigned startx, const unsigned starty, UFO &ufo)
 {
     // If laser is shooting, don't try to shoot again
     if (!this->is_shooting)
     {
         this->shoot_snd.play();
         this->laser.setPosition(startx, starty);
+        ufo.incShotsFired();
         this->is_shooting = true;
     }
 }
 
-void PlayerLaser::move()
+void PlayerLaser::move(Explosions &explosions)
 {
     // This will probably get called every frame, so don't move unless actually shooting
     if (!this->is_shooting)
@@ -30,8 +32,11 @@ void PlayerLaser::move()
     this->laser.move(0, this->SPEED * -1);
 
     // Player can shoot again when laser leaves screen
-    if (this->laser.getPosition().y < 0)
+    if (this->laser.getPosition().y < 100)
+    {
+        explosions.newExplosion(sf::Color::Red, this->getShape().getPosition().x, this->getShape().getPosition().y);
         this->stop();
+    }
 }
 
 void PlayerLaser::stop()

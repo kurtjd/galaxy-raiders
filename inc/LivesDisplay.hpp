@@ -29,6 +29,8 @@ public:
     void reset();
 
     void removeLife();
+    void addLife();
+    void setLives(const unsigned num);
     void draw(sf::RenderWindow &window);
 
 };

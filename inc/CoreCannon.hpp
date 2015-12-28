@@ -5,6 +5,7 @@
 #include "SoundFx.hpp"
 #include "Textures.hpp"
 #include "InvaderFormation.hpp"
+#include "Explosions.hpp"
 
 /* The player's ship. */
 
@@ -39,8 +40,9 @@ public:
     const sf::Sprite& getSprite() const { return this->sprite; }
     unsigned getX() const { return this->sprite.getPosition().x; }
     unsigned getWidth() const { return this->getSprite().getGlobalBounds().width; }
-    void handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo);
-    void update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp);
+    void die(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, Explosions &explosions);
+    void handleHit(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, Explosions &explosions);
+    void update(InvaderFormation &invaders, PlayerLaser &player_laser, UFO &ufo, LivesDisplay &lives_disp, Explosions &explosions);
 
 };
 

@@ -19,6 +19,10 @@ int main()
     sf::RenderWindow window(sf::VideoMode(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT), Globals::SCREEN_TITLE);
     window.setFramerateLimit(Globals::FRAME_RATE);
 
+    /*sf::Image icon;
+    icon.loadFromFile("images/icon.png");
+    window.setIcon(32, 32, icon.getPixelsPtr());*/
+
     // This loads all textures.
     Textures textures;
 
@@ -46,8 +50,7 @@ int main()
     InvaderFormation invaders(window, textures, earth, invader_step1_snd, invader_step2_snd, invader_step3_snd, invader_step4_snd, invader_death_snd);
 
     ShieldWall shields(window, textures, Globals::SCREEN_WIDTH);
-    const unsigned SHIELD_LINE = shields.getY() - 20; //-20 because shield y doesn't start at top of shield.
-    invaders.setShieldLine(SHIELD_LINE);
+    invaders.setShieldLine(shields.getY() - 20);
 
     CoreCannon cannon(textures, player_killed_snd, 100);
 
@@ -57,13 +60,17 @@ int main()
 
     LivesDisplay lives_disp(textures);
 
+    Menu menu(textures, score_disp);
+
+    Explosions explosions(textures);
+
 
     /* Begin game loop */
     while (window.isOpen())
     {
-        Game::handle_events(window, ufo);
-        Game::update_objects(cannon, player_laser, earth, ufo, invaders, shields, lives_disp, game_score, wave_on);
-        Game::draw_objects(window, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth, wave_on);
+        Game::handle_events(window, menu, score_disp, lives_disp, invaders, player_laser, cannon, shields, earth, ufo, explosions, wave_on);
+        Game::update_objects(cannon, player_laser, earth, ufo, invaders, shields, lives_disp, explosions, game_score, wave_on);
+        Game::draw_objects(window, menu, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth, explosions, wave_on);
         Game::updateFPS(window, fps_clock, fps_timer);
     }
 }

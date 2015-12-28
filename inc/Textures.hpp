@@ -14,6 +14,7 @@ private:
 
 public:
     sf::Texture UFO;
+    sf::Texture UFO_MENU;
 
     sf::Texture LARGE_INV_1;
     sf::Texture LARGE_INV_2;
@@ -31,6 +32,8 @@ public:
     sf::Texture CORECANNON;
     sf::Texture CORECANNON_DEATH_1;
     sf::Texture CORECANNON_DEATH_2;
+
+    sf::Texture EXPLOSION;
 
     // Actually loads the textures into memory for use by sprites.
     Textures();

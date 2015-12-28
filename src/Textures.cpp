@@ -15,6 +15,9 @@ Textures::Textures()
 
     sf::IntRect UFO_RECT(382, 33, 86, 38);
     this->UFO.loadFromImage(this->spritesheet, UFO_RECT);
+    
+    sf::IntRect UFO_MENU_RECT(318, 95, 87, 38);
+    this->UFO_MENU.loadFromImage(this->spritesheet, UFO_MENU_RECT);
 
     sf::IntRect LARGE_INV_1_RECT(257, 35, 45, 35);
     sf::IntRect LARGE_INV_2_RECT(315, 35, 45, 35);
@@ -43,4 +46,7 @@ Textures::Textures()
     this->CORECANNON.loadFromImage(this->spritesheet, CORECANNON_RECT);
     this->CORECANNON_DEATH_1.loadFromImage(this->spritesheet, CORECANNON_DEATH_1_RECT);
     this->CORECANNON_DEATH_2.loadFromImage(this->spritesheet, CORECANNON_DEATH_2_RECT);
+
+    sf::IntRect EXPLOSION_RECT(283, 110, 16, 20);
+    this->EXPLOSION.loadFromImage(this->spritesheet, EXPLOSION_RECT);
 }
