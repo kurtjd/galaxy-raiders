@@ -9,7 +9,7 @@
 class Explosion
 {
 private:
-    static constexpr unsigned SHOW_TICK_START = 30;
+    static constexpr unsigned SHOW_TICK_START = 20;
 
     sf::Sprite sprite;
     unsigned show_tick;

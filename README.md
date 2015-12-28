@@ -12,6 +12,8 @@ What I Learned and What I Plan to do Differently Next Game
 ----------------------------------------------------------
 -Decouple graphics from gameplay logic. Although it isn't absolutely terrible in my code, it can still be much better.
 
+-Make objects not so tightly coupled. This was increasing compile times. Forward declare classes instead of including their header file when able.
+
 -Look into game programming patterns, specifically entity-component pattern. I really don't like how I'm passing all the game objects separately into each function. There needs to be an easier way to handle all this.
 
 -Implement sprite batching. Although it isn't a big deal here because of the few number of sprites, making individual draw calls for every sprite every frame is very inefficient.

@@ -13,8 +13,8 @@ int main()
 
     srand(time(0));
 
-    sf::Clock fps_clock;
-    float fps_timer = fps_clock.getElapsedTime().asSeconds();
+    /*sf::Clock fps_clock;
+    float fps_timer = fps_clock.getElapsedTime().asSeconds();*/
 
     sf::RenderWindow window(sf::VideoMode(Globals::SCREEN_WIDTH, Globals::SCREEN_HEIGHT), Globals::SCREEN_TITLE);
     window.setFramerateLimit(Globals::FRAME_RATE);
@@ -71,6 +71,6 @@ int main()
         Game::handle_events(window, menu, score_disp, lives_disp, invaders, player_laser, cannon, shields, earth, ufo, explosions, wave_on);
         Game::update_objects(cannon, player_laser, earth, ufo, invaders, shields, lives_disp, explosions, game_score, wave_on);
         Game::draw_objects(window, menu, score_disp, lives_disp, ufo, invaders, shields, cannon, player_laser, earth, explosions, wave_on);
-        Game::updateFPS(window, fps_clock, fps_timer);
+        //Game::updateFPS(window, fps_clock, fps_timer);
     }
 }
