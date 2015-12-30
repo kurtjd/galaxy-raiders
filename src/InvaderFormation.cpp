@@ -363,10 +363,14 @@ void InvaderFormation::update(PlayerLaser &laser, CoreCannon &cannon, PlayerLase
 
 void InvaderFormation::draw(int amount)
 {
-    //for (auto& invader_row : this->invaders)
     // Draw rows from the bottom up
-    for (auto iter = this->invaders.end() - 1; iter != this->invaders.begin() - 1; --iter)
+    // The decrement is in the body of the loop because it needs to happen before the first iteration.
+    // My previous setup "worked" but resulted in undefined behavior.
+    // And apparently reverse iterators are slower to dereference so I didn't use them here.
+    for (auto iter = this->invaders.end(); iter != this->invaders.begin(); /* intentionally empty */)
     {
+        --iter; // end() can't be dereferenced, so immediately decrement the iterator.
+
         for (auto& invader : *iter)
         {
             if (!invader->isDead() || (invader->isDead() && invader->isExploding()))
