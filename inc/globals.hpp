@@ -33,6 +33,6 @@ namespace Globals
     const std::string HS_FILE = "misc/definitely_NOT_highscore.sav";
 
     extern States GAME_STATE;
-};
+}
 
 #endif

@@ -3,7 +3,10 @@ PROG := invaders
 
 # Add whatever compiler flags you want.
 CXXFLAGS := -std=c++14
-CXXFLAGS += -Wall -Wextra
+CXXFLAGS += -pedantic -Wall -Wextra -Wcast-align -Wcast-qual -Wctor-dtor-privacy
+CXXFLAGS += -Winit-self -Wlogical-op -Wmissing-declarations -Wmissing-include-dirs -Wnoexcept
+CXXFLAGS += -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wstrict-null-sentinel #-Wshadow
+CXXFKAGS += -Wswitch-default -Wundef -Werror -Wno-unused
 
 # You MUST keep this for auto-dependency generation.
 CXXFLAGS += -MMD

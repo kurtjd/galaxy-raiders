@@ -60,6 +60,6 @@ namespace Game
     unsigned get_highscore();
     void write_highscore(const unsigned score);
 
-};
+}
 
 #endif
