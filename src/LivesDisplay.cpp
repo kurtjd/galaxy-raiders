@@ -1,6 +1,6 @@
 #include <sstream>
-#include "../inc/LivesDisplay.hpp"
-#include "../inc/game.hpp"
+#include "LivesDisplay.hpp"
+#include "game.hpp"
 
 void LivesDisplay::reset()
 {

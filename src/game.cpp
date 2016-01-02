@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
-#include "../inc/game.hpp"
-#include "../inc/globals.hpp"
+#include "game.hpp"
+#include "globals.hpp"
 
 bool Game::life_awarded = false;
 

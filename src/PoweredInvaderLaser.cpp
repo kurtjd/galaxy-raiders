@@ -1,4 +1,4 @@
-#include "../inc/PoweredInvaderLaser.hpp"
+#include "PoweredInvaderLaser.hpp"
 
 PoweredInvaderLaser::PoweredInvaderLaser(const unsigned x, const unsigned y, const unsigned shield_line, const bool will_hurt, Invader &owner): InvaderLaser(LaserType::POWERED, 6, 20, shield_line, will_hurt, owner), flip_tick(FLIP_TICK_MAX)
 {

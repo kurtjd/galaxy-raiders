@@ -1,4 +1,4 @@
-#include "../inc/NormalInvaderLaser.hpp"
+#include "NormalInvaderLaser.hpp"
 
 void NormalInvaderLaser::moveHPart()
 {

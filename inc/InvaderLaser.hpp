@@ -2,8 +2,8 @@
 #define INVADERLASER_H
 
 #include <SFML/Graphics.hpp>
-#include "../inc/globals.hpp"
-#include "../inc/Invader.hpp"
+#include "globals.hpp"
+#include "Invader.hpp"
 
 
 /* The laser shot by Space Invaders. */

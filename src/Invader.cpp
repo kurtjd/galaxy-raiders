@@ -1,4 +1,4 @@
-#include "../inc/Invader.hpp"
+#include "Invader.hpp"
 
 void Invader::reset(const unsigned x, const unsigned y)
 {

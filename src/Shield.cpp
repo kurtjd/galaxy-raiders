@@ -1,4 +1,4 @@
-#include "../inc/Shield.hpp"
+#include "Shield.hpp"
 
 Shield::Shield(Textures &textures, const int xpos, const int ypos): textures(textures)
 {

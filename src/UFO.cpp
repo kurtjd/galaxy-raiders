@@ -1,8 +1,8 @@
 #include <sstream>
-#include "../inc/UFO.hpp"
-#include "../inc/globals.hpp"
-#include "../inc/misc.hpp"
-#include "../inc/game.hpp"
+#include "UFO.hpp"
+#include "globals.hpp"
+#include "misc.hpp"
+#include "game.hpp"
 
 bool UFO::toAppearOrNah()
 {

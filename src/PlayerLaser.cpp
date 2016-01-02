@@ -1,6 +1,6 @@
 #include <cmath>
-#include "../inc/PlayerLaser.hpp"
-#include "../inc/UFO.hpp"
+#include "PlayerLaser.hpp"
+#include "UFO.hpp"
 
 PlayerLaser::PlayerLaser(SoundFx &shoot_snd): is_shooting(false), shoot_snd(shoot_snd)
 {

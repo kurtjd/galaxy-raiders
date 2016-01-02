@@ -1,4 +1,4 @@
-#include "../inc/Explosions.hpp"
+#include "Explosions.hpp"
 
 /* BEGIN EXPLOSION CLASS METHODS */
 Explosion::Explosion(Textures &textures, sf::Color color, const unsigned x, const unsigned y): show_tick(SHOW_TICK_START), showing(true)
