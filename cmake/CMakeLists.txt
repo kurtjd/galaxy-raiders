@@ -12,7 +12,7 @@ set(PROJECT_VERSION_METADATA "")
 
 # Use a common include and source directory for projects. Each project creates their own
 # subdirectory in ../include and ../source as needed.
-set(PROJECT_INCLUDES ${CMAKE_SOURCE_DIR}/../inc)
+set(PROJECT_INCLUDES ${CMAKE_SOURCE_DIR}/../include)
 set(PROJECT_SOURCES ${CMAKE_SOURCE_DIR}/../src)
 
 # Global variable for warning flags
