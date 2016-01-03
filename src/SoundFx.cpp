@@ -1,4 +1,4 @@
-#include "../inc/SoundFx.hpp"
+#include "SoundFx.hpp"
 
 SoundFx::SoundFx(std::string filename)
 {

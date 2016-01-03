@@ -1,7 +1,7 @@
-#include "../inc/globals.hpp"
-#include "../inc/misc.hpp"
-#include "../inc/InvaderFormation.hpp"
-#include "../inc/CoreCannon.hpp"
+#include "globals.hpp"
+#include "misc.hpp"
+#include "InvaderFormation.hpp"
+#include "CoreCannon.hpp"
 
 void InvaderFormation::reset(unsigned wave_on)
 {

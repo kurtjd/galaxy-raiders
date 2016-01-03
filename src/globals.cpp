@@ -1,4 +1,4 @@
-#include "../inc/globals.hpp"
+#include "globals.hpp"
 
 // Game state is useful to all objects so make it global.
 // Globals are evil my ass...

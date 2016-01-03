@@ -2,8 +2,8 @@
 #define MENU_H
 
 #include <SFML/Graphics.hpp>
-#include "../inc/Textures.hpp"
-#include "../inc/ScoreDisplay.hpp"
+#include "Textures.hpp"
+#include "ScoreDisplay.hpp"
 
 class Menu
 {

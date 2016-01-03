@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../inc/Earth.hpp"
+#include "Earth.hpp"
 
 Earth::Earth(const unsigned screenw): WIDTH(screenw)
 {

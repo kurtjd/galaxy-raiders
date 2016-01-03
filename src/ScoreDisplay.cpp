@@ -1,6 +1,6 @@
 #include <sstream>
-#include "../inc/ScoreDisplay.hpp"
-#include "../inc/game.hpp"
+#include "ScoreDisplay.hpp"
+#include "game.hpp"
 
 ScoreDisplay::ScoreDisplay(unsigned &score): game_score(score), highscore(0)
 {

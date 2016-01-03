@@ -1,5 +1,5 @@
 #include <cstdlib>
-#include "../inc/misc.hpp"
+#include "misc.hpp"
 
 unsigned Misc::random(const unsigned low, const unsigned high)
 {

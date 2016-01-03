@@ -1,10 +1,10 @@
 #include <ctime>
 #include <SFML/Graphics.hpp>
-#include "../inc/globals.hpp"
-#include "../inc/misc.hpp"
-#include "../inc/game.hpp"
-#include "../inc/SoundFx.hpp"
-#include "../inc/Textures.hpp"
+#include "globals.hpp"
+#include "misc.hpp"
+#include "game.hpp"
+#include "SoundFx.hpp"
+#include "Textures.hpp"
 
 int main()
 {

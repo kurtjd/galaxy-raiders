@@ -1,6 +1,6 @@
 #include <sstream>
-#include "../inc/Menu.hpp"
-#include "../inc/game.hpp"
+#include "Menu.hpp"
+#include "game.hpp"
 
 Menu::Menu(Textures &textures, ScoreDisplay &score_disp): score_disp(score_disp), str_char_on(0), line_on(1), sprite_drawn(false), display_scores(false)
 {

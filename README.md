@@ -8,8 +8,15 @@ I learned a lot about C++ and OOP as I wrote this, so unfortunately code started
 
 Build Procedures
 ----------------
-Linux: Just run 'make' then run ./invaders to play. You will need SFML 2.3 installed and a compiler that supports C++11.
-Windows: Depends on your build environment, but you will also need SFML 2.3 and a compiler that supports C++11.
+
+This project uses the CMake build tool and depends on SFML 2.x and a modern C++ compiler. Building
+on Linux, for example:
+
+```
+mkdir build && cd build
+cmake ../cmake/
+make
+```
 
 What I Learned and What I Plan to do Differently Next Game
 ----------------------------------------------------------

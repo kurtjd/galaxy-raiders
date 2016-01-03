@@ -1,6 +1,6 @@
 #include <string>
-#include "../inc/globals.hpp"
-#include "../inc/Textures.hpp"
+#include "globals.hpp"
+#include "Textures.hpp"
 
 sf::Image Textures::loadSprites(const std::string img)
 {

@@ -1,6 +1,6 @@
-#include "../inc/globals.hpp"
-#include "../inc/game.hpp"
-#include "../inc/CoreCannon.hpp"
+#include "globals.hpp"
+#include "game.hpp"
+#include "CoreCannon.hpp"
 
 void CoreCannon::flipFrame()
 {

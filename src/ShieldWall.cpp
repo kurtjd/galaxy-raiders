@@ -1,4 +1,4 @@
-#include "../inc/ShieldWall.hpp"
+#include "ShieldWall.hpp"
 
 ShieldWall::ShieldWall(sf::RenderWindow &window, Textures &textures, const unsigned screenw): window(window)
 {
