@@ -1,6 +1,6 @@
-![Space Invaders](/misc/screenshot.png?raw=true "Space Invaders")
+![Galaxy Raiders](/misc/screenshot.png?raw=true "Galaxy Raiders")
 
-Space Inavders
+Galaxy Raiders
 ==============
 This is a Space Invaders clone written in C++ and SFML. I wanted to make it a pretty faithful copy, so there are no "enhancements" on my part. However, it does have some of the gameplay tricks of the original such as the 300 point UFO trick, the "lasers don't hurt you when shot by Invaders right above the invasion line" trick, etc.
 
