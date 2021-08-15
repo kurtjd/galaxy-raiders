@@ -1,5 +1,3 @@
-![Galaxy Raiders](/misc/screenshot.png?raw=true "Galaxy Raiders")
-
 Galaxy Raiders
 ==============
 This is a Space Invaders clone written in C++ and SFML. I wanted to make it a pretty faithful copy, so there are no "enhancements" on my part. However, it does have some of the gameplay tricks of the original such as the 300 point UFO trick, the "lasers don't hurt you when shot by Invaders right above the invasion line" trick, etc.
@@ -20,6 +18,8 @@ mkdir build && cd build
 cmake ../cmake/
 make
 ```
+
+Unfortunately, this will no longer build because the project originally used copyrighted sprites and sounds which I have now removed.
 
 What I Learned and What I Plan to do Differently
 ================================================
