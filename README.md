@@ -1,4 +1,4 @@
-# space-invaders
+# Space Invaders
 
 ![Space Invaders](/misc/screenshot.png?raw=true "Space Invaders")
 
