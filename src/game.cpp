@@ -1,5 +1,6 @@
 #include <fstream>
 #include <sstream>
+#include <cmath>
 #include "game.hpp"
 #include "globals.hpp"
 
